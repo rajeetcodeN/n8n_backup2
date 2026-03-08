@@ -1,0 +1,458 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Schedule Drift Check": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Load Test Dataset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Test Dataset": {
+      "main": [
+        [
+          {
+            "node": "Get Baseline Answers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Baseline Answers": {
+      "main": [
+        [
+          {
+            "node": "Execute Current LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Current LLM": {
+      "main": [
+        [
+          {
+            "node": "Score and Compare Answers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score and Compare Answers": {
+      "main": [
+        [
+          {
+            "node": "Calculate Drift Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Drift Metrics": {
+      "main": [
+        [
+          {
+            "node": "Drift Detected?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Drift Detected?": {
+      "main": [
+        [
+          {
+            "node": "Send Drift Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Results to Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Drift Alert": {
+      "main": [
+        [
+          {
+            "node": "Log Results to Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Model (Execution)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Execute Current LLM",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Model (Scoring)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Score and Compare Answers",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JSON Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Score and Compare Answers",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-28T14:43:19.467Z",
+  "id": "YCN3SIHID8SManTv",
+  "isArchived": false,
+  "meta": null,
+  "name": "AI Model Drift Detection and Performance Regression Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 2
+            }
+          ]
+        }
+      },
+      "id": "dad6c6a2-14f8-46c4-aa29-5078d50b1d7d",
+      "name": "Schedule Drift Check",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -2064,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "driftThreshold",
+              "value": 15,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "maxAccuracyDrop",
+              "value": 2,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "maxLogicDrop",
+              "value": 2,
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "maxCompletenessDrop",
+              "value": 2,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "12db13f3-a9e5-4c38-b555-216a378fe635",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1840,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "testQuestion",
+              "value": "<__PLACEHOLDER_VALUE__Test question for the model__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "expectedContext",
+              "value": "<__PLACEHOLDER_VALUE__Expected context or topic__>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2304a089-de40-4c03-81c1-b783af07ea22",
+      "name": "Load Test Dataset",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1616,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT baseline_answer, test_id, question FROM baseline_answers WHERE question = '{{ $json.testQuestion }}'",
+        "options": {}
+      },
+      "id": "22135f1b-f725-4173-8913-33ae03c23a17",
+      "name": "Get Baseline Answers",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1392,
+        80
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.testQuestion }}",
+        "options": {
+          "systemMessage": "You are an AI model being tested for drift detection. Answer the question provided accurately and completely."
+        }
+      },
+      "id": "b70c0926-0185-4166-ac9f-621e35ea2302",
+      "name": "Execute Current LLM",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1168,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Baseline Answer: {{ $('Get Baseline Answers').item.json.baseline_answer }}\n\nCurrent Model Answer: {{ $('Execute Current LLM').item.json.output }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a model evaluator.\n\nCompare:\n- Baseline answer\n- Current model answer\n\nScore across:\n1. Factual accuracy (0–10)\n2. Logical consistency (0–10)\n3. Completeness (0–10)\n\nExplain discrepancies.\n\nReturn JSON:\n{\n  \"accuracy\": <score>,\n  \"logic\": <score>,\n  \"completeness\": <score>,\n  \"drift_detected\": true/false,\n  \"explanation\": \"<explanation>\"\n}"
+        }
+      },
+      "id": "e3f0ac73-025f-4f5a-a8f1-8d6dfeb1c760",
+      "name": "Score and Compare Answers",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -816,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calculate drift metrics from AI scoring output\nconst config = $('Workflow Configuration').first().json;\nconst baseline = $('Get Baseline Answers').first().json;\nconst currentAnswer = $('Execute Current LLM').first().json.output;\nconst scores = $json;\n\n// Calculate average score\nconst avgScore = (scores.accuracy + scores.logic + scores.completeness) / 3;\n\n// Calculate drift percentage (how far from perfect 10)\nconst maxPossibleScore = 30; // 3 metrics × 10 points each\nconst actualScore = scores.accuracy + scores.logic + scores.completeness;\nconst driftPercentage = ((maxPossibleScore - actualScore) / maxPossibleScore) * 100;\n\n// Determine if drift is significant based on thresholds\nconst driftDetected = scores.drift_detected || \n  driftPercentage > config.driftThreshold ||\n  (10 - scores.accuracy) > config.maxAccuracyDrop ||\n  (10 - scores.logic) > config.maxLogicDrop ||\n  (10 - scores.completeness) > config.maxCompletenessDrop;\n\nreturn {\n  json: {\n    timestamp: new Date().toISOString(),\n    testQuestion: $('Load Test Dataset').first().json.testQuestion,\n    baselineAnswer: baseline.baseline_answer,\n    currentAnswer: currentAnswer,\n    accuracy: scores.accuracy,\n    logic: scores.logic,\n    completeness: scores.completeness,\n    avgScore: avgScore,\n    driftPercentage: driftPercentage,\n    driftDetected: driftDetected,\n    explanation: scores.explanation\n  }\n};"
+      },
+      "id": "2c858ee3-0212-406b-a9a3-4f59af6ee9a3",
+      "name": "Calculate Drift Metrics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -464,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.driftDetected }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4467f1a3-c3cf-47e4-b6ea-0f5d13d83128",
+      "name": "Drift Detected?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -240,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "<__PLACEHOLDER_VALUE__Sender email address__>",
+        "toEmail": "<__PLACEHOLDER_VALUE__Alert recipient email address__>",
+        "subject": "AI Model Drift Alert - Performance Regression Detected",
+        "html": "=<h2>AI Model Drift Alert</h2>\n<p><strong>Drift detected at:</strong> {{ $json.timestamp }}</p>\n<p><strong>Drift Percentage:</strong> {{ $json.driftPercentage.toFixed(2) }}%</p>\n\n<h3>Scores:</h3>\n<ul>\n  <li>Accuracy: {{ $json.accuracy }}/10</li>\n  <li>Logic: {{ $json.logic }}/10</li>\n  <li>Completeness: {{ $json.completeness }}/10</li>\n  <li>Average: {{ $json.avgScore.toFixed(2) }}/10</li>\n</ul>\n\n<h3>Test Details:</h3>\n<p><strong>Question:</strong> {{ $json.testQuestion }}</p>\n<p><strong>Baseline Answer:</strong> {{ $json.baselineAnswer }}</p>\n<p><strong>Current Answer:</strong> {{ $json.currentAnswer }}</p>\n\n<h3>Analysis:</h3>\n<p>{{ $json.explanation }}</p>",
+        "options": {}
+      },
+      "id": "aafb182d-d98f-4f4b-9888-2e2bc509ecbf",
+      "name": "Send Drift Alert",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        0
+      ],
+      "webhookId": "7ee2b8e7-fc0c-4bd8-9ff6-94ccde782666"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO drift_monitoring_results (timestamp, test_question, accuracy, logic, completeness, avg_score, drift_percentage, drift_detected, explanation, baseline_answer, current_answer) VALUES ('{{ $json.timestamp }}', '{{ $json.testQuestion }}', {{ $json.accuracy }}, {{ $json.logic }}, {{ $json.completeness }}, {{ $json.avgScore }}, {{ $json.driftPercentage }}, {{ $json.driftDetected }}, '{{ $json.explanation }}', '{{ $json.baselineAnswer }}', '{{ $json.currentAnswer }}')",
+        "options": {}
+      },
+      "id": "2549a5e1-1ab9-4f23-b814-31e06e5493cf",
+      "name": "Log Results to Database",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        80
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "69e6b1ac-c2e8-4927-aac6-3774a072d20e",
+      "name": "Anthropic Model (Execution)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -1088,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "9189e6d9-d799-48cd-a5d3-4fc9ec3358bf",
+      "name": "Anthropic Model (Scoring)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -800,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"accuracy\": {\n\t\t\t\"type\": \"number\",\n\t\t\t\"description\": \"Factual accuracy score 0-10\"\n\t\t},\n\t\t\"logic\": {\n\t\t\t\"type\": \"number\",\n\t\t\t\"description\": \"Logical consistency score 0-10\"\n\t\t},\n\t\t\"completeness\": {\n\t\t\t\"type\": \"number\",\n\t\t\t\"description\": \"Completeness score 0-10\"\n\t\t},\n\t\t\"drift_detected\": {\n\t\t\t\"type\": \"boolean\",\n\t\t\t\"description\": \"Whether drift was detected\"\n\t\t},\n\t\t\"explanation\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"description\": \"Explanation of discrepancies\"\n\t\t}\n\t}\n}"
+      },
+      "id": "94cd824d-b3e2-460b-80ad-e7a38f335eb8",
+      "name": "JSON Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -672,
+        304
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-28T14:43:19.469Z",
+      "createdAt": "2026-02-28T14:43:19.469Z",
+      "role": "workflow:owner",
+      "workflowId": "YCN3SIHID8SManTv",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-28T14:55:40.064Z",
+  "versionId": "61a12e13-ba1b-4e8f-bbb9-a4651374811d"
+}
