@@ -1,0 +1,457 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Get CRM Deals",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Recent Emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get CRM Deals": {
+      "main": [
+        [
+          {
+            "node": "Combine Deal Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Recent Emails": {
+      "main": [
+        [
+          {
+            "node": "Combine Deal Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Deal Context": {
+      "main": [
+        [
+          {
+            "node": "AI Deal Intelligence Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Deal Intelligence Analyzer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deal Intelligence Schema": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Deal Intelligence Analyzer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Deal Intelligence Analyzer": {
+      "main": [
+        [
+          {
+            "node": "Prepare CRM Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare CRM Update": {
+      "main": [
+        [
+          {
+            "node": "Update CRM Deal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update CRM Deal": {
+      "main": [
+        [
+          {
+            "node": "Check Deal Risk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Deal Risk": {
+      "main": [
+        [
+          {
+            "node": "Alert Sales Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-31T11:10:23.176Z",
+  "id": "VfShQo90zI8bDNy3",
+  "isArchived": false,
+  "meta": null,
+  "name": "AI-Powered CRM Intelligence and Deal Risk Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "627d2138-f960-4793-b0b1-88e8032728d5",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -384,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "dealStageFilter",
+              "value": "negotiation,proposal",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "emailLookbackDays",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "riskScoreThreshold",
+              "value": 70,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "1546489c-26d8-4f37-98cc-bf1c7e8572d8",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "deal",
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {}
+      },
+      "id": "bf699906-e458-4b3e-aa26-ae37f176cbc2",
+      "name": "Get CRM Deals",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "receivedAfter": "={{ $now.minus({ days: $('Workflow Configuration').first().json.emailLookbackDays }).toISO() }}"
+        }
+      },
+      "id": "8695bd9c-73cd-406b-95f2-d616685aede8",
+      "name": "Get Recent Emails",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        -80
+      ],
+      "webhookId": "7e665cd0-10ff-47f1-a090-ef03b5dd21a4"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "c649284f-af0e-442f-9a86-2319df1dac2c",
+      "name": "Combine Deal Context",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        288,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the following CRM deal data and recent email communications: {{ $json }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an AI sales operations analyst specializing in deal intelligence and risk assessment.\n\nYour task is to:\n1. Extract key objections mentioned in emails or call notes\n2. Identify clear next steps and action items\n3. Detect risk signals such as:\n   - Delayed responses or ghosting\n   - Budget concerns or pricing objections\n   - Competitor mentions\n   - Stakeholder changes or lack of engagement\n   - Timeline pushbacks\n4. Calculate a risk score from 0-100 (0=no risk, 100=deal likely to be lost)\n5. Provide a brief risk summary\n\nReturn your analysis in the structured JSON format defined by the output parser."
+        }
+      },
+      "id": "0e4b58da-ad2b-4271-8e0b-eda2d88ee1e9",
+      "name": "AI Deal Intelligence Analyzer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        512,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"objections\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"nextSteps\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"riskSignals\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"riskScore\": {\n      \"type\": \"number\"\n    },\n    \"riskSummary\": {\n      \"type\": \"string\"\n    },\n    \"dealId\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+      },
+      "id": "7d5afc6b-ba0f-4eca-827e-7ee3b4179c68",
+      "name": "Deal Intelligence Schema",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        656,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "99da6b13-04bc-4c6b-aa43-45896acf5eb1",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "dealId",
+              "value": "={{ $json.dealId }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "objections",
+              "value": "={{ $json.objections.join('; ') }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "nextSteps",
+              "value": "={{ $json.nextSteps.join('; ') }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "riskScore",
+              "value": "={{ $json.riskScore }}",
+              "type": "number"
+            },
+            {
+              "id": "id-5",
+              "name": "riskSummary",
+              "value": "={{ $json.riskSummary }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "909e1a16-ea55-4366-a701-21ae21fdbde7",
+      "name": "Prepare CRM Update",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        864,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "deal",
+        "operation": "update",
+        "dealId": {
+          "mode": "id",
+          "value": "={{ $json.dealId }}"
+        },
+        "updateFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "objections",
+                "value": "={{ $json.objections }}"
+              },
+              {
+                "property": "next_steps",
+                "value": "={{ $json.next_steps }}"
+              },
+              {
+                "property": "risk_score",
+                "value": "={{ $json.risk_score }}"
+              },
+              {
+                "property": "risk_summary",
+                "value": "={{ $json.risk_summary }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "fc8a68f6-fc3b-4d6d-97dd-3f1386ae5078",
+      "name": "Update CRM Deal",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        1088,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Prepare CRM Update').item.json.riskScore }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.riskScoreThreshold }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9df9f709-54bb-4474-8e0f-c9c3be503efa",
+      "name": "Check Deal Risk",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1312,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Slack channel ID for sales manager alerts__>"
+        },
+        "text": "=🚨 *High-Risk Deal Alert*\n\n*Deal ID:* {{ $json.dealId }}\n*Risk Score:* {{ $json.riskScore }}/100\n*Risk Summary:* {{ $json.riskSummary }}\n\n*Key Objections:*\n{{ $json.objections }}\n\n*Next Steps:*\n{{ $json.nextSteps }}\n\nPlease review this deal immediately.",
+        "otherOptions": {}
+      },
+      "id": "1e879691-9c5f-4499-b979-de4d5dc80c5f",
+      "name": "Alert Sales Manager",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1536,
+        -176
+      ],
+      "webhookId": "46190d1d-3556-4835-ac02-cfe5d2834a55"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T11:10:23.181Z",
+      "createdAt": "2026-01-31T11:10:23.181Z",
+      "role": "workflow:owner",
+      "workflowId": "VfShQo90zI8bDNy3",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:12:37.573Z",
+  "versionId": "6d764d21-3835-43de-87b0-f779a07cc757"
+}
