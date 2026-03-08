@@ -1,0 +1,2005 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-17T14:13:22.060Z",
+    "createdAt": "2026-02-17T14:13:22.060Z",
+    "versionId": "b5da006f-b61d-40b9-a7f3-44194d646f14",
+    "workflowId": "36bWhzz8qb0jaaw9",
+    "nodes": [
+      {
+        "parameters": {
+          "binaryPropertyName": "file",
+          "options": {
+            "headerRow": false
+          }
+        },
+        "id": "a6577df8-1eaa-4ccb-b60e-9c15a80ba70c",
+        "name": "Read Spreadsheet File1",
+        "type": "n8n-nodes-base.spreadsheetFile",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "jsCode": "// Convert Excel serial date -> YYYY-MM-DD\nconst base = new Date(Date.UTC(1899, 11, 30));\nfunction fromSerial(s) {\n  if (!s || isNaN(Number(s))) return s; // skip if not a number\n  const ms = Number(s) * 86400 * 1000;\n  return new Date(base.getTime() + ms).toISOString().slice(0, 10);\n}\n\nreturn items.map(item => {\n  let row = { ...item.json };\n\n  // Convert possible date fields\n  if (row.__EMPTY && !isNaN(row.__EMPTY)) {\n    row.__EMPTY = fromSerial(row.__EMPTY);\n  }\n  if (row.__EMPTY_1 && !isNaN(row.__EMPTY_1) && row[\" Contractor Timesheet\"]?.includes(\"Weekending\")) {\n    row.__EMPTY_1 = fromSerial(row.__EMPTY_1);\n  }\n\n  return { json: row };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          320,
+          16
+        ],
+        "id": "5378bb85-668f-469d-93eb-6d8a542b3b4a",
+        "name": "Code6"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "530eae36-2bc2-4f6f-8755-73b44da913e4",
+                "name": "text",
+                "value": "={{ $json.data }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          800,
+          32
+        ],
+        "id": "84141e4a-dbcc-470f-8fe4-78227149baf1",
+        "name": "Edit Fields7"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ JSON.parse($json[\"data\"][0]).blocks[0].content }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          640,
+          640
+        ],
+        "id": "8a516243-7dc5-42c1-b41b-2b17da759c20",
+        "name": "Edit Fields8"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/ocr",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+          "options": {}
+        },
+        "id": "d76d77c7-4743-4a9a-90fc-f3065577e847",
+        "name": "Mistral DOC OCR1",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          656,
+          416
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ $json.pages[0].markdown }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          832,
+          448
+        ],
+        "id": "2ba523bc-731f-49c6-8870-a0fe1cff0a2c",
+        "name": "Edit Fields9"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          544,
+          16
+        ],
+        "id": "8efdee95-7053-4b1a-b13e-bdec19a8bfe9",
+        "name": "Aggregate3"
+      },
+      {
+        "parameters": {
+          "method": "DELETE",
+          "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload').item.json.id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {}
+            ]
+          },
+          "options": {}
+        },
+        "id": "c1eeaa5d-d54a-4de5-a8fb-bf752a511544",
+        "name": "Mistral file delete",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          832,
+          320
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "mode",
+                "value": "single"
+              },
+              {
+                "name": "output_type",
+                "value": "jsonl"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "files",
+                "inputDataFieldName": "data"
+              },
+              {
+                "name": "include_images",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          352,
+          656
+        ],
+        "id": "bf7be4d6-a171-4014-9c3f-1d60b46c5595",
+        "name": "HTTP Request3",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/files",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "purpose",
+                "value": "ocr"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "file",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "fafa6822-0d6d-4b25-841e-bcb1d08e5d28",
+        "name": "Mistral Upload",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          208,
+          416
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "expiry",
+                "value": "1"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f5783a41-9c6e-467f-b070-746aceec3497",
+        "name": "Mistral Signed URL",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          432,
+          416
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          96,
+          640
+        ],
+        "id": "51d92ab7-a571-41c5-ada1-89047579261a",
+        "name": "Code5"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          16,
+          416
+        ],
+        "id": "ecda9cd1-aba9-48d1-9b42-fa48c2f53b9a",
+        "name": "Code7"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/msword",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "509a71b4-8c1b-419b-8d8b-fc2c68b86bf2"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/msword",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "e492cbb6-eaca-42fa-95b6-8cb1363b1ead"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "44e10cb4-4d6a-41f4-a34d-f9f635e6c998"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.google-apps.document",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "33eaa3dd-d6c6-4fbb-a625-9db12fd6b13c"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "doc"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.ms-excel",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "298f79a3-fb4b-48c7-bed8-f9e26a4fafad"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b08acf48-8386-4017-8285-e134d0094482"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.google-apps.spreadsheet",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "8a5c4ec2-f2d9-4a98-b62b-b51e08ec6bd7"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "excel"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/jpeg",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "8f99c496-5acb-4577-8ee3-89267716697b"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/png",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "1a243663-2d4d-4004-b0be-77d61f69fd34"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/tiff",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "fdd3e440-3119-43c9-ba2c-b0ad4aa29454"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/jpg",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b7c6b1a4-cce5-4912-9c24-2bb7527d6d38"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/bmp",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "47c28737-9239-4ac9-a5cb-74e6843c07a6"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "image"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "8b8e621e-40b4-43cd-8bd6-220e55b9e9fc",
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "=application/pdf",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "pdf"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "898eca8c-df43-41dc-a7fd-c5ad0ee5f1ef",
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "text/plain",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "txt"
+              }
+            ]
+          },
+          "options": {
+            "allMatchingOutputs": false
+          }
+        },
+        "id": "2a0ac000-6875-4e3a-a5a7-38db1f84cee9",
+        "name": "Switch File Type",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3,
+        "position": [
+          -496,
+          496
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "pdf",
+          "binaryPropertyName": "file",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          368,
+          1072
+        ],
+        "id": "6dd44952-8fd4-4c63-9484-89ab39c7f22f",
+        "name": "Extract from File2"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n- Do NOT skip any line item. Continue extracting all line items until the sum of all line_total values exactly equals the total sale amount extracted from the invoice. This verification ensures that all items are fully extracted and no entries are missed. If the totals do not match, keep parsing and extracting additional line items until they do. Only then stop.\n\n\n\n{{ $json.text }}",
+          "options": {
+            "systemMessage": "=\"\"\"You are a document parsing assistant designed to extract structured data from purchase orders and RFQs for automated uploading and validation in a procurement system.\n\nExtract the following fields from the text:\n\nrequested_items: List of all requested materials/articles in the document. For each item, extract:\n\npos: Position number. **IMPORTANT**: Maintain the original numbering exactly.\n\nconfig: **EXTRACT THIS FIRST**. A nested object containing technical specifications:\n    - material_id: The structured material ID if present (Format: 100-xxx-xxx.xx-xx).\n    - standard: Standard or DIN (e.g., \"DIN 6885\").\n    - form: The exact form letter/code (e.g., \"A\", \"B\", \"C\", \"AS\", \"AB\").\n      * **CRITICAL**: Do NOT confuse dimension labels with the Form. \"B=10\" means Form is NOT \"B\".\n    - material: Material grade.\n      * **WHITELIST**: Only accepted values are: [\"C45\", \"C45+C\", \"C45K\", \"42CrMo4\", \"1.4301\", \"1.4305\", \"1.4571\", \"1.4404\", \"1.4057\"].\n      * **CLEANING**: Remove prefixes like \"P\", \"PF\", \"P85\", \"P885\" if attached to material.\n        - Example: \"P885-C45C\" -> \"C45+C\"\n        - Example: \"P5K\" -> \"C45K\"\n        - Example: \"P5C\" -> \"C45+C\"\n        - Example: \"C45C\" -> \"C45+C\"\n      * **CRITICAL**: If the text contains \"C45+C\", extracted material MUST be \"C45+C\".\n      * **IGNORE**: \"P5K\", \"P85\", \"P100\", \"S355\", \"S235\" -> These are NOT valid.\n      * If multiple valid materials appear (e.g. \"C45+C / 1.4301\"), output them with a slash.\n    - dimensions: Object with `width`, `height`, `length` (numeric values).\n      * **CRITICAL**: Prioritize dimensions found WITHIN the article string (e.g., \"20X12X50\" -> Length=50).\n      * **IGNORE** loose numbers that look like material codes (e.g., ignore \"100\" from \"100-013...\").\n      * Example: \"B=10 H=8 T=16\" -> {width: 10, height: 8, length: 16}.\n    - features: List of features. Each feature is an object { \"feature_type\": \"...\", \"spec\": \"...\" }.\n      * **CRITICAL**: Extract ALL technical specifications (M-codes, coatings, tolerances).\n      * **ALWAYS** extract \"M\" codes (e.g., \"M6\") as type \"thread\"/\"bore\", even if they appear in the description.\n      * **CONSTRAINT**: Only extract M-codes between M1 and M21. Ignore smaller (e.g. M0.5) or larger (e.g. M30).\n      * Example: \"PF...-20x12x100-M6\" -> features: [{\"feature_type\": \"thread\", \"spec\": \"M6\"}]\n    - weight_per_unit: Weight per single unit if available.\n\narticle_name: **CONSTRUCT** this field *AFTER* extracting config. Use this strict format:\n\"{GenericName}-{Form}-{Dimensions}-{Material}-{Features}\"\n- GenericName: \"Passfeder\"/\"Passfed\" -> \"PF\". Otherwise use base name.\n- Form: e.g. \"AS\".\n- Dimensions: e.g. \"8X7X45\".\n- Material: e.g. \"C45+C\".\n- Features: Any features found in config.features (e.g., \"M4\").\n- Do NOT include DIN/Standard in the article_name.\n*Example Result*: \"PF-AS-8X7X45-C45+C-M4\"\n\nsupplier_material_number: Supplier’s material number if present, else null.\n\ncustomer_material_number: Customer’s material number if present, else null.\n\nquantity: Number of parts requested.\n  * **CRITICAL**: Use \"Menge\" (total quantity ordered), NOT \"VPE\" (packaging unit / Verpackungseinheit).\n  * VPE is the packaging size, Menge is the actual order quantity.\n  * Example: If VPE=200 and Menge=2000, extract quantity as 2000.\n\nunit: Unit of measure (pcs, kg, etc.).\n\ndelivery_date: Delivery date in YYYY-MM-DD format if present, else null.\n\nImportant rules:\n\nIgnore “Nosta” as customer; it can only appear under supplier_name.\n\nDo not skip any requested item.\n\nIf a field is missing, return it as null (or empty list for features).\n\nExtract values exactly as shown in the document.\n\nDates must always be normalized to YYYY-MM-DD.\n\nAlways return a single valid JSON object with the exact key names above.\n\n✨ If an item is split across multiple pages, merge them into a single requested_items entry.\n\n✨ Ensure all position numbers (pos) are in sequence.\n\n{LEARNED_CONTEXT}\n\noutput format\n\nYou must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n- Do NOT skip any line item. Continue extracting all line items until the sum of all line_total values exactly equals the total sale amount extracted from the invoice. This verification ensures that all items are fully extracted and no entries are missed. If the totals do not match, keep parsing and extracting additional line items until they do. Only then stop.\"\"\"\n\nUSER_PROMPT_TEMPLATE = \"\"\"Extract ALL line items and document information from this RFQ/Purchase Order document:\n\n{TEXT}\n\nReturn ONLY valid JSON with no markdown formatting.\"\"\"additional line items until they do. Only then stop.\n\n\n[\n  {\n    \"document_info\": {\n      \n    },\n    \"requested_items\": [\n      {\n        \"pos\": null,\n        \"article_number\": null,\n         \"config\": {\n          \"material_id\": null,\n          \"standard\": null,\n          \"form\": \"\",\n          \"material\": \"\",\n          \"dimensions\": {\n            \"width\": ,\n            \"height\": ,\n            \"length\":\n          },\n       \"features\": [],\n          \"weight_per_unit\": null\n        },\n        \"article_name\": \"\",\n        \"supplier_material_number\": null,\n        \"customer_material_number\": null,\n        \"quantity\": ,\n        \"unit\": \"pc\",\n        \"metadata\": {\n          \"raw_text_snippet\": \"\",\n          \"rule_confidence_score\":\n        }\n      }\n    ]\n  }\n]\n\n\n\n "
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          1104,
+          592
+        ],
+        "id": "b613c576-8de2-42b6-a026-d1c46ef59d78",
+        "name": "AI Agent5"
+      },
+      {
+        "parameters": {
+          "model": "mistral-medium-latest",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          832
+        ],
+        "id": "e70b9e55-3a4f-4460-9177-ee78a05971f0",
+        "name": "Mistral Cloud Chat Model6",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4f0cd863-7593-471b-9c43-743c0f7602c1",
+                "name": "output",
+                "value": "={{ $json.output }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1456,
+          592
+        ],
+        "id": "40110680-7ea5-4be5-bed7-7b9df9d6891d",
+        "name": "Edit Fields11"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Get the raw string\nconst raw = $input.first().json.output;\n\n// Helper: remove ```json ... ``` fences if present\nfunction stripFences(s) {\n  if (typeof s !== 'string') return s;\n  return s.trim()\n    .replace(/^```[a-zA-Z]*\\s*/i, '')   // leading ``` or ```json\n    .replace(/```[\\s]*$/i, '')          // trailing ```\n    .trim();\n}\n\n// Helper: robust JSON parse (handles double-encoded JSON too)\nfunction robustParse(s) {\n  if (typeof s !== 'string') return s;\n  let t = stripFences(s);\n  try { return JSON.parse(t); } catch (e1) {}\n  // Sometimes the JSON is stringified twice\n  try { return JSON.parse(JSON.parse(t)); } catch (e2) {}\n  // Fallback: try to extract the first {...} block\n  const m = t.match(/\\{[\\s\\S]*\\}$/);\n  if (m) { return JSON.parse(m[0]); }\n  throw new Error('Could not parse JSON from `output` – check the upstream node.');\n}\n\nconst parsed = robustParse(raw);\nreturn [{ json: parsed }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1648,
+          608
+        ],
+        "id": "55eb42a8-4942-40e6-be05-915207088c0c",
+        "name": "Code9",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "60573ec2-ab96-4470-9c3c-dcba96c5264e",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -912,
+          592
+        ],
+        "id": "37e3f20b-2fc6-4b9a-9916-a348c41a0831",
+        "name": "Webhook",
+        "webhookId": "60573ec2-ab96-4470-9c3c-dcba96c5264e"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          1968,
+          560
+        ],
+        "id": "9075f580-bd2e-4db5-8d97-f876bc7f6fc3",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "operation": "text",
+          "binaryPropertyName": "file",
+          "destinationKey": "file",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1.1,
+        "position": [
+          160,
+          1472
+        ],
+        "id": "ca26bd81-9459-46f5-9269-074034c472ad",
+        "name": "Extract from File"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ $json.file }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          528,
+          1424
+        ],
+        "id": "7ffcaa47-c63f-4f65-87ce-b9be02f2c10b",
+        "name": "Edit Fields"
+      }
+    ],
+    "connections": {
+      "Read Spreadsheet File1": {
+        "main": [
+          [
+            {
+              "node": "Code6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code6": {
+        "main": [
+          [
+            {
+              "node": "Aggregate3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields7": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields8": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral DOC OCR1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields9",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Mistral file delete",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields9": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate3": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request3": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Upload": {
+        "main": [
+          [
+            {
+              "node": "Mistral Signed URL",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Signed URL": {
+        "main": [
+          [
+            {
+              "node": "Mistral DOC OCR1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code5": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code7": {
+        "main": [
+          [
+            {
+              "node": "Mistral Upload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch File Type": {
+        "main": [
+          [
+            {
+              "node": "Code7",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Read Spreadsheet File1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code5",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Extract from File2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File2": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent5": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Cloud Chat Model6": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields11": {
+        "main": [
+          [
+            {
+              "node": "Code9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code9": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Switch File Type",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Anusha Priya",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "b5da006f-b61d-40b9-a7f3-44194d646f14",
+  "connections": {
+    "Read Spreadsheet File1": {
+      "main": [
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields8": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral DOC OCR1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mistral file delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields9": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Upload": {
+      "main": [
+        [
+          {
+            "node": "Mistral Signed URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Signed URL": {
+      "main": [
+        [
+          {
+            "node": "Mistral DOC OCR1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Mistral Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch File Type": {
+      "main": [
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Read Spreadsheet File1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields11": {
+      "main": [
+        [
+          {
+            "node": "Code9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code9": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch File Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-17T10:36:31.072Z",
+  "id": "36bWhzz8qb0jaaw9",
+  "isArchived": false,
+  "meta": null,
+  "name": "rfq fallback",
+  "nodes": [
+    {
+      "parameters": {
+        "binaryPropertyName": "file",
+        "options": {
+          "headerRow": false
+        }
+      },
+      "id": "a6577df8-1eaa-4ccb-b60e-9c15a80ba70c",
+      "name": "Read Spreadsheet File1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convert Excel serial date -> YYYY-MM-DD\nconst base = new Date(Date.UTC(1899, 11, 30));\nfunction fromSerial(s) {\n  if (!s || isNaN(Number(s))) return s; // skip if not a number\n  const ms = Number(s) * 86400 * 1000;\n  return new Date(base.getTime() + ms).toISOString().slice(0, 10);\n}\n\nreturn items.map(item => {\n  let row = { ...item.json };\n\n  // Convert possible date fields\n  if (row.__EMPTY && !isNaN(row.__EMPTY)) {\n    row.__EMPTY = fromSerial(row.__EMPTY);\n  }\n  if (row.__EMPTY_1 && !isNaN(row.__EMPTY_1) && row[\" Contractor Timesheet\"]?.includes(\"Weekending\")) {\n    row.__EMPTY_1 = fromSerial(row.__EMPTY_1);\n  }\n\n  return { json: row };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        16
+      ],
+      "id": "5378bb85-668f-469d-93eb-6d8a542b3b4a",
+      "name": "Code6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "530eae36-2bc2-4f6f-8755-73b44da913e4",
+              "name": "text",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        32
+      ],
+      "id": "84141e4a-dbcc-470f-8fe4-78227149baf1",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ JSON.parse($json[\"data\"][0]).blocks[0].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        640
+      ],
+      "id": "8a516243-7dc5-42c1-b41b-2b17da759c20",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+        "options": {}
+      },
+      "id": "d76d77c7-4743-4a9a-90fc-f3065577e847",
+      "name": "Mistral DOC OCR1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        656,
+        416
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ $json.pages[0].markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        448
+      ],
+      "id": "2ba523bc-731f-49c6-8870-a0fe1cff0a2c",
+      "name": "Edit Fields9"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        544,
+        16
+      ],
+      "id": "8efdee95-7053-4b1a-b13e-bdec19a8bfe9",
+      "name": "Aggregate3"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "c1eeaa5d-d54a-4de5-a8fb-bf752a511544",
+      "name": "Mistral file delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        832,
+        320
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "jsonl"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "include_images",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        352,
+        656
+      ],
+      "id": "bf7be4d6-a171-4014-9c3f-1d60b46c5595",
+      "name": "HTTP Request3",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fafa6822-0d6d-4b25-841e-bcb1d08e5d28",
+      "name": "Mistral Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        208,
+        416
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f5783a41-9c6e-467f-b070-746aceec3497",
+      "name": "Mistral Signed URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        432,
+        416
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        640
+      ],
+      "id": "51d92ab7-a571-41c5-ada1-89047579261a",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16,
+        416
+      ],
+      "id": "ecda9cd1-aba9-48d1-9b42-fa48c2f53b9a",
+      "name": "Code7"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/msword",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "509a71b4-8c1b-419b-8d8b-fc2c68b86bf2"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/msword",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e492cbb6-eaca-42fa-95b6-8cb1363b1ead"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "44e10cb4-4d6a-41f4-a34d-f9f635e6c998"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.google-apps.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "33eaa3dd-d6c6-4fbb-a625-9db12fd6b13c"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "doc"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.ms-excel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "298f79a3-fb4b-48c7-bed8-f9e26a4fafad"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b08acf48-8386-4017-8285-e134d0094482"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.google-apps.spreadsheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8a5c4ec2-f2d9-4a98-b62b-b51e08ec6bd7"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "excel"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/jpeg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8f99c496-5acb-4577-8ee3-89267716697b"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/png",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1a243663-2d4d-4004-b0be-77d61f69fd34"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/tiff",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fdd3e440-3119-43c9-ba2c-b0ad4aa29454"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/jpg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b7c6b1a4-cce5-4912-9c24-2bb7527d6d38"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/bmp",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "47c28737-9239-4ac9-a5cb-74e6843c07a6"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8b8e621e-40b4-43cd-8bd6-220e55b9e9fc",
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "=application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pdf"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "898eca8c-df43-41dc-a7fd-c5ad0ee5f1ef",
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "text/plain",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "txt"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": false
+        }
+      },
+      "id": "2a0ac000-6875-4e3a-a5a7-38db1f84cee9",
+      "name": "Switch File Type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -496,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        368,
+        1072
+      ],
+      "id": "6dd44952-8fd4-4c63-9484-89ab39c7f22f",
+      "name": "Extract from File2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n- Do NOT skip any line item. Continue extracting all line items until the sum of all line_total values exactly equals the total sale amount extracted from the invoice. This verification ensures that all items are fully extracted and no entries are missed. If the totals do not match, keep parsing and extracting additional line items until they do. Only then stop.\n\n\n\n{{ $json.text }}",
+        "options": {
+          "systemMessage": "=\"\"\"You are a document parsing assistant designed to extract structured data from purchase orders and RFQs for automated uploading and validation in a procurement system.\n\nExtract the following fields from the text:\n\nrequested_items: List of all requested materials/articles in the document. For each item, extract:\n\npos: Position number. **IMPORTANT**: Maintain the original numbering exactly.\n\nconfig: **EXTRACT THIS FIRST**. A nested object containing technical specifications:\n    - material_id: The structured material ID if present (Format: 100-xxx-xxx.xx-xx).\n    - standard: Standard or DIN (e.g., \"DIN 6885\").\n    - form: The exact form letter/code (e.g., \"A\", \"B\", \"C\", \"AS\", \"AB\").\n      * **CRITICAL**: Do NOT confuse dimension labels with the Form. \"B=10\" means Form is NOT \"B\".\n    - material: Material grade.\n      * **WHITELIST**: Only accepted values are: [\"C45\", \"C45+C\", \"C45K\", \"42CrMo4\", \"1.4301\", \"1.4305\", \"1.4571\", \"1.4404\", \"1.4057\"].\n      * **CLEANING**: Remove prefixes like \"P\", \"PF\", \"P85\", \"P885\" if attached to material.\n        - Example: \"P885-C45C\" -> \"C45+C\"\n        - Example: \"P5K\" -> \"C45K\"\n        - Example: \"P5C\" -> \"C45+C\"\n        - Example: \"C45C\" -> \"C45+C\"\n      * **CRITICAL**: If the text contains \"C45+C\", extracted material MUST be \"C45+C\".\n      * **IGNORE**: \"P5K\", \"P85\", \"P100\", \"S355\", \"S235\" -> These are NOT valid.\n      * If multiple valid materials appear (e.g. \"C45+C / 1.4301\"), output them with a slash.\n    - dimensions: Object with `width`, `height`, `length` (numeric values).\n      * **CRITICAL**: Prioritize dimensions found WITHIN the article string (e.g., \"20X12X50\" -> Length=50).\n      * **IGNORE** loose numbers that look like material codes (e.g., ignore \"100\" from \"100-013...\").\n      * Example: \"B=10 H=8 T=16\" -> {width: 10, height: 8, length: 16}.\n    - features: List of features. Each feature is an object { \"feature_type\": \"...\", \"spec\": \"...\" }.\n      * **CRITICAL**: Extract ALL technical specifications (M-codes, coatings, tolerances).\n      * **ALWAYS** extract \"M\" codes (e.g., \"M6\") as type \"thread\"/\"bore\", even if they appear in the description.\n      * **CONSTRAINT**: Only extract M-codes between M1 and M21. Ignore smaller (e.g. M0.5) or larger (e.g. M30).\n      * Example: \"PF...-20x12x100-M6\" -> features: [{\"feature_type\": \"thread\", \"spec\": \"M6\"}]\n    - weight_per_unit: Weight per single unit if available.\n\narticle_name: **CONSTRUCT** this field *AFTER* extracting config. Use this strict format:\n\"{GenericName}-{Form}-{Dimensions}-{Material}-{Features}\"\n- GenericName: \"Passfeder\"/\"Passfed\" -> \"PF\". Otherwise use base name.\n- Form: e.g. \"AS\".\n- Dimensions: e.g. \"8X7X45\".\n- Material: e.g. \"C45+C\".\n- Features: Any features found in config.features (e.g., \"M4\").\n- Do NOT include DIN/Standard in the article_name.\n*Example Result*: \"PF-AS-8X7X45-C45+C-M4\"\n\nsupplier_material_number: Supplier’s material number if present, else null.\n\ncustomer_material_number: Customer’s material number if present, else null.\n\nquantity: Number of parts requested.\n  * **CRITICAL**: Use \"Menge\" (total quantity ordered), NOT \"VPE\" (packaging unit / Verpackungseinheit).\n  * VPE is the packaging size, Menge is the actual order quantity.\n  * Example: If VPE=200 and Menge=2000, extract quantity as 2000.\n\nunit: Unit of measure (pcs, kg, etc.).\n\ndelivery_date: Delivery date in YYYY-MM-DD format if present, else null.\n\nImportant rules:\n\nIgnore “Nosta” as customer; it can only appear under supplier_name.\n\nDo not skip any requested item.\n\nIf a field is missing, return it as null (or empty list for features).\n\nExtract values exactly as shown in the document.\n\nDates must always be normalized to YYYY-MM-DD.\n\nAlways return a single valid JSON object with the exact key names above.\n\n✨ If an item is split across multiple pages, merge them into a single requested_items entry.\n\n✨ Ensure all position numbers (pos) are in sequence.\n\n{LEARNED_CONTEXT}\n\noutput format\n\nYou must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n- Do NOT skip any line item. Continue extracting all line items until the sum of all line_total values exactly equals the total sale amount extracted from the invoice. This verification ensures that all items are fully extracted and no entries are missed. If the totals do not match, keep parsing and extracting additional line items until they do. Only then stop.\"\"\"\n\nUSER_PROMPT_TEMPLATE = \"\"\"Extract ALL line items and document information from this RFQ/Purchase Order document:\n\n{TEXT}\n\nReturn ONLY valid JSON with no markdown formatting.\"\"\"additional line items until they do. Only then stop.\n\n\n[\n  {\n    \"document_info\": {\n      \n    },\n    \"requested_items\": [\n      {\n        \"pos\": null,\n        \"article_number\": null,\n         \"config\": {\n          \"material_id\": null,\n          \"standard\": null,\n          \"form\": \"\",\n          \"material\": \"\",\n          \"dimensions\": {\n            \"width\": ,\n            \"height\": ,\n            \"length\":\n          },\n       \"features\": [],\n          \"weight_per_unit\": null\n        },\n        \"article_name\": \"\",\n        \"supplier_material_number\": null,\n        \"customer_material_number\": null,\n        \"quantity\": ,\n        \"unit\": \"pc\",\n        \"metadata\": {\n          \"raw_text_snippet\": \"\",\n          \"rule_confidence_score\":\n        }\n      }\n    ]\n  }\n]\n\n\n\n "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1104,
+        592
+      ],
+      "id": "b613c576-8de2-42b6-a026-d1c46ef59d78",
+      "name": "AI Agent5"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        832
+      ],
+      "id": "e70b9e55-3a4f-4460-9177-ee78a05971f0",
+      "name": "Mistral Cloud Chat Model6",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4f0cd863-7593-471b-9c43-743c0f7602c1",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1456,
+        592
+      ],
+      "id": "40110680-7ea5-4be5-bed7-7b9df9d6891d",
+      "name": "Edit Fields11"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the raw string\nconst raw = $input.first().json.output;\n\n// Helper: remove ```json ... ``` fences if present\nfunction stripFences(s) {\n  if (typeof s !== 'string') return s;\n  return s.trim()\n    .replace(/^```[a-zA-Z]*\\s*/i, '')   // leading ``` or ```json\n    .replace(/```[\\s]*$/i, '')          // trailing ```\n    .trim();\n}\n\n// Helper: robust JSON parse (handles double-encoded JSON too)\nfunction robustParse(s) {\n  if (typeof s !== 'string') return s;\n  let t = stripFences(s);\n  try { return JSON.parse(t); } catch (e1) {}\n  // Sometimes the JSON is stringified twice\n  try { return JSON.parse(JSON.parse(t)); } catch (e2) {}\n  // Fallback: try to extract the first {...} block\n  const m = t.match(/\\{[\\s\\S]*\\}$/);\n  if (m) { return JSON.parse(m[0]); }\n  throw new Error('Could not parse JSON from `output` – check the upstream node.');\n}\n\nconst parsed = robustParse(raw);\nreturn [{ json: parsed }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1648,
+        608
+      ],
+      "id": "55eb42a8-4942-40e6-be05-915207088c0c",
+      "name": "Code9",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "60573ec2-ab96-4470-9c3c-dcba96c5264e",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -912,
+        592
+      ],
+      "id": "37e3f20b-2fc6-4b9a-9916-a348c41a0831",
+      "name": "Webhook",
+      "webhookId": "60573ec2-ab96-4470-9c3c-dcba96c5264e"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1968,
+        560
+      ],
+      "id": "9075f580-bd2e-4db5-8d97-f876bc7f6fc3",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "binaryPropertyName": "file",
+        "destinationKey": "file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        1472
+      ],
+      "id": "ca26bd81-9459-46f5-9269-074034c472ad",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ $json.file }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        1424
+      ],
+      "id": "7ffcaa47-c63f-4f65-87ce-b9be02f2c10b",
+      "name": "Edit Fields"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "nosta.app.n8n.cloud",
+            "user-agent": "python-httpx/0.28.1",
+            "content-length": "436",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "74.220.51.250",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "DE",
+            "cf-ray": "9cf5dd57222b198f-FRA",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "multipart/form-data; boundary=845a10415e26289ea38ed67afa7266ae",
+            "x-forwarded-for": "74.220.51.250, 162.158.95.27",
+            "x-forwarded-host": "nosta.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-39-c65d8f959-7n2hn",
+            "x-is-trusted": "yes",
+            "x-real-ip": "74.220.51.250"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://nosta.app.n8n.cloud/webhook/60573ec2-ab96-4470-9c3c-dcba96c5264e",
+          "executionMode": "production"
+        },
+        "binary": {
+          "file": {
+            "mimeType": "text/plain",
+            "fileType": "text",
+            "fileExtension": "txt",
+            "data": "filesystem-v2",
+            "fileName": "manual_batch_input.txt",
+            "id": "filesystem-v2:workflows/36bWhzz8qb0jaaw9/executions/temp/binary_data/a06e3cb3-3602-4c22-8bab-e36218826322",
+            "fileSize": "252 B"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-17T10:36:31.075Z",
+      "createdAt": "2026-02-17T10:36:31.075Z",
+      "role": "workflow:owner",
+      "workflowId": "36bWhzz8qb0jaaw9",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-17T14:13:22.058Z",
+  "versionId": "b5da006f-b61d-40b9-a7f3-44194d646f14"
+}
