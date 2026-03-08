@@ -1,0 +1,832 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Task Input Webhook": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Task Classifier Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Task Classifier Agent": {
+      "main": [
+        [
+          {
+            "node": "Load Policy Rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Policy Rules": {
+      "main": [
+        [
+          {
+            "node": "Policy Engine Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Policy Engine Decision": {
+      "main": [
+        [
+          {
+            "node": "Route by Model Selection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Model Selection": {
+      "main": [
+        [
+          {
+            "node": "Small Model Execution",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Large Model Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Small Model Execution": {
+      "main": [
+        [
+          {
+            "node": "Prepare Telemetry Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Large Model Execution": {
+      "main": [
+        [
+          {
+            "node": "Prepare Telemetry Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Telemetry Data": {
+      "main": [
+        [
+          {
+            "node": "Store Telemetry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Telemetry": {
+      "main": [
+        [
+          {
+            "node": "Return Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekly Self-Tuning Schedule": {
+      "main": [
+        [
+          {
+            "node": "Fetch Historical Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Historical Data": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Success Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Success Metrics": {
+      "main": [
+        [
+          {
+            "node": "Calculate Routing Adjustments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Routing Adjustments": {
+      "main": [
+        [
+          {
+            "node": "Update Policy Rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model - Classifier": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Task Classifier Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classification Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Task Classifier Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model - Small": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Small Model Execution",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model - Large": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Large Model Execution",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-31T10:59:41.695Z",
+  "id": "f0nYBGbPOZ43m4Jy",
+  "isArchived": false,
+  "meta": null,
+  "name": "Policy-Driven LLM Orchestration with SLA Enforcement and Adaptive Routing",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "llm-orchestrator",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "349533ca-77d8-420a-beb1-730410d3a71f",
+      "name": "Task Input Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1472,
+        304
+      ],
+      "webhookId": "297cdc22-8f0d-4cbc-a19f-b876a3894c14"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "maxLatencyMs",
+              "value": 30000,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "costCeiling",
+              "value": 0.5,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "timeoutMs",
+              "value": 25000,
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "maxTokens",
+              "value": 4000,
+              "type": "number"
+            },
+            {
+              "id": "id-5",
+              "name": "maxRetries",
+              "value": 2,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "eed3cdb1-4fc2-4ba7-bf47-c4718a6ff219",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1248,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.task }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a task classification expert. Analyze the provided task and classify it into one of these categories: extraction, classification, reasoning, or generation.\n\nProvide a confidence score (0-100) for your classification.\n\nConsider:\n- Extraction: pulling specific data from text\n- Classification: categorizing or labeling content\n- Reasoning: logical analysis or problem-solving\n- Generation: creating new content\n\nReturn your analysis in the structured format."
+        }
+      },
+      "id": "5bdf28f7-562f-40d5-82ed-4c05b4177975",
+      "name": "Task Classifier Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1024,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM policy_rules WHERE task_type = $1 AND priority = $2",
+        "options": {
+          "queryReplacement": "={{ $json.taskType }},={{ $json.priority }}"
+        }
+      },
+      "id": "6d48e008-923c-469e-9dc3-d19eece5d4f4",
+      "name": "Load Policy Rules",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -672,
+        304
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $('Workflow Configuration').first().json;\nconst classification = $input.first().json;\nconst policy = $input.item.json;\n\n// Decision matrix based on policy rules\nconst decision = {\n  modelSize: policy.preferred_model || 'small',\n  allowTools: policy.allow_tools || false,\n  retryStrategy: policy.retry_strategy || 'fallback',\n  timeoutMs: Math.min(classification.priority === 'critical' ? config.timeoutMs * 0.8 : config.timeoutMs, policy.max_latency_ms || config.timeoutMs),\n  maxTokens: policy.max_tokens || config.maxTokens,\n  costBudget: Math.min(config.costCeiling, policy.cost_limit || config.costCeiling),\n  taskType: classification.taskType,\n  confidence: classification.confidence,\n  priority: classification.priority\n};\n\n// Override to large model for complex reasoning or low confidence\nif (classification.taskType === 'reasoning' && classification.confidence < 70) {\n  decision.modelSize = 'large';\n}\n\nif (classification.priority === 'critical') {\n  decision.modelSize = 'large';\n}\n\nreturn decision;"
+      },
+      "id": "e19c6b78-61fe-4c08-8cb4-2838249ce325",
+      "name": "Policy Engine Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.modelSize }}",
+                    "rightValue": "small",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "small"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.modelSize }}",
+                    "rightValue": "large",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "large"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Fallback"
+        }
+      },
+      "id": "acbc3db8-0544-43e7-9f30-8d28a07d2d48",
+      "name": "Route by Model Selection",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -224,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.task }}",
+        "options": {
+          "systemMessage": "=You are a fast, efficient AI assistant optimized for quick responses. Process the task accurately and concisely.\n\nTask type: {{ $json.taskType }}\nPriority: {{ $json.priority }}\n\nProvide your response within the allocated time and token budget."
+        }
+      },
+      "id": "04f16c61-e829-4812-90ff-a41501a792cf",
+      "name": "Small Model Execution",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.task }}",
+        "options": {
+          "systemMessage": "=You are an advanced AI assistant capable of complex reasoning and detailed analysis. Process the task thoroughly and accurately.\n\nTask type: {{ $json.taskType }}\nPriority: {{ $json.priority }}\n\nProvide comprehensive, well-reasoned responses within the allocated time and token budget."
+        }
+      },
+      "id": "1af9d4aa-8813-4a31-b9e8-eb5faca87d57",
+      "name": "Large Model Execution",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        0,
+        504
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "telemetry"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "task_type": "={{ $json.task_type }}",
+            "priority": "={{ $json.priority }}",
+            "model_used": "={{ $json.model_used }}",
+            "latency_ms": "={{ $json.latency_ms }}",
+            "tokens_used": "={{ $json.tokens_used }}",
+            "estimated_cost": "={{ $json.estimated_cost }}",
+            "success": "={{ $json.success }}",
+            "failure_type": "={{ $json.failure_type }}",
+            "timestamp": "={{ $json.timestamp }}"
+          },
+          "matchingColumns": [
+            "task_type",
+            "priority",
+            "model_used",
+            "latency_ms",
+            "tokens_used",
+            "estimated_cost",
+            "success",
+            "failure_type",
+            "timestamp"
+          ],
+          "schema": [
+            {
+              "id": "task_type",
+              "displayName": "task_type",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "model_used",
+              "displayName": "model_used",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "latency_ms",
+              "displayName": "latency_ms",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tokens_used",
+              "displayName": "tokens_used",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estimated_cost",
+              "displayName": "estimated_cost",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "success",
+              "displayName": "success",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "failure_type",
+              "displayName": "failure_type",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a9da0962-c7d8-4f52-a540-07569c953106",
+      "name": "Store Telemetry",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        576,
+        304
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"result\": {{ $json.output }},\n  \"latency\": {{ $json.executionLatencyMs }},\n  \"model\": {{ $json.modelUsed }},\n  \"cost\": {{ $json.estimatedCost }}\n}",
+        "options": {}
+      },
+      "id": "7f069e9f-6565-4feb-b5ce-fa645ea7144d",
+      "name": "Return Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        800,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtHour": 2
+            }
+          ]
+        }
+      },
+      "id": "c128c847-e2b5-4f02-9725-938cfdbd8f73",
+      "name": "Weekly Self-Tuning Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1472,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT task_type, model_used, AVG(latency_ms) as avg_latency, AVG(estimated_cost) as avg_cost, COUNT(*) as total_executions, SUM(CASE WHEN success = true THEN 1 ELSE 0 END) as successful_executions FROM telemetry WHERE timestamp > NOW() - INTERVAL '7 days' GROUP BY task_type, model_used",
+        "options": {}
+      },
+      "id": "9e701117-0c70-4cf1-8e7a-56dc583861b0",
+      "name": "Fetch Historical Data",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1248,
+        832
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "task_type",
+        "options": {}
+      },
+      "id": "e32b495f-7832-4884-b560-d67f3e72fee7",
+      "name": "Aggregate Success Metrics",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -1024,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const metrics = $input.first().json;\n\n// Calculate success rates and performance\nconst adjustments = [];\n\nfor (const metric of metrics) {\n  const successRate = metric.successful_executions / metric.total_executions;\n  const avgLatency = metric.avg_latency;\n  const avgCost = metric.avg_cost;\n  \n  let recommendation = metric.model_used;\n  \n  // If small model has high success rate and low latency, prefer it\n  if (metric.model_used === 'large' && successRate > 0.95 && avgLatency < 5000) {\n    recommendation = 'small';\n  }\n  \n  // If small model has low success rate, upgrade to large\n  if (metric.model_used === 'small' && successRate < 0.80) {\n    recommendation = 'large';\n  }\n  \n  adjustments.push({\n    task_type: metric.task_type,\n    current_model: metric.model_used,\n    recommended_model: recommendation,\n    success_rate: successRate,\n    avg_latency: avgLatency,\n    avg_cost: avgCost,\n    adjustment_reason: recommendation !== metric.model_used ? 'Performance optimization' : 'No change needed'\n  });\n}\n\nreturn adjustments;"
+      },
+      "id": "9a3edb39-c41b-4cbc-b5c5-c7604042445f",
+      "name": "Calculate Routing Adjustments",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE policy_rules SET preferred_model = $1 WHERE task_type = $2",
+        "options": {
+          "queryReplacement": "={{ $json.recommended_model }},={{ $json.task_type }}"
+        }
+      },
+      "id": "5544ce5e-a2ed-4620-bf58-92239152a77a",
+      "name": "Update Policy Rules",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -576,
+        832
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-3-5-haiku-20241022"
+        },
+        "options": {}
+      },
+      "id": "63ede21b-77a5-4b0c-b0c3-7f308b369ef9",
+      "name": "Anthropic Chat Model - Classifier",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -1016,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"taskType\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"description\": \"The classified task type: extraction, classification, reasoning, or generation\"\n\t\t},\n\t\t\"confidence\": {\n\t\t\t\"type\": \"number\",\n\t\t\t\"description\": \"Confidence score from 0-100\"\n\t\t},\n\t\t\"priority\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"description\": \"Task priority from input\"\n\t\t}\n\t}\n}"
+      },
+      "id": "94b183e1-5330-40aa-831e-a3e7b27b83a0",
+      "name": "Classification Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -888,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-3-5-haiku-20241022"
+        },
+        "options": {}
+      },
+      "id": "56b2b6e2-b65e-4e5a-9b43-cf1cdaa7e601",
+      "name": "Anthropic Chat Model - Small",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        72,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "claude-3-5-sonnet-20241022"
+        },
+        "options": {}
+      },
+      "id": "e7b1cb69-d909-4ee2-b2da-28cf2883be8b",
+      "name": "Anthropic Chat Model - Large",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        72,
+        728
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "executionLatencyMs",
+              "value": "={{ $now.diff($('Task Classifier Agent').first().json.startTime) }}",
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "modelUsed",
+              "value": "={{ $json.modelSize || 'unknown' }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "tokensUsed",
+              "value": "={{ $json.usage?.total_tokens || 0 }}",
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "estimatedCost",
+              "value": "={{ ($json.usage?.total_tokens || 0) * 0.00001 }}",
+              "type": "number"
+            },
+            {
+              "id": "id-5",
+              "name": "success",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "id-6",
+              "name": "failureType",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "id-7",
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "552d820c-fba6-4506-a8c1-a652fd4ed812",
+      "name": "Prepare Telemetry Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        304
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T10:59:41.700Z",
+      "createdAt": "2026-01-31T10:59:41.700Z",
+      "role": "workflow:owner",
+      "workflowId": "f0nYBGbPOZ43m4Jy",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:02:24.713Z",
+  "versionId": "48c3f1ac-2606-4120-9159-4eb762aca3fd"
+}
