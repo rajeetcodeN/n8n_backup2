@@ -1,0 +1,701 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Clean HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean HTML": {
+      "main": [
+        [
+          {
+            "node": "Normalize Ticket Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Ticket Data": {
+      "main": [
+        [
+          {
+            "node": "Language Detection & Translation Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Model - Translation": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Language Detection & Translation Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Translation Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Language Detection & Translation Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Language Detection & Translation Agent": {
+      "main": [
+        [
+          {
+            "node": "Support Intelligence Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Model - Intelligence": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Support Intelligence Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intelligence Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Support Intelligence Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Support Intelligence Agent": {
+      "main": [
+        [
+          {
+            "node": "Decision Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision Router": {
+      "main": [
+        [
+          {
+            "node": "Draft Reply Generator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Escalate to Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Model - Reply": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Draft Reply Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Reply Generator": {
+      "main": [
+        [
+          {
+            "node": "Update CRM/Helpdesk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update CRM/Helpdesk": {
+      "main": [
+        [
+          {
+            "node": "Log Observability Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalate to Team": {
+      "main": [
+        [
+          {
+            "node": "Log Observability Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-28T15:06:15.846Z",
+  "id": "ivpta4dLQ0prQ7gf",
+  "isArchived": false,
+  "meta": null,
+  "name": "AI Multilingual Support Ticket Triage and Auto-Response System",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "cf1e078b-39fc-45ad-9e03-c88bbcc1ac11",
+      "name": "Email Trigger (IMAP)",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2.1,
+      "position": [
+        -336,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "support-ticket",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "f702bea0-191f-4dd8-885c-11b37ae8fb80",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -336,
+        112
+      ],
+      "webhookId": "59430543-8000-45f2-a606-806eeb30c586"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "crmApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__CRM/Helpdesk API URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "escalationWebhookUrl",
+              "value": "<__PLACEHOLDER_VALUE__Escalation Webhook URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "observabilityEndpoint",
+              "value": "<__PLACEHOLDER_VALUE__Observability Logging Endpoint__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "162daa89-ae1c-42d9-b450-621952a4fab2",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -112,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "={{ $json.html || $json.body || $json.text }}",
+        "extractionValues": {
+          "values": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "503e52ac-3ca8-451d-bae0-722c90791b7a",
+      "name": "Clean HTML",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "ticket_id",
+              "value": "={{ $json.id || $json.messageId || $now }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "user_email",
+              "value": "={{ $json.from || $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "original_message",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "source_channel",
+              "value": "={{ $json.source || \"email\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "3e879b1e-7e79-44ee-8cb2-57ab8e0e722f",
+      "name": "Normalize Ticket Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        336,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.original_message }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a language detection and translation specialist.\n\nYour task is to:\n1. Detect the language of the provided message\n2. If the language is NOT English, translate it to English while preserving meaning and tone\n3. If the language is already English, return the original text\n4. Provide a confidence score (0-1) for your language detection\n\nReturn your response in the exact JSON format specified by the output parser."
+        }
+      },
+      "id": "5ab59774-0395-4ad6-8ffc-eabe3a293b22",
+      "name": "Language Detection & Translation Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        560,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "6164e449-0a26-4449-ad44-6155e8fcccc1",
+      "name": "Anthropic Model - Translation",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"original_language\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"description\": \"ISO language code detected\"\n\t\t},\n\t\t\"translated_text\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"description\": \"English translation or original if already English\"\n\t\t},\n\t\t\"confidence\": {\n\t\t\t\"type\": \"number\",\n\t\t\t\"description\": \"Confidence score 0-1 for language detection\"\n\t\t}\n\t}\n}"
+      },
+      "id": "6c269a60-770d-463c-bcd7-effad56278f1",
+      "name": "Translation Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        688,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.translated_text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a senior support analyst specializing in ticket classification and triage.\n\nAnalyze the provided support message and classify it according to these criteria:\n\n1. **Sentiment**: positive, neutral, or negative\n2. **Urgency**: low, medium, high, or critical\n3. **Category**: billing, bug, feature_request, account, technical, or other\n4. **Summary**: A concise 1-2 line summary of the issue\n5. **Churn Risk**: Score from 0 to 1 indicating likelihood of customer churn\n6. **Recommended Path**: auto_reply, escalate, or engineering\n\nBe thorough and accurate. Return your analysis in the exact JSON format specified."
+        }
+      },
+      "id": "06952b6e-eb32-41de-88c0-e8f14dcfcdac",
+      "name": "Support Intelligence Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        912,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "91e9da64-073f-4c38-9eaf-1e49b2196708",
+      "name": "Anthropic Model - Intelligence",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        912,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"sentiment\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"enum\": [\"positive\", \"neutral\", \"negative\"],\n\t\t\t\"description\": \"Sentiment of the support ticket\"\n\t\t},\n\t\t\"urgency\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"enum\": [\"low\", \"medium\", \"high\", \"critical\"],\n\t\t\t\"description\": \"Urgency level of the ticket\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"enum\": [\"billing\", \"bug\", \"feature_request\", \"account\", \"technical\", \"other\"],\n\t\t\t\"description\": \"Category of the support ticket\"\n\t\t},\n\t\t\"summary\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"description\": \"Brief 1-2 line summary\"\n\t\t},\n\t\t\"churn_risk\": {\n\t\t\t\"type\": \"number\",\n\t\t\t\"description\": \"Score 0-1\",\n\t\t\t\"minimum\": 0,\n\t\t\t\"maximum\": 1\n\t\t},\n\t\t\"recommended_path\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"enum\": [\"auto_reply\", \"escalate\", \"engineering\"],\n\t\t\t\"description\": \"Recommended action path for the ticket\"\n\t\t}\n\t},\n\t\"required\": [\"sentiment\", \"urgency\", \"category\", \"summary\", \"churn_risk\", \"recommended_path\"]\n}"
+      },
+      "id": "1b257004-73e2-4573-bb73-4b2ff5422fd6",
+      "name": "Intelligence Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.recommended_path }}",
+                    "rightValue": "auto_reply",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Auto Reply"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.urgency }}",
+                    "rightValue": "critical",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  },
+                  {
+                    "leftValue": "={{ $json.recommended_path }}",
+                    "rightValue": "escalate",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "Escalate"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "ignoreCase": true,
+          "renameFallbackOutput": "Escalate"
+        }
+      },
+      "id": "9acad09d-cf0f-4545-9ec1-0e55eb20813e",
+      "name": "Decision Router",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1264,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Original message: {{ $json.original_message }}\n\nCategory: {{ $json.category }}\nSentiment: {{ $json.sentiment }}\nUrgency: {{ $json.urgency }}",
+        "options": {
+          "systemMessage": "You are a professional customer support representative.\n\nDraft a reply to the customer based on the provided ticket information:\n- Use an empathetic and professional tone\n- Provide clear and actionable solutions when possible\n- Keep the response under 200 words\n- Do NOT make promises about features or timelines unless explicitly stated\n- Do NOT hallucinate information\n- If you cannot provide a solution, acknowledge the issue and indicate it will be reviewed\n\nReturn ONLY the draft reply text, nothing else."
+        }
+      },
+      "id": "e4b6a09e-78d6-4deb-9c71-fd47ef93a820",
+      "name": "Draft Reply Generator",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1488,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "9452a98e-6b0c-4de8-8435-a6737fe4f1a0",
+      "name": "Anthropic Model - Reply",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1552,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Configuration').first().json.crmApiUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "ticket_id",
+              "value": "={{ $('Normalize Ticket Data').item.json.ticket_id }}"
+            },
+            {
+              "name": "priority",
+              "value": "={{ $('Support Intelligence Agent').item.json.urgency }}"
+            },
+            {
+              "name": "tags",
+              "value": "={{ $('Support Intelligence Agent').item.json.category }}"
+            },
+            {
+              "name": "summary",
+              "value": "={{ $('Support Intelligence Agent').item.json.summary }}"
+            },
+            {
+              "name": "sentiment",
+              "value": "={{ $('Support Intelligence Agent').item.json.sentiment }}"
+            },
+            {
+              "name": "churn_risk",
+              "value": "={{ $('Support Intelligence Agent').item.json.churn_risk }}"
+            },
+            {
+              "name": "draft_reply",
+              "value": "={{ $('Draft Reply Generator').item.json.output }}"
+            },
+            {
+              "name": "original_language",
+              "value": "={{ $('Language Detection & Translation Agent').item.json.original_language }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8c1a0cc5-5efd-49c6-91a3-39ffc7f6d629",
+      "name": "Update CRM/Helpdesk",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1840,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Configuration').first().json.escalationWebhookUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "ticket_id",
+              "value": "={{ $json.ticket_id }}"
+            },
+            {
+              "name": "urgency",
+              "value": "={{ $json.urgency }}"
+            },
+            {
+              "name": "category",
+              "value": "={{ $json.category }}"
+            },
+            {
+              "name": "sentiment",
+              "value": "={{ $json.sentiment }}"
+            },
+            {
+              "name": "summary",
+              "value": "={{ $json.summary }}"
+            },
+            {
+              "name": "churn_risk",
+              "value": "={{ $json.churn_risk }}"
+            },
+            {
+              "name": "user_email",
+              "value": "={{ $json.user_email }}"
+            },
+            {
+              "name": "original_message",
+              "value": "={{ $json.original_message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c48a98a1-7b35-4118-93b3-a18f3fe9bb7c",
+      "name": "Escalate to Team",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1840,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Log observability metrics\nconst startTime = $('Workflow Configuration').item.json.timestamp || new Date().toISOString();\nconst currentTime = new Date().toISOString();\n\n// Calculate response time in milliseconds\nconst responseTime = new Date(currentTime) - new Date(startTime);\n\n// Determine escalation status based on which path was taken\nconst escalationStatus = $input.item.json.escalated || false;\n\n// Get intelligence data from Support Intelligence Agent\nconst intelligenceData = $('Support Intelligence Agent').item.json;\n\nconst metrics = {\n  response_time: responseTime,\n  escalation_status: escalationStatus,\n  model_used: 'anthropic',\n  category: intelligenceData.category || 'unknown',\n  urgency: intelligenceData.urgency || 'unknown',\n  sentiment: intelligenceData.sentiment || 'unknown',\n  churn_risk: intelligenceData.churn_risk || 'unknown',\n  timestamp: currentTime\n};\n\n// Get observability endpoint from Workflow Configuration\nconst observabilityEndpoint = $('Workflow Configuration').item.json.observability_endpoint;\n\nif (observabilityEndpoint) {\n  try {\n    // Send metrics to observability endpoint\n    await $http.post(observabilityEndpoint, {\n      body: metrics,\n      headers: {\n        'Content-Type': 'application/json'\n      }\n    });\n    \n    return {\n      json: {\n        success: true,\n        metrics: metrics,\n        message: 'Metrics logged successfully'\n      }\n    };\n  } catch (error) {\n    return {\n      json: {\n        success: false,\n        metrics: metrics,\n        error: error.message,\n        message: 'Failed to send metrics to observability endpoint'\n      }\n    };\n  }\n} else {\n  // If no endpoint configured, just return the metrics\n  return {\n    json: {\n      success: true,\n      metrics: metrics,\n      message: 'No observability endpoint configured, metrics collected only'\n    }\n  };\n}"
+      },
+      "id": "11bae951-89c2-4594-8058-813e53095458",
+      "name": "Log Observability Metrics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2064,
+        16
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-28T15:06:15.850Z",
+      "createdAt": "2026-02-28T15:06:15.850Z",
+      "role": "workflow:owner",
+      "workflowId": "ivpta4dLQ0prQ7gf",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-28T15:08:49.583Z",
+  "versionId": "41dafcfe-5af9-4212-9b42-f94fe5d566c3"
+}
