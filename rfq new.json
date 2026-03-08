@@ -1,0 +1,2039 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Read Spreadsheet File1": {
+      "main": [
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral DOC OCR1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mistral file delete",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check OCR Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Upload": {
+      "main": [
+        [
+          {
+            "node": "Mistral Signed URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Signed URL": {
+      "main": [
+        [
+          {
+            "node": "Mistral DOC OCR1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Mistral Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch File Type": {
+      "main": [
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Read Spreadsheet File1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields11": {
+      "main": [
+        [
+          {
+            "node": "Code9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields9": {
+      "main": [
+        [
+          {
+            "node": "Check OCR Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Initialize Audit Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize Audit Log": {
+      "main": [
+        [
+          {
+            "node": "Switch File Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enhanced Masking with Audit": {
+      "main": [
+        [
+          {
+            "node": "Check Masking Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code9": {
+      "main": [
+        [
+          {
+            "node": "Restore Unmasked Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Processing Success": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Log Error to Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Processed Data": {
+      "main": [
+        [
+          {
+            "node": "Log to Audit Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log to Audit Database": {
+      "main": [
+        [
+          {
+            "node": "Schedule Data Deletion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Data Deletion": {
+      "main": [
+        [
+          {
+            "node": "Return Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Error to Database": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check OCR Success": {
+      "main": [
+        [
+          {
+            "node": "Enhanced Masking with Audit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Collect All Errors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Extraction Success": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Collect All Errors",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Check Masking Success": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Collect All Errors",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Collect All Errors": {
+      "main": [
+        [
+          {
+            "node": "Format Error Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Error Details": {
+      "main": [
+        [
+          {
+            "node": "Track Retry Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "Check Excel Extraction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields8": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File2": {
+      "main": [
+        [
+          {
+            "node": "Check Document Extraction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Excel Extraction": {
+      "main": [
+        [
+          {
+            "node": "Check Extraction Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Excel Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check PDF Extraction": {
+      "main": [
+        [
+          {
+            "node": "Check Extraction Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log PDF Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Document Extraction": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Document Error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Excel Error": {
+      "main": [
+        [
+          {
+            "node": "Collect All Errors",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Log PDF Error": {
+      "main": [
+        [
+          {
+            "node": "Collect All Errors",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Log Document Error": {
+      "main": [
+        [
+          {
+            "node": "Collect All Errors",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Unmasked Data": {
+      "main": [
+        [
+          {
+            "node": "Check Processing Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Track Retry Count": {
+      "main": [
+        [
+          {
+            "node": "Check Retry Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Retry Limit": {
+      "main": [
+        [
+          {
+            "node": "Increment Retry Counter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Error to Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Increment Retry Counter": {
+      "main": [
+        [
+          {
+            "node": "Switch File Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-24T14:41:26.238Z",
+  "id": "LzGENeUqiZ4225bo",
+  "isArchived": false,
+  "meta": null,
+  "name": "rfq new",
+  "nodes": [
+    {
+      "parameters": {
+        "binaryPropertyName": "file",
+        "options": {
+          "headerRow": false
+        }
+      },
+      "id": "ea1d6c66-e597-4292-8161-8b164e415c6e",
+      "name": "Read Spreadsheet File1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "position": [
+        1344,
+        1056
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convert Excel serial date -> YYYY-MM-DD\nconst base = new Date(Date.UTC(1899, 11, 30));\nfunction fromSerial(s) {\n  if (!s || isNaN(Number(s))) return s; // skip if not a number\n  const ms = Number(s) * 86400 * 1000;\n  return new Date(base.getTime() + ms).toISOString().slice(0, 10);\n}\n\nreturn items.map(item => {\n  let row = { ...item.json };\n\n  // Convert possible date fields\n  if (row.__EMPTY && !isNaN(row.__EMPTY)) {\n    row.__EMPTY = fromSerial(row.__EMPTY);\n  }\n  if (row.__EMPTY_1 && !isNaN(row.__EMPTY_1) && row[\" Contractor Timesheet\"]?.includes(\"Weekending\")) {\n    row.__EMPTY_1 = fromSerial(row.__EMPTY_1);\n  }\n\n  return { json: row };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        1056
+      ],
+      "id": "b2d58226-5b64-4811-b1cb-ce5ff8b0a12f",
+      "name": "Code6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "530eae36-2bc2-4f6f-8755-73b44da913e4",
+              "name": "text",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2016,
+        1056
+      ],
+      "id": "2fe9deb3-c5be-4dbd-b404-943f0645e36a",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ JSON.parse($json[\"data\"][0]).blocks[0].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2016,
+        1296
+      ],
+      "id": "c77360a6-b71b-4d04-8dbc-4a369ee2bfa1",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+        "options": {}
+      },
+      "id": "78b666f3-9c41-4c24-99d8-414fc0411488",
+      "name": "Mistral DOC OCR1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2016,
+        640
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ $json.pages[0].markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2240,
+        640
+      ],
+      "id": "dcc99b40-1eed-47d5-aacf-0c26ef529821",
+      "name": "Edit Fields9"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        1056
+      ],
+      "id": "238a1930-4ae9-417f-bbd4-f72e609f67a2",
+      "name": "Aggregate3"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "2388354e-aa74-4411-8aec-0ff849d901b7",
+      "name": "Mistral file delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2240,
+        448
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "jsonl"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "include_images",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1792,
+        1296
+      ],
+      "id": "f298189c-1846-465c-bb74-2ceb6d1f73a2",
+      "name": "HTTP Request3",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ad85f414-624a-4ef5-ab64-cf2f82785250",
+      "name": "Mistral Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1568,
+        640
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1974248c-4236-4a59-80f8-2805250ab2f0",
+      "name": "Mistral Signed URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1792,
+        640
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        1296
+      ],
+      "id": "90698ece-a8bd-4bc0-a904-f155918cf952",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        640
+      ],
+      "id": "f3c4b5d5-e8b3-4fc9-9845-84fb0f03523b",
+      "name": "Code7"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/msword",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "509a71b4-8c1b-419b-8d8b-fc2c68b86bf2"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/msword",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e492cbb6-eaca-42fa-95b6-8cb1363b1ead"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "44e10cb4-4d6a-41f4-a34d-f9f635e6c998"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.google-apps.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "33eaa3dd-d6c6-4fbb-a625-9db12fd6b13c"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "doc"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.ms-excel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "298f79a3-fb4b-48c7-bed8-f9e26a4fafad"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b08acf48-8386-4017-8285-e134d0094482"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.google-apps.spreadsheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8a5c4ec2-f2d9-4a98-b62b-b51e08ec6bd7"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "excel"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/jpeg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8f99c496-5acb-4577-8ee3-89267716697b"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/png",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1a243663-2d4d-4004-b0be-77d61f69fd34"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/tiff",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fdd3e440-3119-43c9-ba2c-b0ad4aa29454"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/jpg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b7c6b1a4-cce5-4912-9c24-2bb7527d6d38"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/bmp",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "47c28737-9239-4ac9-a5cb-74e6843c07a6"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8b8e621e-40b4-43cd-8bd6-220e55b9e9fc",
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "=application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pdf"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": false
+        }
+      },
+      "id": "e8bf4fac-30ac-4cb2-be35-c8767afa2764",
+      "name": "Switch File Type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        672,
+        1376
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "data0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        896,
+        1536
+      ],
+      "id": "340da749-f238-4ce9-8218-65393220ef27",
+      "name": "Extract from File2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n- Do NOT skip any line item. Continue extracting all line items until the sum of all line_total values exactly equals the total sale amount extracted from the invoice. This verification ensures that all items are fully extracted and no entries are missed. If the totals do not match, keep parsing and extracting additional line items until they do. Only then stop.\n\n\n\n{{ $json.text }}",
+        "options": {
+          "systemMessage": "=\"\"\"You are a document parsing assistant designed to extract structured data from purchase orders and RFQs for automated uploading and validation in a procurement system.\n\nExtract the following fields from the text:\n\nrequested_items: List of all requested materials/articles in the document. For each item, extract:\n\npos: Position number. **IMPORTANT**: Maintain the original numbering exactly.\n\nconfig: **EXTRACT THIS FIRST**. A nested object containing technical specifications:\n    - material_id: The structured material ID if present (Format: 100-xxx-xxx.xx-xx).\n    - standard: Standard or DIN (e.g., \"DIN 6885\").\n    - form: The exact form letter/code (e.g., \"A\", \"B\", \"C\", \"AS\", \"AB\").\n      * **CRITICAL**: Do NOT confuse dimension labels with the Form. \"B=10\" means Form is NOT \"B\".\n    - material: Material grade.\n      * **WHITELIST**: Only accepted values are: [\"C45\", \"C45+C\", \"C45K\", \"42CrMo4\", \"1.4301\", \"1.4305\", \"1.4571\", \"1.4404\", \"1.4057\"].\n      * **CLEANING**: Remove prefixes like \"P\", \"PF\", \"P85\", \"P885\" if attached to material.\n        - Example: \"P885-C45C\" -> \"C45+C\"\n        - Example: \"P5K\" -> \"C45K\"\n        - Example: \"P5C\" -> \"C45+C\"\n        - Example: \"C45C\" -> \"C45+C\"\n      * **CRITICAL**: If the text contains \"C45+C\", extracted material MUST be \"C45+C\".\n      * **IGNORE**: \"P5K\", \"P85\", \"P100\", \"S355\", \"S235\" -> These are NOT valid.\n      * If multiple valid materials appear (e.g. \"C45+C / 1.4301\"), output them with a slash.\n    - dimensions: Object with `width`, `height`, `length` (numeric values).\n      * **CRITICAL**: Prioritize dimensions found WITHIN the article string (e.g., \"20X12X50\" -> Length=50).\n      * **IGNORE** loose numbers that look like material codes (e.g., ignore \"100\" from \"100-013...\").\n      * Example: \"B=10 H=8 T=16\" -> {width: 10, height: 8, length: 16}.\n    - features: List of features. Each feature is an object { \"feature_type\": \"...\", \"spec\": \"...\" }.\n      * **CRITICAL**: Extract ALL technical specifications (M-codes, coatings, tolerances).\n      * **ALWAYS** extract \"M\" codes (e.g., \"M6\") as type \"thread\"/\"bore\", even if they appear in the description.\n      * **CONSTRAINT**: Only extract M-codes between M1 and M21. Ignore smaller (e.g. M0.5) or larger (e.g. M30).\n      * Example: \"PF...-20x12x100-M6\" -> features: [{\"feature_type\": \"thread\", \"spec\": \"M6\"}]\n    - weight_per_unit: Weight per single unit if available.\n\narticle_name: **CONSTRUCT** this field *AFTER* extracting config. Use this strict format:\n\"{GenericName}-{Form}-{Dimensions}-{Material}-{Features}\"\n- GenericName: \"Passfeder\"/\"Passfed\" -> \"PF\". Otherwise use base name.\n- Form: e.g. \"AS\".\n- Dimensions: e.g. \"8X7X45\".\n- Material: e.g. \"C45+C\".\n- Features: Any features found in config.features (e.g., \"M4\").\n- Do NOT include DIN/Standard in the article_name.\n*Example Result*: \"PF-AS-8X7X45-C45+C-M4\"\n\nsupplier_material_number: Supplier’s material number if present, else null.\n\ncustomer_material_number: Customer’s material number if present, else null.\n\nquantity: Number of parts requested.\n  * **CRITICAL**: Use \"Menge\" (total quantity ordered), NOT \"VPE\" (packaging unit / Verpackungseinheit).\n  * VPE is the packaging size, Menge is the actual order quantity.\n  * Example: If VPE=200 and Menge=2000, extract quantity as 2000.\n\nunit: Unit of measure (pcs, kg, etc.).\n\ndelivery_date: Delivery date in YYYY-MM-DD format if present, else null.\n\nImportant rules:\n\nIgnore “Nosta” as customer; it can only appear under supplier_name.\n\nDo not skip any requested item.\n\nIf a field is missing, return it as null (or empty list for features).\n\nExtract values exactly as shown in the document.\n\nDates must always be normalized to YYYY-MM-DD.\n\nAlways return a single valid JSON object with the exact key names above.\n\n✨ If an item is split across multiple pages, merge them into a single requested_items entry.\n\n✨ Ensure all position numbers (pos) are in sequence.\n\n{LEARNED_CONTEXT}\n\noutput format\n\nYou must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n- Do NOT skip any line item. Continue extracting all line items until the sum of all line_total values exactly equals the total sale amount extracted from the invoice. This verification ensures that all items are fully extracted and no entries are missed. If the totals do not match, keep parsing and extracting additional line items until they do. Only then stop.\"\"\"\n\nUSER_PROMPT_TEMPLATE = \"\"\"Extract ALL line items and document information from this RFQ/Purchase Order document:\n\n{TEXT}\n\nReturn ONLY valid JSON with no markdown formatting.\"\"\"additional line items until they do. Only then stop.\n\n\n[\n  {\n    \"document_info\": {\n      \"type\": null,\n      \"date\": null,\n      \"customer_name\": null,\n      \"customer_number\": null,\n      \"supplier_number\": null,\n      \"order_number\": null\n    },\n    \"requested_items\": [\n      {\n        \"pos\": null,\n        \"article_number\": null,\n        \"customer_article_number\": null,\n        \"article_name\": null,\n        \"quantity\": null,\n        \"unit\": null,\n         \"dimensions\": null x null x null,\n        \"delivery_date\": null\n      }\n    ]\n  }\n]\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        3136,
+        624
+      ],
+      "id": "665a854f-82ec-4379-8bd7-6c937171fed3",
+      "name": "AI Agent5"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        3216,
+        848
+      ],
+      "id": "d43d3881-355c-4ad4-8c0f-c63013d36a59",
+      "name": "Mistral Cloud Chat Model6",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4f0cd863-7593-471b-9c43-743c0f7602c1",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3488,
+        624
+      ],
+      "id": "8c655d68-640e-44f2-9b7d-660e4a173582",
+      "name": "Edit Fields11"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the raw string\nconst raw = $input.first().json.output;\n\n// Helper: remove ```json ... ``` fences if present\nfunction stripFences(s) {\n  if (typeof s !== 'string') return s;\n  return s.trim()\n    .replace(/^```[a-zA-Z]*\\s*/i, '')   // leading ``` or ```json\n    .replace(/```[\\s]*$/i, '')          // trailing ```\n    .trim();\n}\n\n// Helper: robust JSON parse (handles double-encoded JSON too)\nfunction robustParse(s) {\n  if (typeof s !== 'string') return s;\n  let t = stripFences(s);\n  try { return JSON.parse(t); } catch (e1) {}\n  // Sometimes the JSON is stringified twice\n  try { return JSON.parse(JSON.parse(t)); } catch (e2) {}\n  // Fallback: try to extract the first {...} block\n  const m = t.match(/\\{[\\s\\S]*\\}$/);\n  if (m) { return JSON.parse(m[0]); }\n  throw new Error('Could not parse JSON from `output` – check the upstream node.');\n}\n\nconst parsed = robustParse(raw);\nreturn [{ json: parsed }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3712,
+        624
+      ],
+      "id": "28e62774-5d17-48fb-8f32-50302c483003",
+      "name": "Code9",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "dataRetentionDays",
+              "value": 30,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "auditLogEnabled",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "id-3",
+              "name": "adminEmail",
+              "value": "<__PLACEHOLDER_VALUE__Admin notification email__>",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "maxFileSizeMB",
+              "value": 10,
+              "type": "number"
+            },
+            {
+              "id": "id-5",
+              "name": "encryptionKeyId",
+              "value": "prod_key_v1",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "gdprDataController",
+              "value": "<__PLACEHOLDER_VALUE__Data controller organization name__>",
+              "type": "string"
+            },
+            {
+              "id": "id-7",
+              "name": "gdprDataProtectionOfficer",
+              "value": "<__PLACEHOLDER_VALUE__DPO contact email__>",
+              "type": "string"
+            },
+            {
+              "id": "id-8",
+              "name": "consentPurpose",
+              "value": "Document processing and data extraction for procurement system",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "83b2de14-6f7c-4f0c-a09f-854e21f0e0e4",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Create comprehensive audit log entry\nconst items = $input.all();\nconst firstItem = items[0];\n\n// Extract file information from binary data\nconst binaryKeys = Object.keys(firstItem.binary || {});\nconst firstBinaryKey = binaryKeys[0];\nconst binaryData = firstBinaryKey ? firstItem.binary[firstBinaryKey] : null;\n\n// Extract request headers and body\nconst headers = firstItem.json.headers || {};\nconst body = firstItem.json.body || {};\n\n// Get GDPR configuration from Workflow Configuration node\nconst config = firstItem.json;\nconst dataRetentionDays = config.dataRetentionDays || 30;\n\n// Create audit log entry\nconst auditLog = {\n  execution_id: $execution.id,\n  workflow_id: $workflow.id,\n  user_id: body.user_id || body.userId || null,\n  timestamp: new Date().toISOString(),\n  file_name: binaryData?.fileName || body.file_name || body.fileName || 'unknown',\n  file_size: binaryData?.fileSize || body.file_size || body.fileSize || 0,\n  mime_type: binaryData?.mimeType || body.mime_type || body.mimeType || 'unknown',\n  consent_given: body.consent_given === true || body.consentGiven === true || body.consent === true,\n  ip_address: headers['x-forwarded-for'] || headers['x-real-ip'] || headers['cf-connecting-ip'] || 'unknown',\n  processing_stage: 'initiated',\n  legal_basis: 'consent',\n  processing_purpose: config.consentPurpose || 'Document processing and data extraction',\n  data_controller: config.gdprDataController || 'Organization Name',\n  data_retention_notice: `Data will be automatically deleted after ${dataRetentionDays} days in compliance with GDPR data minimization principles`\n};\n\nreturn [{\n  json: {\n    ...firstItem.json,\n    audit_log: auditLog\n  },\n  binary: firstItem.binary\n}];"
+      },
+      "id": "35c3ad5e-a6d8-4fb8-958a-3bbf191bc7e5",
+      "name": "Initialize Audit Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\n// Helper function to create SHA-256 hash\nfunction hashValue(value) {\n  return crypto.createHash('sha256').update(value).digest('hex');\n}\n\n// Helper function to generate unique ID\nfunction generateId() {\n  return `mask_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;\n}\n\n// Helper function to encrypt data using AES-256-GCM\nfunction encryptValue(value, keyId) {\n  // Get encryption key from environment variable or use a secure default\n  // In production, this should come from a secure key management system\n  const encryptionKey = process.env.ENCRYPTION_KEY || 'default-32-byte-encryption-key!';\n  \n  // Ensure key is 32 bytes for AES-256\n  const key = crypto.createHash('sha256').update(encryptionKey).digest();\n  \n  // Generate a random initialization vector\n  const iv = crypto.randomBytes(16);\n  \n  // Create cipher\n  const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);\n  \n  // Encrypt the value\n  let encrypted = cipher.update(value, 'utf8', 'hex');\n  encrypted += cipher.final('hex');\n  \n  // Get authentication tag\n  const authTag = cipher.getAuthTag();\n  \n  // Return encrypted data with IV and auth tag for decryption\n  return {\n    encrypted: encrypted,\n    iv: iv.toString('hex'),\n    authTag: authTag.toString('hex'),\n    keyId: keyId\n  };\n}\n\n// Helper function to categorize PII types\nfunction categorizePII(type) {\n  const categories = {\n    personal_identifiers: ['socialSecurityNumber', 'passportNumber', 'idCardNumber', 'taxId', 'driversLicense', 'healthInsurance', 'personName', 'dateOfBirth'],\n    financial_data: ['iban', 'creditCard', 'vatId'],\n    contact_info: ['email', 'phone', 'fax'],\n    location_data: ['postalCode', 'streetAddress', 'ipv4', 'ipv6']\n  };\n  \n  for (const [category, types] of Object.entries(categories)) {\n    if (types.includes(type)) {\n      return category;\n    }\n  }\n  \n  return 'other';\n}\n\n// Comprehensive GDPR-compliant masking patterns\nconst patterns = {\n  // German company legal forms - using word boundaries to match only standalone suffixes\n  companyLegalForm: /\\b(GmbH|AG|KG|OHG|GbR|UG|e\\.V\\.|eV|mbH|Co\\. KG|GmbH & Co\\. KG)\\b/gi,\n  \n  // German person names (first and last name combinations)\n  personName: /\\b[A-ZÄÖÜ][a-zäöüß]+\\s+[A-ZÄÖÜ][a-zäöüß]+\\b/g,\n  \n  // Email addresses\n  email: /\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b/g,\n  \n  // German phone numbers (enhanced to include mobile formats)\n  // Matches: +49 xxx xxxx, 0xxx xxxx, mobile 015x/016x/017x\n  phone: /\\b(?:\\+49[\\s.-]?|0)(?:1[5-7]\\d|[2-9]\\d{1,4})[\\s.-]?\\d{3,}[\\s.-]?\\d{3,}\\b/g,\n  \n  // Fax numbers (similar pattern to phone)\n  fax: /\\b(?:Fax|FAX|fax)[:\\s]*(?:\\+49[\\s.-]?|0)[1-9]\\d{1,4}[\\s.-]?\\d{3,}[\\s.-]?\\d{3,}\\b/gi,\n  \n  // German postal codes (5 digits)\n  postalCode: /\\b\\d{5}\\b/g,\n  \n  // German tax ID (Steuernummer) - various formats\n  // Format: 12/345/67890 or 123/456/7890 or similar\n  taxId: /\\b\\d{2,3}\\/\\d{3}\\/\\d{4,5}\\b/g,\n  \n  // German VAT ID (Umsatzsteuer-Identifikationsnummer)\n  // Format: DE + 9 digits\n  vatId: /\\bDE\\d{9}\\b/gi,\n  \n  // IBAN (International Bank Account Number)\n  // Format: 2 letters + 2 digits + up to 30 alphanumeric characters\n  iban: /\\b[A-Z]{2}\\d{2}[A-Z0-9]{1,30}\\b/gi,\n  \n  // German social security number (Sozialversicherungsnummer)\n  // Format: 12 digits with specific structure\n  socialSecurityNumber: /\\b\\d{2}\\s?\\d{6}\\s?[A-Z]\\s?\\d{3}\\b/gi,\n  \n  // German passport number\n  // Format: C + 8 digits or various other formats\n  passportNumber: /\\b[CFGHJKLMNPRTVWXYZ]\\d{8}\\b/gi,\n  \n  // German ID card number (Personalausweisnummer)\n  // Format: 9 alphanumeric characters or 10 digits\n  idCardNumber: /\\b[A-Z0-9]{9,10}(?=\\s|$)/g,\n  \n  // German driver's license number\n  // Format: 11 alphanumeric characters\n  driversLicense: /\\b[A-Z0-9]{11}\\b/g,\n  \n  // German health insurance number\n  // Format: Letter + 9 digits\n  healthInsurance: /\\b[A-Z]\\d{9}\\b/gi,\n  \n  // Credit card numbers\n  // Format: 4 groups of 4 digits with optional spaces or hyphens\n  creditCard: /\\b(?:\\d{4}[\\s-]?){3}\\d{4}\\b/g,\n  \n  // IPv4 addresses\n  ipv4: /\\b(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\b/g,\n  \n  // IPv6 addresses (simplified pattern)\n  ipv6: /\\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\\b|\\b(?:[0-9a-fA-F]{1,4}:){1,7}:\\b|\\b::(?:[0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}\\b/g,\n  \n  // German street addresses\n  // Matches: Straße/Str./Weg/Platz/Allee + house number\n  streetAddress: /\\b[A-ZÄÖÜ][a-zäöüß]+(?:straße|str\\.|weg|platz|allee|gasse|ring|damm|ufer)\\s+\\d+[a-z]?\\b/gi,\n  \n  // Date of birth patterns (DD.MM.YYYY or DD/MM/YYYY)\n  dateOfBirth: /\\b(?:0[1-9]|[12]\\d|3[01])[\\.\\/-](?:0[1-9]|1[0-2])[\\.\\/-](?:19|20)\\d{2}\\b/g,\n  \n  // Nosta company name (case-insensitive)\n  nosta: /\\bNosta\\b/gi\n};\n\n// Masking functions for each PII type\nconst maskingFunctions = {\n  companyLegalForm: (value) => '[FILTERED_LEGAL_FORM]',\n  personName: (value) => '[MASKED_NAME]',\n  email: (value) => {\n    const [local, domain] = value.split('@');\n    const maskedLocal = local.length > 2 ? local[0] + '***' + local[local.length - 1] : '***';\n    return `${maskedLocal}@${domain}`;\n  },\n  phone: (value) => value.replace(/.(?=.{4})/g, '*'),\n  fax: (value) => {\n    const match = value.match(/(Fax|FAX|fax)[:\\s]*(.*)/i);\n    if (match) {\n      const label = match[1];\n      const number = match[2];\n      return `${label}: ${number.replace(/.(?=.{4})/g, '*')}`;\n    }\n    return value.replace(/.(?=.{4})/g, '*');\n  },\n  postalCode: (value) => '[MASKED_POSTAL_CODE]',\n  taxId: (value) => '[MASKED_TAX_ID]',\n  vatId: (value) => '[MASKED_VAT_ID]',\n  iban: (value) => '[MASKED_IBAN]',\n  socialSecurityNumber: (value) => '[MASKED_SSN]',\n  passportNumber: (value) => '[MASKED_PASSPORT]',\n  idCardNumber: (value) => '[MASKED_ID_CARD]',\n  driversLicense: (value) => '[MASKED_LICENSE]',\n  healthInsurance: (value) => '[MASKED_HEALTH_INS]',\n  creditCard: (value) => '[MASKED_CREDIT_CARD]',\n  ipv4: (value) => '[MASKED_IP]',\n  ipv6: (value) => '[MASKED_IP]',\n  streetAddress: (value) => '[MASKED_ADDRESS]',\n  dateOfBirth: (value) => '[MASKED_DOB]',\n  nosta: (value) => '[FILTERED_COMPANY]'\n};\n\n// Process all items\nreturn items.map(item => {\n  let text = item.json.text || '';\n  const maskingMap = [];\n  let maskedCount = 0;\n  const encryptionKeyId = `key_${Date.now()}`;\n  \n  // Track already masked positions to avoid double-masking\n  const maskedPositions = new Set();\n  \n  // Track PII categories for GDPR compliance\n  const piiCategoriesDetected = new Set();\n  \n  // Process each PII type in priority order (more specific patterns first)\n  const processingOrder = [\n    'iban', 'creditCard', 'vatId', 'taxId', 'socialSecurityNumber', 'passportNumber',\n    'idCardNumber', 'driversLicense', 'healthInsurance', 'email', 'ipv6', 'ipv4', \n    'streetAddress', 'dateOfBirth', 'personName', 'phone', 'fax', 'postalCode', \n    'companyLegalForm', 'nosta'\n  ];\n  \n  for (const type of processingOrder) {\n    const pattern = patterns[type];\n    if (!pattern) continue;\n    \n    const matches = [...text.matchAll(pattern)];\n    \n    matches.forEach(match => {\n      const originalValue = match[0];\n      const position = match.index;\n      \n      // Skip if this position was already masked\n      if (maskedPositions.has(position)) return;\n      \n      // Additional validation for certain types to reduce false positives\n      if (type === 'postalCode') {\n        // Skip if postal code is part of a larger number\n        const before = text[position - 1];\n        const after = text[position + originalValue.length];\n        if ((before && /\\d/.test(before)) || (after && /\\d/.test(after))) {\n          return;\n        }\n      }\n      \n      if (type === 'idCardNumber' || type === 'driversLicense') {\n        // Skip common false positives (e.g., order numbers, article numbers)\n        if (text.substring(Math.max(0, position - 20), position).toLowerCase().includes('artikel') ||\n            text.substring(Math.max(0, position - 20), position).toLowerCase().includes('order') ||\n            text.substring(Math.max(0, position - 20), position).toLowerCase().includes('pos')) {\n          return;\n        }\n      }\n      \n      if (type === 'personName') {\n        // Skip if it looks like a company name or common false positives\n        const context = text.substring(Math.max(0, position - 30), Math.min(text.length, position + originalValue.length + 30)).toLowerCase();\n        if (context.includes('gmbh') || context.includes('ag ') || context.includes('kg ') ||\n            context.includes('company') || context.includes('firma')) {\n          return;\n        }\n      }\n      \n      if (type === 'creditCard') {\n        // Validate credit card using Luhn algorithm to reduce false positives\n        const digits = originalValue.replace(/[\\s-]/g, '');\n        if (!luhnCheck(digits)) {\n          return;\n        }\n      }\n      \n      const maskedValue = maskingFunctions[type](originalValue);\n      const originalHash = hashValue(originalValue);\n      \n      // Encrypt the original value using AES-256-GCM\n      const encryptedData = encryptValue(originalValue, encryptionKeyId);\n      \n      // Get PII category\n      const piiCategory = categorizePII(type);\n      piiCategoriesDetected.add(piiCategory);\n      \n      // Replace in text\n      text = text.replace(originalValue, maskedValue);\n      \n      // Mark positions as masked\n      for (let i = position; i < position + originalValue.length; i++) {\n        maskedPositions.add(i);\n      }\n      \n      // Record masking operation in masking_map with encrypted data\n      maskingMap.push({\n        id: generateId(),\n        type: type,\n        pii_category: piiCategory,\n        masked_value: maskedValue,\n        encrypted_value: encryptedData.encrypted,\n        encryption_iv: encryptedData.iv,\n        encryption_auth_tag: encryptedData.authTag,\n        encryption_key_id: encryptedData.keyId,\n        original_hash: originalHash,\n        position: position,\n        timestamp: new Date().toISOString()\n      });\n      \n      maskedCount++;\n    });\n  }\n  \n  // Verify GDPR compliance - all PII types must be properly masked and encrypted\n  const allPIIMasked = maskedCount > 0;\n  const allPIIEncrypted = maskingMap.every(entry => entry.encrypted_value && entry.encryption_key_id);\n  const gdprCompliant = allPIIMasked && allPIIEncrypted;\n  \n  return {\n    json: {\n      text: text,\n      masking_map: maskingMap,\n      audit_log: {\n        masked_count: maskedCount,\n        processed_at: new Date().toISOString(),\n        encryption_method: 'AES-256-GCM',\n        data_minimization_applied: true,\n        gdpr_compliant: gdprCompliant,\n        pii_types_detected: [...new Set(maskingMap.map(m => m.type))],\n        pii_categories_detected: [...piiCategoriesDetected],\n        total_pii_instances: maskedCount,\n        encryption_key_id: encryptionKeyId\n      }\n    }\n  };\n});\n\n// Helper function for Luhn algorithm (credit card validation)\nfunction luhnCheck(cardNumber) {\n  let sum = 0;\n  let isEven = false;\n  \n  for (let i = cardNumber.length - 1; i >= 0; i--) {\n    let digit = parseInt(cardNumber[i], 10);\n    \n    if (isEven) {\n      digit *= 2;\n      if (digit > 9) {\n        digit -= 9;\n      }\n    }\n    \n    sum += digit;\n    isEven = !isEven;\n  }\n  \n  return sum % 10 === 0;\n}"
+      },
+      "id": "eb1a5925-d4d3-45a2-9011-36eb9ceb4bdd",
+      "name": "Enhanced Masking with Audit",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2688,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.requested_items }}",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.requested_items }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ed533410-6d30-4431-95bf-417d0e822f17",
+      "name": "Check Processing Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4160,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Audit log table name__>"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "execution_id": "={{ $execution.id }}",
+            "workflow_id": "={{ $workflow.id }}",
+            "user_id": "={{ $json.user_id }}",
+            "timestamp": "={{ $now }}",
+            "action": "document_processed",
+            "file_name": "={{ $json.file_name }}",
+            "file_size": "={{ $json.file_size }}",
+            "mime_type": "={{ $json.mime_type }}",
+            "consent_given": "={{ $json.consent_given }}",
+            "ip_address": "={{ $json.ip_address }}",
+            "masked_fields_count": "={{ $json.masked_fields_count }}",
+            "processing_duration": "={{ $json.processing_duration }}",
+            "status": "success",
+            "retention_until": "={{ $json.retention_until }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "c3f8d5fa-674a-4560-b839-39967eee6dd9",
+      "name": "Log to Audit Database",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        224,
+        2080
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Processed documents table name__>"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "execution_id": "={{ $execution.id }}",
+            "document_info": "={{ JSON.stringify($json.document_info) }}",
+            "requested_items": "={{ JSON.stringify($json.requested_items) }}",
+            "processed_at": "={{ $now.toISO() }}",
+            "data_retention_until": "={{ $now.plus({ days: $('Workflow Configuration').item.json.retentionDays || 30 }).toISO() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "394bd062-8095-4acf-9473-17e9033af856",
+      "name": "Store Processed Data",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        2080
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Audit log table name__>"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "execution_id": "={{ $execution.id }}",
+            "workflow_id": "={{ $workflow.id }}",
+            "timestamp": "={{ $now }}",
+            "action": "processing_failed",
+            "error_message": "={{ $json.error }}",
+            "error_stack": "={{ $json.error_stack }}",
+            "status": "error",
+            "file_name": "={{ $json.file_name || null }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "execution_id",
+              "displayName": "execution_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "action",
+              "displayName": "action",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_stack",
+              "displayName": "error_stack",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "file_name",
+              "displayName": "file_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bee4fc19-54e5-415f-9534-b3de708797b4",
+      "name": "Log Error to Database",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        4384,
+        912
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "<__PLACEHOLDER_VALUE__System notification email__>",
+        "toEmail": "={{ $('Workflow Configuration').item.json.adminEmail }}",
+        "subject": "=ALERT: Document Processing Failed - Execution {{ $execution.id }}",
+        "html": "=<h2>Document Processing Error</h2>\n<p><strong>Execution ID:</strong> {{ $execution.id }}</p>\n<p><strong>Timestamp:</strong> {{ $now.toISO() }}</p>\n<p><strong>Workflow:</strong> {{ $workflow.name }}</p>\n\n<h3>Error Details:</h3>\n<pre>{{ $('Code9').item.json.error || 'Processing failed - check execution logs' }}</pre>\n\n<h3>File Information:</h3>\n<p><strong>Filename:</strong> {{ $('Document Upload Webhook').item.json.body.filename || 'Unknown' }}</p>\n<p><strong>File Type:</strong> {{ $('Document Upload Webhook').item.json.body.mimeType || 'Unknown' }}</p>\n\n<p>Please review the execution in n8n for full details.</p>",
+        "options": {
+          "appendAttribution": true
+        }
+      },
+      "id": "63a79661-3874-4617-8a86-f853adbbf42f",
+      "name": "Send Error Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1856
+      ],
+      "webhookId": "b874888d-66bd-4f99-85c5-59e420da8dc5"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Schedule data deletion based on retention policy\nconst config = $('Workflow Configuration').first().json;\nconst dataRetentionDays = config.dataRetentionDays || 30;\n\n// Calculate deletion timestamp\nconst now = new Date();\nconst deletionDate = new Date(now.getTime() + (dataRetentionDays * 24 * 60 * 60 * 1000));\n\nreturn items.map(item => {\n  return {\n    json: {\n      ...item.json,\n      deletion_scheduled_at: deletionDate.toISOString(),\n      automated_deletion_scheduled: true,\n      data_subject_notification: false,\n      gdpr_compliance: {\n        right_to_erasure: true,\n        data_minimization_applied: true,\n        purpose_limitation_documented: true,\n        retention_period_days: dataRetentionDays,\n        scheduled_deletion_date: deletionDate.toISOString().split('T')[0],\n        storage_limitation_compliance: true,\n        lawfulness_of_processing: 'consent',\n        purpose_limitation: 'document_processing_only'\n      }\n    }\n  };\n});"
+      },
+      "id": "b499b8f6-dad3-4309-baa6-26d9cbb77dfe",
+      "name": "Schedule Data Deletion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        2080
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"execution_id\": \"{{ $execution.id }}\",\n  \"document_id\": \"{{ $('Document Upload Webhook').item.json.document_id || 'N/A' }}\",\n  \"processed_items_count\": {{ $('Code9').item.json.requested_items?.length || 0 }},\n  \"masked_fields_count\": {{ $('Enhanced Masking with Audit').item.json.masked_fields_count || 0 }},\n  \"data_retention_until\": \"{{ $('Schedule Data Deletion').item.json.deletion_date }}\",\n  \"message\": \"Document processed successfully with GDPR-compliant data handling and masking\"\n}",
+        "options": {}
+      },
+      "id": "f216f457-3ec2-4c37-9fe3-4261a30e80d9",
+      "name": "Return Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        672,
+        2080
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"error\",\n  \"execution_id\": \"{{ $execution.id }}\",\n  \"error_message\": \"{{ $json.error_message || 'An error occurred during document processing' }}\",\n  \"timestamp\": \"{{ $now.toISO() }}\",\n  \"support_contact\": \"support@example.com\"\n}",
+        "options": {
+          "responseCode": 500
+        }
+      },
+      "id": "6114b649-4d55-4403-a20a-963f64ea9144",
+      "name": "Return Error Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validate Input & Check Consent\nconst MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB\nconst ALLOWED_FILE_TYPES = [\n  'application/pdf',\n  'application/msword',\n  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',\n  'application/vnd.ms-excel',\n  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',\n  'image/jpeg',\n  'image/png',\n  'image/tiff',\n  'image/jpg',\n  'image/bmp'\n];\n\nconst item = $input.first();\nconst body = item.json.body || {};\nconst binary = item.binary || {};\n\n// Check for user consent flag\nif (!body.gdprConsent || body.gdprConsent !== true) {\n  throw new Error('GDPR consent is required. User must explicitly consent to data processing.');\n}\n\n// Verify GDPR consent timestamp is present\nif (!body.consentTimestamp) {\n  throw new Error('GDPR consent timestamp is missing. Cannot proceed without valid consent record.');\n}\n\n// Validate consent timestamp format (ISO 8601)\nconst consentDate = new Date(body.consentTimestamp);\nif (isNaN(consentDate.getTime())) {\n  throw new Error('Invalid consent timestamp format. Expected ISO 8601 format.');\n}\n\n// Check if file is present\nconst firstBinaryKey = Object.keys(binary)[0];\nif (!firstBinaryKey) {\n  throw new Error('No file uploaded. Please provide a document to process.');\n}\n\nconst file = binary[firstBinaryKey];\n\n// Validate file size\nif (file.fileSize && file.fileSize > MAX_FILE_SIZE) {\n  throw new Error(`File size exceeds maximum allowed size of ${MAX_FILE_SIZE / 1024 / 1024}MB. Current size: ${(file.fileSize / 1024 / 1024).toFixed(2)}MB`);\n}\n\n// Validate file type\nif (!ALLOWED_FILE_TYPES.includes(file.mimeType)) {\n  throw new Error(`File type '${file.mimeType}' is not allowed. Allowed types: ${ALLOWED_FILE_TYPES.join(', ')}`);\n}\n\n// All validations passed - return item with consent metadata\nreturn [{\n  json: {\n    ...item.json,\n    validationPassed: true,\n    consentVerified: true,\n    consentTimestamp: body.consentTimestamp,\n    fileValidated: true,\n    fileName: file.fileName,\n    fileSize: file.fileSize,\n    mimeType: file.mimeType\n  },\n  binary: binary\n}];"
+      },
+      "id": "53fcb67f-a6dd-44e6-913b-7ef933b767cf",
+      "name": "Validate Input & Check Consent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "id": "c7f2ecbf-35cf-4e14-8221-79cc741390a5",
+      "name": "Collect All Errors",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3200,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format comprehensive error details from failed extraction steps\n// Enhanced with retry tracking - only proceed to email notification after 2 failures\nconst items = $input.all();\n\n// Collect all error information\nconst errorDetails = items.map((item, index) => {\n  const error = item.json.error || {};\n  const errorMessage = error.message || item.json.errorMessage || 'Unknown error occurred';\n  const errorStack = error.stack || item.json.errorStack || '';\n  \n  // Get retry count from previous attempts (stored in item data)\n  const currentRetryCount = item.json.retry_count || 0;\n  const maxRetries = 2;\n  \n  // Determine if this should be retried or if it's a final failure\n  const shouldRetry = currentRetryCount < maxRetries;\n  const isFinalFailure = currentRetryCount >= maxRetries;\n  \n  // Determine which node/stage failed\n  let failedNode = 'Unknown';\n  let processingStage = 'Unknown';\n  \n  // Try to extract node information from error or item metadata\n  if (item.json.node) {\n    failedNode = item.json.node;\n  } else if (errorStack.includes('Mistral')) {\n    failedNode = 'Mistral DOC OCR1';\n    processingStage = 'OCR Processing';\n  } else if (errorStack.includes('HTTP Request')) {\n    failedNode = 'HTTP Request3';\n    processingStage = 'Text Extraction';\n  } else if (errorStack.includes('Extract from File')) {\n    failedNode = 'Extract from File2';\n    processingStage = 'PDF Extraction';\n  } else if (errorStack.includes('AI Agent')) {\n    failedNode = 'AI Agent5';\n    processingStage = 'AI Parsing';\n  } else if (errorStack.includes('Code')) {\n    failedNode = 'Code Node';\n    processingStage = 'Data Processing';\n  }\n  \n  // Get file information from earlier nodes\n  const fileInfo = {\n    fileName: item.json.fileName || item.json.file_name || 'Unknown',\n    fileSize: item.json.fileSize || item.json.file_size || 0,\n    mimeType: item.json.mimeType || item.json.mime_type || 'Unknown'\n  };\n  \n  return {\n    error_id: `error_${$execution.id}_${index}`,\n    execution_id: $execution.id,\n    workflow_id: $workflow.id,\n    timestamp: new Date().toISOString(),\n    failed_node: failedNode,\n    processing_stage: processingStage,\n    error_message: errorMessage,\n    error_stack: errorStack,\n    file_name: fileInfo.fileName,\n    file_size: fileInfo.fileSize,\n    mime_type: fileInfo.mimeType,\n    user_id: item.json.user_id || null,\n    ip_address: item.json.ip_address || 'Unknown',\n    retry_count: currentRetryCount,\n    should_retry: shouldRetry,\n    is_final_failure: isFinalFailure,\n    max_retries: maxRetries,\n    retry_status: shouldRetry ? `Retriable (attempt ${currentRetryCount + 1}/${maxRetries})` : `Final failure after ${currentRetryCount} attempts`,\n    proceed_to_notification: isFinalFailure,\n    is_recoverable: !errorMessage.toLowerCase().includes('fatal') && !errorMessage.toLowerCase().includes('invalid file'),\n    error_category: categorizeError(errorMessage)\n  };\n});\n\n// Helper function to categorize errors\nfunction categorizeError(message) {\n  const msg = message.toLowerCase();\n  if (msg.includes('timeout') || msg.includes('network')) return 'network_error';\n  if (msg.includes('parse') || msg.includes('json')) return 'parsing_error';\n  if (msg.includes('file') || msg.includes('format')) return 'file_error';\n  if (msg.includes('auth') || msg.includes('credential')) return 'authentication_error';\n  if (msg.includes('rate limit') || msg.includes('quota')) return 'rate_limit_error';\n  return 'general_error';\n}\n\n// Return formatted error details\nreturn errorDetails.map(detail => ({ json: detail }));"
+      },
+      "id": "982a8262-e802-4036-8fe9-33722d03fbd4",
+      "name": "Format Error Details",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3488,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.error }}",
+              "operator": {
+                "type": "string",
+                "operation": "notExists"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.pages }}",
+              "operator": {
+                "type": "array",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b07acc06-dd1e-4d7c-9584-a7659ebf467d",
+      "name": "Check OCR Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2464,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.error }}",
+              "operator": {
+                "type": "string",
+                "operation": "notExists"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            },
+            {
+              "id": "id-3",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7710bab8-27ce-4496-be55-ccaee49b0f96",
+      "name": "Check Extraction Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2608,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.error }}",
+              "operator": {
+                "type": "string",
+                "operation": "notExists"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "53413879-d074-4c56-b399-3eb148717632",
+      "name": "Check Masking Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2896,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.error }}",
+              "operator": {
+                "type": "string",
+                "operation": "notExists"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            },
+            {
+              "id": "id-3",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "175499d3-4176-4fa2-866f-ced4e2c26d0d",
+      "name": "Check Excel Extraction",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2240,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log Excel extraction error with comprehensive details\nconst items = $input.all();\n\nreturn items.map(item => {\n  const error = item.json.error || {};\n  const errorMessage = error.message || item.json.errorMessage || 'Excel extraction failed';\n  const errorStack = error.stack || item.json.errorStack || '';\n  \n  // Get file information from earlier nodes\n  const fileInfo = {\n    fileName: item.json.fileName || item.json.file_name || 'Unknown',\n    fileSize: item.json.fileSize || item.json.file_size || 0,\n    mimeType: item.json.mimeType || item.json.mime_type || 'Unknown'\n  };\n  \n  return {\n    json: {\n      error_id: `excel_error_${$execution.id}`,\n      execution_id: $execution.id,\n      workflow_id: $workflow.id,\n      timestamp: new Date().toISOString(),\n      failed_node: 'Edit Fields7',\n      processing_stage: 'Excel Extraction',\n      error_message: errorMessage,\n      error_stack: errorStack,\n      file_name: fileInfo.fileName,\n      file_size: fileInfo.fileSize,\n      mime_type: fileInfo.mimeType,\n      user_id: item.json.user_id || null,\n      ip_address: item.json.ip_address || 'Unknown',\n      error_category: 'excel_extraction_error'\n    }\n  };\n});"
+      },
+      "id": "8e70370b-221d-40a8-9112-77df7abd4e91",
+      "name": "Log Excel Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.error }}",
+              "operator": {
+                "type": "string",
+                "operation": "notExists"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            },
+            {
+              "id": "id-3",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dc592a62-0a9f-4bf8-b161-5a1ffa423993",
+      "name": "Check PDF Extraction",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2240,
+        1296
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log PDF extraction error with comprehensive details\nconst items = $input.all();\nconst firstItem = items[0] || {};\n\n// Extract error information\nconst errorMessage = firstItem.json?.error?.message || firstItem.json?.errorMessage || 'PDF extraction failed';\nconst errorStack = firstItem.json?.error?.stack || firstItem.json?.errorStack || '';\n\n// Get file information from earlier nodes\nconst fileInfo = {\n  fileName: firstItem.json?.fileName || firstItem.json?.file_name || 'Unknown',\n  fileSize: firstItem.json?.fileSize || firstItem.json?.file_size || 0,\n  mimeType: firstItem.json?.mimeType || firstItem.json?.mime_type || 'application/pdf'\n};\n\n// Create comprehensive error log\nconst errorLog = {\n  error_id: `pdf_error_${$execution.id}`,\n  execution_id: $execution.id,\n  workflow_id: $workflow.id,\n  timestamp: new Date().toISOString(),\n  processing_stage: 'PDF Extraction',\n  failed_node: 'Extract from File2',\n  error_message: errorMessage,\n  error_stack: errorStack,\n  file_name: fileInfo.fileName,\n  file_size: fileInfo.fileSize,\n  mime_type: fileInfo.mimeType,\n  user_id: firstItem.json?.user_id || null,\n  ip_address: firstItem.json?.ip_address || 'Unknown',\n  retry_count: firstItem.json?.retry_count || 0,\n  is_recoverable: !errorMessage.toLowerCase().includes('fatal'),\n  error_category: 'pdf_extraction_error'\n};\n\nreturn [{ json: errorLog }];"
+      },
+      "id": "3dccca81-d716-4ef6-aebe-3f377c7199c7",
+      "name": "Log PDF Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        1392
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log document extraction error with comprehensive details\nconst items = $input.all();\n\nreturn items.map(item => {\n  const error = item.json.error || {};\n  const errorMessage = error.message || item.json.errorMessage || 'Document extraction failed';\n  const errorStack = error.stack || item.json.errorStack || '';\n  \n  // Get file information from earlier nodes\n  const fileInfo = {\n    fileName: item.json.fileName || item.json.file_name || 'Unknown',\n    fileSize: item.json.fileSize || item.json.file_size || 0,\n    mimeType: item.json.mimeType || item.json.mime_type || 'Unknown'\n  };\n  \n  return {\n    json: {\n      error_id: `doc_error_${$execution.id}_${Date.now()}`,\n      execution_id: $execution.id,\n      workflow_id: $workflow.id,\n      timestamp: new Date().toISOString(),\n      failed_node: 'Extract from File2',\n      processing_stage: 'Document Extraction',\n      error_message: errorMessage,\n      error_stack: errorStack,\n      file_name: fileInfo.fileName,\n      file_size: fileInfo.fileSize,\n      mime_type: fileInfo.mimeType,\n      user_id: item.json.user_id || null,\n      ip_address: item.json.ip_address || 'Unknown',\n      error_category: 'document_extraction_error'\n    }\n  };\n});"
+      },
+      "id": "55f6f758-735e-4b39-b5e1-6580e3cc8c0b",
+      "name": "Log Document Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        1632
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.error }}",
+              "operator": {
+                "type": "string",
+                "operation": "notExists"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            },
+            {
+              "id": "id-3",
+              "leftValue": "={{ $json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d57db2e2-70e5-4020-a048-af8e89e7882f",
+      "name": "Check Document Extraction",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        1536
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        1408
+      ],
+      "id": "fda6c43b-2e2d-42da-ad29-5b6324fe7c8a",
+      "name": "When chat message received",
+      "webhookId": "6dfbc085-e85d-48ef-b3d8-979f8ae2520b"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        2304
+      ],
+      "id": "b6aa99e2-1908-4389-a511-524acc65c8fa",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Restore Unmasked Data - Selective restoration of brand names while preserving ALL PII\n// Enhanced with AES-256 decryption support for encrypted original_value fields\nconst crypto = require('crypto');\nconst items = $input.all();\nconst firstItem = items[0];\n\n// 1. Retrieve masking_map from Enhanced Masking node\nconst maskingData = $('Enhanced Masking with Audit').first().json;\nconst maskingMap = maskingData.masking_map || [];\n\n// 2. Get AI-processed JSON output from current input (Code9 output)\nlet processedData = firstItem.json;\n\n// 3. Convert the JSON output to string for text replacement\nlet dataString = JSON.stringify(processedData, null, 2);\n\n// Define PII categories for GDPR compliance reporting\nconst piiCategories = {\n  personal_identifiers: ['ssn', 'passport', 'id_card', 'tax_id', 'vat_id', 'dob'],\n  financial_data: ['iban', 'credit_card', 'bank_account'],\n  contact_info: ['email', 'phone', 'fax'],\n  location_data: ['postal_code', 'street_address', 'ip_address']\n};\n\n// Track restoration operations for audit\nconst restorationAudit = {\n  timestamp: new Date().toISOString(),\n  total_masked_fields: maskingMap.length,\n  restored_count: 0,\n  kept_masked_count: 0,\n  restored_fields: [],\n  kept_masked_fields: [],\n  decryption_failures: []\n};\n\n// Initialize GDPR compliance tracking by category\nconst gdprCompliance = {\n  pii_kept_masked: true,\n  brand_names_restored: false,\n  restoration_timestamp: new Date().toISOString(),\n  encryption_verified: true,\n  protected_pii_categories: {\n    personal_identifiers: { count: 0, types: [] },\n    financial_data: { count: 0, types: [] },\n    contact_info: { count: 0, types: [] },\n    location_data: { count: 0, types: [] },\n    company_protection: { count: 0, types: [] }\n  },\n  total_pii_protected: 0,\n  data_subject_rights: {\n    right_to_access: true,\n    right_to_rectification: true,\n    right_to_erasure: true,\n    right_to_data_portability: true,\n    right_to_object: true\n  }\n};\n\n// Helper function to decrypt AES-256 encrypted data\nfunction decryptAES256(encryptedData, encryptionKeyId) {\n  try {\n    // Parse encrypted data (format: iv:encryptedText:authTag)\n    const parts = encryptedData.split(':');\n    if (parts.length !== 3) {\n      throw new Error('Invalid encrypted data format');\n    }\n    \n    const iv = Buffer.from(parts[0], 'hex');\n    const encryptedText = Buffer.from(parts[1], 'hex');\n    const authTag = Buffer.from(parts[2], 'hex');\n    \n    // Retrieve encryption key from environment or secure storage\n    // In production, this should fetch from a secure key management service\n    const encryptionKey = process.env[`ENCRYPTION_KEY_${encryptionKeyId}`] || process.env.ENCRYPTION_KEY;\n    \n    if (!encryptionKey) {\n      throw new Error(`Encryption key not found for key_id: ${encryptionKeyId}`);\n    }\n    \n    // Create decipher\n    const decipher = crypto.createDecipheriv('aes-256-gcm', Buffer.from(encryptionKey, 'hex'), iv);\n    decipher.setAuthTag(authTag);\n    \n    // Decrypt\n    let decrypted = decipher.update(encryptedText, null, 'utf8');\n    decrypted += decipher.final('utf8');\n    \n    return { success: true, data: decrypted };\n  } catch (error) {\n    return { success: false, error: error.message };\n  }\n}\n\n// Helper function to categorize PII type\nfunction categorizePII(type) {\n  for (const [category, types] of Object.entries(piiCategories)) {\n    if (types.includes(type)) {\n      return category;\n    }\n  }\n  if (type === 'nosta') {\n    return 'company_protection';\n  }\n  return 'other';\n}\n\n// 4. Iterate through masking_map entries\nmaskingMap.forEach(entry => {\n  const { type, masked_value, original_value, original_hash, encryption_key_id, is_encrypted } = entry;\n  \n  // 5. For type='companyLegalForm' entries: restore original_value (brand names)\n  if (type === 'companyLegalForm') {\n    let valueToRestore = original_value;\n    let decryptionSuccess = true;\n    \n    // Check if original_value is encrypted\n    if (is_encrypted === true && encryption_key_id) {\n      const decryptResult = decryptAES256(original_value, encryption_key_id);\n      \n      if (decryptResult.success) {\n        valueToRestore = decryptResult.data;\n      } else {\n        // Decryption failed - keep masked and log failure\n        decryptionSuccess = false;\n        gdprCompliance.encryption_verified = false;\n        \n        restorationAudit.decryption_failures.push({\n          type: type,\n          masked_value: masked_value,\n          encryption_key_id: encryption_key_id,\n          error: decryptResult.error,\n          timestamp: new Date().toISOString()\n        });\n        \n        restorationAudit.kept_masked_count++;\n        restorationAudit.kept_masked_fields.push({\n          type: type,\n          masked_value: masked_value,\n          reason: `Decryption failed: ${decryptResult.error}`,\n          pii_category: 'company_protection'\n        });\n        \n        return; // Skip restoration for this entry\n      }\n    }\n    \n    // Replace masked value with decrypted/original value\n    const regex = new RegExp(masked_value.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&'), 'g');\n    dataString = dataString.replace(regex, valueToRestore);\n    \n    restorationAudit.restored_count++;\n    restorationAudit.restored_fields.push({\n      type: type,\n      masked_value: masked_value,\n      restored_to: valueToRestore,\n      hash: original_hash,\n      was_encrypted: is_encrypted === true,\n      decryption_success: decryptionSuccess\n    });\n    \n    gdprCompliance.brand_names_restored = true;\n  }\n  // 6. For type='nosta' entries: keep masked as '[FILTERED_COMPANY]' - do NOT restore\n  else if (type === 'nosta') {\n    const category = 'company_protection';\n    restorationAudit.kept_masked_count++;\n    restorationAudit.kept_masked_fields.push({\n      type: type,\n      masked_value: masked_value,\n      reason: 'Company name protection - kept masked',\n      pii_category: category\n    });\n    \n    gdprCompliance.protected_pii_categories[category].count++;\n    if (!gdprCompliance.protected_pii_categories[category].types.includes(type)) {\n      gdprCompliance.protected_pii_categories[category].types.push(type);\n    }\n    gdprCompliance.total_pii_protected++;\n  }\n  // 7. For ALL PII types: keep masked - do NOT restore (PII protection)\n  else if (['email', 'phone', 'fax', 'postal_code', 'tax_id', 'vat_id', 'iban', \n             'ssn', 'passport', 'id_card', 'ip_address', 'street_address', 'dob'].includes(type)) {\n    const category = categorizePII(type);\n    restorationAudit.kept_masked_count++;\n    restorationAudit.kept_masked_fields.push({\n      type: type,\n      masked_value: masked_value,\n      reason: 'PII protection - kept masked',\n      pii_category: category\n    });\n    \n    if (category !== 'other') {\n      gdprCompliance.protected_pii_categories[category].count++;\n      if (!gdprCompliance.protected_pii_categories[category].types.includes(type)) {\n        gdprCompliance.protected_pii_categories[category].types.push(type);\n      }\n      gdprCompliance.total_pii_protected++;\n    }\n  }\n});\n\n// 8. Parse the restored string back to JSON\nlet restoredData;\ntry {\n  restoredData = JSON.parse(dataString);\n} catch (error) {\n  // If parsing fails, return original data with error info\n  return [{\n    json: {\n      ...processedData,\n      restoration_error: 'Failed to parse restored data',\n      restoration_audit: restorationAudit,\n      gdpr_compliance: gdprCompliance\n    }\n  }];\n}\n\n// 9. Return output with restored brand names but preserved ALL PII masking\n// 10. Include restoration_audit field tracking what was restored vs kept masked\n// 11. Include detailed GDPR compliance breakdown by PII category\n// 12. Include encryption verification status and data subject rights\nreturn [{\n  json: {\n    ...restoredData,\n    restoration_audit: restorationAudit,\n    gdpr_compliance: gdprCompliance\n  }\n}];"
+      },
+      "id": "1d5d9a7c-665c-480b-b9f0-88313f527df8",
+      "name": "Restore Unmasked Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3936,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Workflow Configuration').item.json.adminEmail }}",
+        "subject": "=CRITICAL: Document Processing Failed After 2 Retries - Execution {{ $execution.id }}",
+        "message": "=<html>\n<head>\n  <style>\n    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n    .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n    .header { background-color: #d32f2f; color: white; padding: 20px; border-radius: 5px 5px 0 0; }\n    .content { background-color: #f5f5f5; padding: 20px; border-radius: 0 0 5px 5px; }\n    .section { background-color: white; padding: 15px; margin-bottom: 15px; border-radius: 5px; border-left: 4px solid #d32f2f; }\n    .label { font-weight: bold; color: #555; }\n    .value { color: #333; margin-left: 10px; }\n    .error-box { background-color: #ffebee; padding: 15px; border-radius: 5px; margin: 15px 0; border: 1px solid #ef5350; }\n    .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #777; }\n    .alert { background-color: #fff3cd; border: 1px solid #ffc107; padding: 10px; border-radius: 5px; margin-bottom: 15px; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1 style=\"margin: 0;\">🚨 CRITICAL: Document Processing Failed</h1>\n      <p style=\"margin: 5px 0 0 0;\">Final Failure After 2 Retry Attempts</p>\n    </div>\n    \n    <div class=\"content\">\n      <div class=\"alert\">\n        <strong>⚠️ ATTENTION:</strong> This is the final failure notification after 2 automatic retry attempts. Manual intervention is required.\n      </div>\n\n      <div class=\"section\">\n        <h3 style=\"margin-top: 0; color: #d32f2f;\">Execution Information</h3>\n        <p><span class=\"label\">Execution ID:</span><span class=\"value\">{{ $execution.id }}</span></p>\n        <p><span class=\"label\">Workflow:</span><span class=\"value\">{{ $workflow.name }}</span></p>\n        <p><span class=\"label\">Timestamp:</span><span class=\"value\">{{ $now.toISO() }}</span></p>\n        <p><span class=\"label\">Retry Count:</span><span class=\"value\">{{ $json.retry_count || 0 }} / 2</span></p>\n      </div>\n\n      <div class=\"section\">\n        <h3 style=\"margin-top: 0; color: #d32f2f;\">Error Details</h3>\n        <p><span class=\"label\">Processing Stage:</span><span class=\"value\">{{ $json.processing_stage || 'Unknown' }}</span></p>\n        <p><span class=\"label\">Failed Node:</span><span class=\"value\">{{ $json.failed_node || 'Unknown' }}</span></p>\n        <p><span class=\"label\">Error Category:</span><span class=\"value\">{{ $json.error_category || 'general_error' }}</span></p>\n        \n        <div class=\"error-box\">\n          <strong>Error Message:</strong>\n          <p style=\"margin: 10px 0 0 0; font-family: monospace;\">{{ $json.error_message || 'No error message available' }}</p>\n        </div>\n      </div>\n\n      <div class=\"section\">\n        <h3 style=\"margin-top: 0; color: #d32f2f;\">File Information</h3>\n        <p><span class=\"label\">File Name:</span><span class=\"value\">{{ $json.file_name || 'Unknown' }}</span></p>\n        <p><span class=\"label\">File Size:</span><span class=\"value\">{{ ($json.file_size / 1024 / 1024).toFixed(2) }} MB</span></p>\n        <p><span class=\"label\">MIME Type:</span><span class=\"value\">{{ $json.mime_type || 'Unknown' }}</span></p>\n        <p><span class=\"label\">User ID:</span><span class=\"value\">{{ $json.user_id || 'N/A' }}</span></p>\n        <p><span class=\"label\">IP Address:</span><span class=\"value\">{{ $json.ip_address || 'Unknown' }}</span></p>\n      </div>\n\n      <div class=\"section\">\n        <h3 style=\"margin-top: 0; color: #d32f2f;\">Next Steps</h3>\n        <ol>\n          <li>Review the execution logs in n8n for detailed error stack trace</li>\n          <li>Check if the file format is supported and not corrupted</li>\n          <li>Verify API credentials and rate limits for external services</li>\n          <li>Contact the user if manual document resubmission is required</li>\n          <li>Review error category for systematic issues requiring workflow updates</li>\n        </ol>\n      </div>\n\n      <div class=\"footer\">\n        <p><strong>n8n Workflow Automation</strong></p>\n        <p>This is an automated notification from your n8n workflow. Please do not reply to this email.</p>\n        <p>View execution details: <a href=\"https://nosta.app.n8n.cloud/workflow/{{ $workflow.id }}/executions/{{ $execution.id }}\">Click here</a></p>\n      </div>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        4608,
+        912
+      ],
+      "id": "292497b0-fcb4-4d70-8095-a7f0a6e954e3",
+      "name": "Send a message",
+      "webhookId": "41b96143-a06e-4977-978d-37dd4b78c3c7"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Track Retry Count - Preserve all fields including binary data\nconst items = $input.all();\n\nreturn items.map(item => {\n  // Get current retry count from error data or initialize to 0\n  const currentRetryCount = item.json.retry_count || 0;\n  \n  // Preserve all existing JSON fields\n  const preservedJson = { ...item.json };\n  \n  // Update retry count\n  preservedJson.retry_count = currentRetryCount;\n  \n  // Preserve binary data if it exists\n  const preservedBinary = item.binary ? { ...item.binary } : undefined;\n  \n  return {\n    json: preservedJson,\n    binary: preservedBinary\n  };\n});"
+      },
+      "id": "be05c908-69b8-4263-8d3f-9708a3dc5174",
+      "name": "Track Retry Count",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3712,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.retry_count }}",
+              "rightValue": "2",
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3c93082b-eb19-46a7-883c-286cffc0d8f7",
+      "name": "Check Retry Limit",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3936,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Increment retry counter and preserve all data including binary\nconst items = $input.all();\n\nreturn items.map(item => {\n  const currentRetryCount = item.json.retry_count || 0;\n  const newRetryCount = currentRetryCount + 1;\n  \n  return {\n    json: {\n      ...item.json,\n      retry_count: newRetryCount,\n      retry_timestamp: new Date().toISOString(),\n      retry_attempt: `Attempt ${newRetryCount} of 2`\n    },\n    binary: item.binary || {}\n  };\n});"
+      },
+      "id": "c4c238d3-1eb3-4845-929d-a482df277927",
+      "name": "Increment Retry Counter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4160,
+        912
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-24T14:41:26.243Z",
+      "createdAt": "2026-01-24T14:41:26.243Z",
+      "role": "workflow:owner",
+      "workflowId": "LzGENeUqiZ4225bo",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-17T10:35:30.901Z",
+  "versionId": "1d83f457-eea1-44b7-a04a-c023a1df1385"
+}
