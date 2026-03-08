@@ -1,0 +1,173 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-05T11:47:00.426Z",
+    "createdAt": "2026-02-05T11:47:00.426Z",
+    "versionId": "40e45ac3-1a5d-4786-9616-e4a6c7977029",
+    "workflowId": "zsCraP0Mr3AMi13i",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours",
+                "hoursInterval": 10
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "f75019f1-5563-4d3d-8fff-00835c31f8a1",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "tableId": "dblive",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "created_at",
+                "fieldValue": "={{ $json.timestamp }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          304,
+          -48
+        ],
+        "id": "6f4e9a8f-073f-4a54-9fbc-cf386470bcea",
+        "name": "Create a row",
+        "credentials": {
+          "supabaseApi": {
+            "id": "SRxOZEWNZgLbKLus",
+            "name": "Supabase account dbt test RN"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Create a row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Anusha Priya",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "40e45ac3-1a5d-4786-9616-e4a6c7977029",
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-28T10:22:40.129Z",
+  "id": "zsCraP0Mr3AMi13i",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f75019f1-5563-4d3d-8fff-00835c31f8a1",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "tableId": "dblive",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $json.timestamp }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -48
+      ],
+      "id": "6f4e9a8f-073f-4a54-9fbc-cf386470bcea",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-28T10:22:40.134Z",
+      "createdAt": "2026-01-28T10:22:40.134Z",
+      "role": "workflow:owner",
+      "workflowId": "zsCraP0Mr3AMi13i",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        20
+      ]
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-05T11:47:00.425Z",
+  "versionId": "40e45ac3-1a5d-4786-9616-e4a6c7977029"
+}
