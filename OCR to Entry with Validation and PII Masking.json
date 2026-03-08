@@ -1,0 +1,870 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Invoice Email Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Capture Invoice Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture Invoice Metadata": {
+      "main": [
+        [
+          {
+            "node": "Check File Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check File Type": {
+      "main": [
+        [
+          {
+            "node": "Extract Text from PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OCR for Images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text from PDF": {
+      "main": [
+        [
+          {
+            "node": "Merge OCR Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OCR for Images": {
+      "main": [
+        [
+          {
+            "node": "Merge OCR Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge OCR Results": {
+      "main": [
+        [
+          {
+            "node": "AI Invoice Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Invoice Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Invoice Schema Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Invoice Extractor",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Invoice Extractor": {
+      "main": [
+        [
+          {
+            "node": "Validate and Recalculate Totals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate and Recalculate Totals": {
+      "main": [
+        [
+          {
+            "node": "Mask PII Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mask PII Data": {
+      "main": [
+        [
+          {
+            "node": "Check if Review Needed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Review Needed": {
+      "main": [
+        [
+          {
+            "node": "Send Review Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create QuickBooks Bill",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Review Request": {
+      "main": [
+        [
+          {
+            "node": "Wait for Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Human Review": {
+      "main": [
+        [
+          {
+            "node": "Create QuickBooks Bill",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create QuickBooks Bill": {
+      "main": [
+        [
+          {
+            "node": "Prepare Audit Log Entry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Audit Log Entry": {
+      "main": [
+        [
+          {
+            "node": "Log to Audit Trail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log to Audit Trail": {
+      "main": [
+        [
+          {
+            "node": "Send Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4 for Parser": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Invoice Schema Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-31T11:14:55.571Z",
+  "id": "feQ3tWJ6mg53651G",
+  "isArchived": false,
+  "meta": null,
+  "name": "OCR to Entry with Validation and PII Masking",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 5,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "AP Inbox"
+          ]
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "id": "68189462-229d-4346-be73-94e8faee7392",
+      "name": "Invoice Email Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -912,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "ocrApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__OCR API endpoint URL (e.g., OCR.space or Google Vision)__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "validationTolerance",
+              "value": 1,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "confidenceThreshold",
+              "value": 0.85,
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "slackChannel",
+              "value": "<__PLACEHOLDER_VALUE__Slack channel ID for notifications__>",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "auditSheetId",
+              "value": "<__PLACEHOLDER_VALUE__Google Sheets ID for audit log__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "b2d15189-f7a7-4736-be90-668cf7410d7a",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -688,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "invoiceSource",
+              "value": "email",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "receivedTimestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "fileHash",
+              "value": "={{ $binary.attachment_0 ? $hash($binary.attachment_0.data, 'sha256') : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "vendorName",
+              "value": "={{ $json.from?.name || $json.from?.address || 'Unknown' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "6123ac34-829d-466b-acfb-465a3d2ffc92",
+      "name": "Capture Invoice Metadata",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -464,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Capture Invoice Metadata').item.json.attachment_0.mimeType }}",
+              "rightValue": "pdf",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6858b9c5-1476-453b-b52d-23e9bf1fce82",
+      "name": "Check File Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -240,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "attachment_0",
+        "options": {}
+      },
+      "id": "eef679ca-d7a3-415f-a95e-54723c28e8b1",
+      "name": "Extract Text from PDF",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Configuration').first().json.ocrApiUrl }}",
+        "authentication": "genericCredentialType",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "attachment_0"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "20f344ad-cf96-4a26-8243-be6dfbcc0799",
+      "name": "OCR for Images",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -16,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "0df54f2f-d0b4-4967-9d80-c1fc42caa6cc",
+      "name": "Merge OCR Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.extractedText || $json.ParsedResults?.[0]?.ParsedText || '' }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an invoice data extraction specialist. Extract structured data from the provided invoice text and return it in the exact JSON schema format.\n\nYour task:\n1. Extract all invoice header fields (invoice number, date, due date, vendor details)\n2. Extract all line items with description, quantity, rate, and amount\n3. Extract tax information and totals\n4. Flag any fields with low confidence\n5. Do NOT perform calculations - only extract what you see\n6. Return ONLY the structured JSON output\n\nIMPORTANT: If a field is unclear or missing, set it to null and mark confidence as low."
+        }
+      },
+      "id": "9a21df69-6194-45c9-9109-faa43a323dff",
+      "name": "AI Invoice Extractor",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        464,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "31a59377-b72a-47a0-97fb-70c59f0e3fa3",
+      "name": "OpenAI GPT-4",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"invoiceNumber\": {\n      \"type\": \"string\",\n      \"description\": \"The invoice number\"\n    },\n    \"invoiceDate\": {\n      \"type\": \"string\",\n      \"description\": \"The date the invoice was issued\"\n    },\n    \"dueDate\": {\n      \"type\": \"string\",\n      \"description\": \"The payment due date\"\n    },\n    \"vendorName\": {\n      \"type\": \"string\",\n      \"description\": \"The name of the vendor\"\n    },\n    \"vendorGST\": {\n      \"type\": \"string\",\n      \"description\": \"The vendor's GST number\"\n    },\n    \"vendorPAN\": {\n      \"type\": \"string\",\n      \"description\": \"The vendor's PAN number\"\n    },\n    \"vendorBankAccount\": {\n      \"type\": \"string\",\n      \"description\": \"The vendor's bank account number\"\n    },\n    \"subtotal\": {\n      \"type\": \"number\",\n      \"description\": \"The subtotal amount before tax\"\n    },\n    \"taxAmount\": {\n      \"type\": \"number\",\n      \"description\": \"The tax amount\"\n    },\n    \"taxRate\": {\n      \"type\": \"number\",\n      \"description\": \"The tax rate percentage\"\n    },\n    \"total\": {\n      \"type\": \"number\",\n      \"description\": \"The total amount including tax\"\n    },\n    \"lineItems\": {\n      \"type\": \"array\",\n      \"description\": \"Array of line items on the invoice\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"description\": {\n            \"type\": \"string\",\n            \"description\": \"Description of the line item\"\n          },\n          \"quantity\": {\n            \"type\": \"number\",\n            \"description\": \"Quantity of the item\"\n          },\n          \"rate\": {\n            \"type\": \"number\",\n            \"description\": \"Rate per unit\"\n          },\n          \"amount\": {\n            \"type\": \"number\",\n            \"description\": \"Total amount for the line item\"\n          }\n        }\n      }\n    },\n    \"confidence\": {\n      \"type\": \"object\",\n      \"description\": \"Field-level confidence scores\",\n      \"properties\": {\n        \"invoiceNumber\": {\n          \"type\": \"number\"\n        },\n        \"invoiceDate\": {\n          \"type\": \"number\"\n        },\n        \"dueDate\": {\n          \"type\": \"number\"\n        },\n        \"vendorName\": {\n          \"type\": \"number\"\n        },\n        \"vendorGST\": {\n          \"type\": \"number\"\n        },\n        \"vendorPAN\": {\n          \"type\": \"number\"\n        },\n        \"vendorBankAccount\": {\n          \"type\": \"number\"\n        },\n        \"subtotal\": {\n          \"type\": \"number\"\n        },\n        \"taxAmount\": {\n          \"type\": \"number\"\n        },\n        \"taxRate\": {\n          \"type\": \"number\"\n        },\n        \"total\": {\n          \"type\": \"number\"\n        }\n      }\n    }\n  }\n}",
+        "autoFix": true
+      },
+      "id": "74558cdd-67b2-44f1-bd0e-529dd3454e35",
+      "name": "Invoice Schema Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const invoice = $input.first().json;\nconst tolerance = $('Workflow Configuration').first().json.validationTolerance;\n\n// Recalculate line totals\nlet calculatedSubtotal = 0;\nconst validatedLineItems = [];\n\nfor (const item of invoice.lineItems || []) {\n  const calculatedAmount = (item.quantity || 0) * (item.rate || 0);\n  const amountMatch = Math.abs(calculatedAmount - (item.amount || 0)) <= tolerance;\n  \n  validatedLineItems.push({\n    ...item,\n    calculatedAmount,\n    amountMatch\n  });\n  \n  calculatedSubtotal += calculatedAmount;\n}\n\n// Recalculate tax and total\nconst calculatedTax = calculatedSubtotal * ((invoice.taxRate || 0) / 100);\nconst calculatedTotal = calculatedSubtotal + calculatedTax;\n\n// Validation checks\nconst subtotalMatch = Math.abs(calculatedSubtotal - (invoice.subtotal || 0)) <= tolerance;\nconst taxMatch = Math.abs(calculatedTax - (invoice.taxAmount || 0)) <= tolerance;\nconst totalMatch = Math.abs(calculatedTotal - (invoice.total || 0)) <= tolerance;\n\nconst validationPassed = subtotalMatch && taxMatch && totalMatch;\n\nreturn {\n  json: {\n    ...invoice,\n    lineItems: validatedLineItems,\n    validation: {\n      calculatedSubtotal,\n      calculatedTax,\n      calculatedTotal,\n      subtotalMatch,\n      taxMatch,\n      totalMatch,\n      validationPassed,\n      tolerance\n    }\n  }\n};"
+      },
+      "id": "86bfd162-9c24-43d2-9307-8d2c95b8adf2",
+      "name": "Validate and Recalculate Totals",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const invoice = $input.first().json;\n\n// PII masking functions\nfunction maskPAN(pan) {\n  if (!pan || pan.length < 10) return pan;\n  return 'XXXX-XXXX-' + pan.slice(-4);\n}\n\nfunction maskBankAccount(account) {\n  if (!account || account.length < 4) return account;\n  return 'XXXX-XXXX-' + account.slice(-4);\n}\n\nfunction maskGST(gst) {\n  if (!gst || gst.length < 6) return gst;\n  return 'XXXX-XXXX-' + gst.slice(-6);\n}\n\n// Store original values (encrypted in production)\nconst originalPII = {\n  vendorPAN: invoice.vendorPAN,\n  vendorBankAccount: invoice.vendorBankAccount,\n  vendorGST: invoice.vendorGST\n};\n\n// Apply masking\nconst maskedInvoice = {\n  ...invoice,\n  vendorPAN: maskPAN(invoice.vendorPAN),\n  vendorBankAccount: maskBankAccount(invoice.vendorBankAccount),\n  vendorGST: maskGST(invoice.vendorGST),\n  _originalPII: originalPII,\n  _piiMasked: true\n};\n\nreturn { json: maskedInvoice };"
+      },
+      "id": "c11e8761-347d-475b-b4be-8b106e407418",
+      "name": "Mask PII Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ !$json.validation?.validationPassed || Object.values($json.confidence || {}).some(c => c < $('Workflow Configuration').first().json.confidenceThreshold) }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c0ca2c2f-75ca-42c7-b9eb-9aa52e4f4671",
+      "name": "Check if Review Needed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1376,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "64bf525b-eab7-4415-8f94-b7938d98fb00",
+      "name": "Wait for Human Review",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1824,
+        256
+      ],
+      "webhookId": "82322453-8bc2-4979-90de-d5ffaafe4ec5"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.slackChannel }}"
+        },
+        "text": "=Invoice Review Required\n\n*Invoice:* {{ $json.invoiceNumber }}\n*Vendor:* {{ $json.vendorName }}\n*Total:* {{ $json.total }}\n*Issue:* {{ !$json.validation?.validationPassed ? \"Validation failed - amounts don't match\" : \"Low confidence extraction\" }}\n\n*Validation Details:*\n- Subtotal Match: {{ $json.validation?.subtotalMatch }}\n- Tax Match: {{ $json.validation?.taxMatch }}\n- Total Match: {{ $json.validation?.totalMatch }}\n\nPlease review and approve/reject.",
+        "otherOptions": {}
+      },
+      "id": "6f6f9fde-9704-4ecf-89e5-66337085c495",
+      "name": "Send Review Request",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1600,
+        256
+      ],
+      "webhookId": "08ff2c2e-e8a8-4812-847b-5cc1d65c4e0c"
+    },
+    {
+      "parameters": {
+        "resource": "bill",
+        "operation": "create",
+        "VendorRef": "={{ $json.vendorName }}",
+        "Line": [
+          {
+            "Description": "={{ $json.lineItems[0].description }}",
+            "Amount": "={{ $json.lineItems[0].amount }}",
+            "DetailType": "ItemBasedExpenseLineDetail",
+            "itemId": "={{ $json.lineItems[0].itemId }}",
+            "LineNum": 1
+          }
+        ],
+        "additionalFields": {
+          "DueDate": "={{ $json.dueDate }}",
+          "TotalAmt": "={{ $json.totalAmount }}",
+          "TxnDate": "={{ $json.invoiceDate }}"
+        }
+      },
+      "id": "414a2e74-98da-4743-976c-165c55c8cde7",
+      "name": "Create QuickBooks Bill",
+      "type": "n8n-nodes-base.quickbooks",
+      "typeVersion": 1,
+      "position": [
+        2048,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.auditSheetId }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Audit Log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "invoiceNumber": "={{ $json.invoiceNumber }}",
+            "vendorName": "={{ $json.vendorName }}",
+            "total": "={{ $json.total }}",
+            "auditTimestamp": "={{ $json.auditTimestamp }}",
+            "quickbooksId": "={{ $json.quickbooksId }}",
+            "processingStatus": "={{ $json.processingStatus }}",
+            "humanReviewed": "={{ $json.humanReviewed }}",
+            "validationResults": "={{ $json.validationResults }}",
+            "confidenceScores": "={{ $json.confidenceScores }}",
+            "fileHash": "={{ $json.fileHash }}"
+          },
+          "matchingColumns": [
+            "invoiceNumber"
+          ],
+          "schema": [
+            {
+              "id": "invoiceNumber",
+              "displayName": "invoiceNumber",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vendorName",
+              "displayName": "vendorName",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "auditTimestamp",
+              "displayName": "auditTimestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "quickbooksId",
+              "displayName": "quickbooksId",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "processingStatus",
+              "displayName": "processingStatus",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "humanReviewed",
+              "displayName": "humanReviewed",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "validationResults",
+              "displayName": "validationResults",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "confidenceScores",
+              "displayName": "confidenceScores",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fileHash",
+              "displayName": "fileHash",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6194870c-5219-4f9e-ad39-6ddf87101e82",
+      "name": "Log to Audit Trail",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2496,
+        320
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.slackChannel }}"
+        },
+        "text": "=✅ Invoice Processed Successfully\n\n*Invoice:* {{ $json.invoiceNumber }}\n*Vendor:* {{ $json.vendorName }}\n*Total:* {{ $json.total }}\n*QuickBooks ID:* {{ $json.quickbooksId }}\n*Human Reviewed:* {{ $json.humanReviewed ? \"Yes\" : \"No\" }}\n\nAudit log updated.",
+        "otherOptions": {}
+      },
+      "id": "1136c99f-2fb8-4d09-a748-4e05117e330a",
+      "name": "Send Success Notification",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        2720,
+        320
+      ],
+      "webhookId": "b705351c-bfdc-4aea-be8f-978e5ed72f47"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "auditTimestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "quickbooksId",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "processingStatus",
+              "value": "completed",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "humanReviewed",
+              "value": "={{ $('Wait for Human Review').first() ? true : false }}",
+              "type": "boolean"
+            },
+            {
+              "id": "id-5",
+              "name": "validationResults",
+              "value": "={{ JSON.stringify($json.validation) }}",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "confidenceScores",
+              "value": "={{ JSON.stringify($json.confidence) }}",
+              "type": "string"
+            },
+            {
+              "id": "id-7",
+              "name": "maskedData",
+              "value": true,
+              "type": "boolean"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "49b66ba8-3658-4cbe-9cfd-6689c3e17e09",
+      "name": "Prepare Audit Log Entry",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2272,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "c1728162-2360-47c9-a448-3dde283ded3b",
+      "name": "OpenAI GPT-4 for Parser",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        640,
+        752
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T11:14:55.576Z",
+      "createdAt": "2026-01-31T11:14:55.576Z",
+      "role": "workflow:owner",
+      "workflowId": "feQ3tWJ6mg53651G",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:18:48.062Z",
+  "versionId": "94c14c43-ce4f-4eb3-9c0d-1c1d3ff5e64b"
+}
