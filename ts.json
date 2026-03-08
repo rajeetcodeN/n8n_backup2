@@ -1,0 +1,170 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Order Created": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Get Order Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Order Details": {
+      "main": [
+        [
+          {
+            "node": "Send Order to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Order to Slack": {
+      "main": [
+        [
+          {
+            "node": "Get Invoice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-12T12:29:06.851Z",
+  "id": "6Z1AOQo1HbgEkQdO",
+  "isArchived": false,
+  "meta": null,
+  "name": "ts",
+  "nodes": [
+    {
+      "parameters": {
+        "topic": "orders/create"
+      },
+      "id": "b3fcbf20-e372-4614-8262-7d8108b13ad3",
+      "name": "Order Created",
+      "type": "n8n-nodes-base.shopifyTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "6e837f97-89c6-4436-ad54-0f6510ba5d9d"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "slackChannel",
+              "value": "<__PLACEHOLDER_VALUE__Slack channel ID or name__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "3eace244-e516-464b-80ce-ba6322162eae",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "orderId": "={{ $json.id }}",
+        "options": {}
+      },
+      "id": "290368b8-0ebe-44ed-8c96-2fe1ae34ac33",
+      "name": "Get Order Details",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [
+        448,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.slackChannel }}"
+        },
+        "text": "=🛒 *New Order Received!*\n\n*Order Number:* {{ $('Get Order Details').item.json.order_number }}\n*Customer Name:* {{ $('Get Order Details').item.json.customer.first_name }} {{ $('Get Order Details').item.json.customer.last_name }}\n*Total Price:* ${{ $('Get Order Details').item.json.total_price }}\n\n*Products:*\n{{ $('Get Order Details').item.json.line_items.map(item => `• ${item.name} - Qty: ${item.quantity} - $${item.price}`).join('\\n') }}",
+        "otherOptions": {}
+      },
+      "id": "5c37c7db-e241-46a0-a42c-221aa8b53948",
+      "name": "Send Order to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        672,
+        0
+      ],
+      "webhookId": "54922a47-759d-45d6-95cc-64765f777994"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "orderId": "={{ $('Get Order Details').first().json.id }}",
+        "options": {}
+      },
+      "id": "b989b108-03d7-49b5-8ac4-8b5930adf41a",
+      "name": "Get Invoice",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [
+        896,
+        0
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-12T12:29:06.855Z",
+      "createdAt": "2026-01-12T12:29:06.855Z",
+      "role": "workflow:owner",
+      "workflowId": "6Z1AOQo1HbgEkQdO",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-12T16:20:59.521Z",
+  "versionId": "0bb063c6-62dd-4021-b453-d54a0846698d"
+}
