@@ -1,0 +1,2238 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Loop Over Items2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set File ID1": {
+      "main": [
+        [
+          {
+            "node": "Insert Document Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare Datasets": {
+      "main": [
+        [],
+        [],
+        [],
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "S3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "S3": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore2",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Upload": {
+      "main": [
+        [
+          {
+            "node": "Mistral Signed URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Signed URL": {
+      "main": [
+        [
+          {
+            "node": "Mistral DOC OCR3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral DOC OCR3": {
+      "main": [
+        [
+          {
+            "node": "Mistral file delete5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code11": {
+      "main": [
+        [
+          {
+            "node": "Mistral Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code9": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code10": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Code10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Code9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code12": {
+      "main": [
+        [
+          {
+            "node": "Set File ID1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert into Supabase Vectorstore2": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Compare Datasets",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Google Drive3": {
+      "main": [
+        [
+          {
+            "node": "Code11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Document Metadata": {
+      "main": [
+        [
+          {
+            "node": "Google Drive3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "nosta site bot",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Web Search 1": {
+      "ai_tool": [
+        [
+          {
+            "node": "nosta site bot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Documents": {
+      "ai_tool": [
+        [
+          {
+            "node": "nosta site bot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "nosta site bot",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "nosta site bot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set File ID": {
+      "main": [
+        [
+          {
+            "node": "Google Drive4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive4": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert into Supabase Vectorstore": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-09T12:13:19.743Z",
+  "id": "i8WSzzvOr7dtSZ44",
+  "isArchived": false,
+  "meta": null,
+  "name": "website agent data loader",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1904,
+        1296
+      ],
+      "id": "0447296c-fb70-40f6-8d8d-db6d5aa97dc9",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f4536df5-d0b1-4392-bf17-b8137fb31a44",
+              "name": "file_type",
+              "value": "={{ $json.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "77d782de-169d-4a46-8a8e-a3831c04d90f",
+              "name": "file_title",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "9bde4d7f-e4f3-4ebd-9338-dce1350f9eab",
+              "name": "file_url",
+              "value": "={{ $json.webViewLink }}",
+              "type": "string"
+            },
+            {
+              "id": "fae402c8-c486-4b57-8d28-bf669db6b442",
+              "name": "last_modified_date",
+              "value": "={{ $json.modifiedTime }}",
+              "type": "string"
+            },
+            {
+              "id": "866ce582-16e2-4869-ac77-13f248c187eb",
+              "name": "sharepoint_file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b333b04b-7ab7-4c36-8670-3c36c3fa35c7",
+      "name": "Set File ID1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1488,
+        1296
+      ]
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "sharepoint_file_id",
+              "field2": "UniqueId"
+            },
+            {
+              "field1": "Last_modified_date",
+              "field2": "TimeLastModified"
+            },
+            {
+              "field1": "Loading Done",
+              "field2": "Exists"
+            }
+          ]
+        },
+        "fuzzyCompare": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        -2288,
+        1216
+      ],
+      "id": "22cd653d-74d0-4fcf-95cc-3e858d68d734",
+      "name": "Compare Datasets"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5132d92c-41da-4a55-ad79-0c329ca7e626",
+              "name": "Document name",
+              "value": "={{ $('Set File ID1').item.json.file_title.replaceSpecialChars() }}",
+              "type": "string"
+            },
+            {
+              "id": "c8160701-2be7-43c6-bcfa-295fbebe0e23",
+              "name": "Document data",
+              "value": "={{ $json.embedding_text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        1296
+      ],
+      "id": "38b0e574-7daa-44da-bebe-9bc28cbd013e",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "={{ $('Insert Document Metadata2').item.json.id_source +\"_\"+ $json.fileName}}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        1024
+      ],
+      "id": "554fc54c-153b-4a66-a215-39b5974cd665",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"data\": \"{{$json['image_base64'].split(',').pop()}}\",\n  \"fileName\": \"{{$json.id}}\",\n  \"mimeType\": \"image/jpeg\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        992,
+        1024
+      ],
+      "id": "fb5d44bd-6a81-491c-8922-f08793c15e62",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e6dcc66-0501-4739-a738-909878c4b23d",
+              "name": "images",
+              "value": "={{ $json.images }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        928
+      ],
+      "id": "0038a75a-ad03-45ef-b662-937f6a1cad0e",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "images",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        832,
+        1024
+      ],
+      "id": "d924b685-6200-4ab1-8d2b-910df3f6cca2",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "ragtest",
+        "fileName": "=",
+        "additionalFields": {
+          "parentFolderKey": "extracted_images"
+        }
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        1024
+      ],
+      "id": "d8bb1f7e-b312-4b00-8b4d-0e112c03d0e6",
+      "name": "S3",
+      "retryOnFail": true,
+      "credentials": {
+        "s3": {
+          "id": "yNoPO0CbsXSK0d48",
+          "name": "S3 account dbt rn"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d15e917b-43d2-40b8-8b49-af467ff63961",
+              "leftValue": "={{ $json.data[0].parseJson().skipped }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        1328
+      ],
+      "id": "b191bc82-874a-4982-af8a-12e0e0321b7c",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.content.parseJson().pageContent.toJsonString() }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "source",
+                "value": "={{ $('Google Drive3').item.json.url }}"
+              },
+              {
+                "name": "blobType",
+                "value": "application/jsonb"
+              },
+              {
+                "name": "loc",
+                "value": "={{ $json.content.parseJson().metadata.loc }}"
+              },
+              {
+                "name": "source_metadata_id",
+                "value": "={{ $('Set File ID1').item.json.file_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "9782cbea-bfdc-4416-84fd-23d6caec5878",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 100000
+      },
+      "id": "0ce75523-e43e-4978-97f7-53cbeac96df0",
+      "name": "Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        1760
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "07c5b3f3-fdc6-43d8-a335-04e9d405bd70",
+      "name": "Mistral Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -656,
+        1328
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "24"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "45432c64-155d-45ae-920b-ec1c56c2834e",
+      "name": "Mistral Signed URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -480,
+        1328
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n\n",
+        "options": {}
+      },
+      "id": "d7e9914f-8311-4c0f-88b5-0e08ed5949ea",
+      "name": "Mistral DOC OCR3",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -336,
+        1328
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "cd32b84c-1549-4510-aef8-96b2b05d6c86",
+      "name": "Mistral file delete5",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        64,
+        1104
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "$input.item.binary.data.fileName = $input.first().json.title\n\nreturn $input.item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -816,
+        1328
+      ],
+      "id": "59dd1306-f069-4d4d-867c-f0eaaae70531",
+      "name": "Code11"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// Keeps image array from input, inserts embedding_text inline with images\n\nconst pages = items[0].json.pages;\nlet output = [];\n\nfor (const page of pages) {\n  let text = `Page ${page.index}\\n\\n`;\n  let markdown = page.markdown;\n\n  // Replace each image markdown with annotation text if available\n  markdown = markdown.replace(/!\\[(.*?)\\]\\((.*?)\\)/g, (match, alt, src) => {\n    const img = page.images.find(i => i.id === src || i.fileName === src);\n    if (img && img.image_annotation) {\n      const ann = JSON.parse(img.image_annotation);\n      return (\n        '{' +\n        `Image: [${img.id}]\\n` +\n        `Type: ${ann.image_type}\\n` +\n        `Short: ${ann.short_description}\\n` +\n        `Summary: ${ann.summary}\\n` +\n        '}'\n      );\n    }\n    return \"\"; // if no annotation, strip it\n  });\n\n  text += markdown.trim();\n\n  output.push({\n    json: {\n      page_index: page.index,\n      embedding_text: text,\n      images: page.images   // ✅ keep original images array\n    }\n  });\n}\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        1328
+      ],
+      "id": "3304200f-861f-422b-b323-dec05535bf74",
+      "name": "Code9"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code10 (idempotent): If input is already chunked, pass through. Otherwise perform chunking.\n// Config:\nconst DEFAULT_CHUNK_SIZE = 1800;   // desired chunk size\nconst DEFAULT_OVERLAP = 0.3;       // 30% overlap\n\n// Helpers\nfunction isAlreadyChunkedInput(items) {\n  // Heuristic: if the first item content is a JSON string with pageContent OR metadata includes chunk_index\n  if (!items || items.length === 0) return false;\n  try {\n    const first = items[0].json;\n    if (!first) return false;\n    // if content looks like already chunked object stringified\n    if (typeof first.content === 'string') {\n      const parsed = JSON.parse(first.content);\n      if (parsed && (parsed.pageContent || parsed.metadata?.chunk_index !== undefined)) {\n        return true;\n      }\n    }\n    // or if the node already has chunk metadata at top level\n    if (first.metadata && first.metadata.chunk_index !== undefined) return true;\n    // or if the input is many short items likely produced by splitter -> treat as already split\n    if (items.length > 1 && items.every(it => (it.json.content || '').length <= DEFAULT_CHUNK_SIZE)) {\n      return true;\n    }\n  } catch (e) {\n    // ignore parse errors -> assume not chunked\n  }\n  return false;\n}\n\nfunction getObjLength(obj) {\n  return (obj.content || '').length;\n}\nfunction getObjLengthofTextOnly(obj) {\n  if (obj.type === 'image_ocr') return 0;\n  return (obj.content || '').length;\n}\n\n// split with overlap for a single large text string\nfunction splitTextWithOverlap(text, chunkSize, overlap) {\n  const step = Math.max(1, Math.floor(chunkSize * (1 - overlap)));\n  const parts = [];\n  for (let start = 0; start < text.length; start += step) {\n    parts.push(text.slice(start, start + chunkSize));\n  }\n  return parts;\n}\n\n// Main chunking function which accepts an array of objects (items) and returns array of { content, metadata }\nfunction chunkPageItems(arr, source, source_id, pageNum, chunkSize = DEFAULT_CHUNK_SIZE, overlap = DEFAULT_OVERLAP) {\n  // Flatten content strings\n  const pageText = arr.map(it => it.content || '').join(' ');\n\n  // Use splitTextWithOverlap to produce chunks\n  const parts = splitTextWithOverlap(pageText, chunkSize, overlap);\n  const response = [];\n  let charPos = 0;\n  for (let i = 0; i < parts.length; i++) {\n    const part = parts[i];\n    const from = charPos;\n    const to = charPos + (part || '').length;\n    const metadata = {\n      source,\n      source_metadata_id: source_id,\n      loc: { page: pageNum, Characters: { from, to } },\n      chunk_index: i\n    };\n    response.push({\n      content: JSON.stringify({\n        pageContent: [{ type: 'text', content: part }],\n        metadata\n      })\n    });\n    charPos = to;\n  }\n  return response;\n}\n\n// --- Entrypoint ---\nconst incoming = $input.all(); // array of items from previous node\n// If already chunked, pass through (normalize if needed)\nif (isAlreadyChunkedInput(incoming)) {\n  // Optionally normalize metadata for each item if not present\n  const pass = incoming.map((it, idx) => {\n    const json = it.json || {};\n    // ensure content is stringified chunk object (if it's already an object, keep it)\n    if (typeof json.content === 'object' && json.content !== null) {\n      return { json: { content: JSON.stringify(json.content), metadata: json.metadata || {} } };\n    }\n    // if content is a raw string that's small, assume it's already a chunk\n    return { json: { content: json.content, metadata: json.metadata || { chunk_index: idx } } };\n  });\n  return pass;\n}\n\n// Otherwise: Not chunked — perform chunking based on raw document pages\n// We expect input format: first item has fields: 'Document data' (array of pages), 'Document name', and insert metadata node contains id\nconst first = incoming[0] ? incoming[0].json : {};\nconst raw = first['Document data'] || []; // array of page strings\nconst source = first['Document name'] || (first.metadata && first.metadata.source) || '';\n// fallback for source_id from Set File ID node\nlet source_id = '';\ntry {\n  source_id = $('Insert Document Metadata2').first().json.id || $('Set File ID1').first().json.file_id || '';\n} catch (e) {\n  // safe fallback\n  source_id = first.metadata?.source_metadata_id || '';\n}\n\n// Build chunks page by page\nlet allChunks = [];\nraw.forEach((pageText, pageIndex) => {\n  // pageText may be a string or array of small blocks; normalize to array of objects\n  let arr = [];\n  if (Array.isArray(pageText)) {\n    arr = pageText;\n  } else {\n    arr = [{ type: 'text', content: pageText }];\n  }\n  const pageChunks = chunkPageItems(arr, source, source_id, pageIndex + 1, DEFAULT_CHUNK_SIZE, DEFAULT_OVERLAP);\n  allChunks.push(...pageChunks);\n});\n\n// Return in n8n format\nreturn allChunks.map(c => ({ json: c }));\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        1296
+      ],
+      "id": "e23827cb-042a-4044-a709-4727098f668c",
+      "name": "Code10"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        1520
+      ],
+      "id": "173b1d87-a632-4aa6-a828-18f9ac909d53",
+      "name": "Embeddings Mistral Cloud",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "Document data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        704,
+        1296
+      ],
+      "id": "8d271eed-2b07-4dcf-bd2d-5422795e3421",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        1296
+      ],
+      "id": "6be182fa-cdb0-4c36-9c72-e6e42564e106",
+      "name": "Wait",
+      "webhookId": "3b2de32e-b543-4a03-90cd-9b05e423339a"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1664,
+        1008
+      ],
+      "id": "88362c9c-b9c5-4185-bcf3-6efe2316970e",
+      "name": "Wait2",
+      "webhookId": "a93353d9-cb90-4f0c-bdf0-423c0ae9af9d"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -112,
+        1328
+      ],
+      "id": "395fc2ef-a325-4be4-a63a-00ef21d77af1",
+      "name": "Wait3",
+      "webhookId": "2dbecc76-246b-4613-92c2-d0581a190786"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - SharePoint URL with Version Parameter\n// Use this in a \"Code\" node in n8n\n\nconst items = $input.all();\n\nconst outputItems = items.map(item => {\n  const data = item.json;\n  \n  // Use existing LinkingUrl if available\n  if (data.LinkingUrl) {\n    return {\n      json: {\n        ...data,\n        fileUrl: data.LinkingUrl\n      }\n    };\n  }\n  \n  // Construct versioned URL\n  let fileUrl = '';\n  \n  if (data.ServerRelativeUrl && data.ContentTag) {\n    // Base URL with server relative path\n    fileUrl = 'https://nosta.sharepoint.com' + data.ServerRelativeUrl;\n    \n    // Extract GUID from ContentTag and create version parameter\n    const guidMatch = data.ContentTag.match(/\\{([^}]+)\\}/);\n    if (guidMatch) {\n      const versionId = guidMatch[1].toLowerCase().replace(/-/g, '');\n      fileUrl += `?d=w${versionId}`;\n    }\n  }\n  \n  return {\n    json: {\n      ...data,\n      fileUrl: fileUrl\n    }\n  };\n});\n\nreturn outputItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1680,
+        1328
+      ],
+      "id": "0fa9ead5-a7de-49d5-9db0-67da64d0161f",
+      "name": "Code12"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "n8n_metadata",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -2800,
+        752
+      ],
+      "id": "48f14916-67fa-46ca-8657-dda0776a0d84",
+      "name": "Supabase2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4244c0ca-eef1-4674-ae75-8c7f9f06018b",
+              "name": "Last_modified_date",
+              "value": "={{ $json[\"Last_modified_date\"] + \"Z\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2480,
+        880
+      ],
+      "id": "b9e1e07f-dd20-4750-ac90-597038372af5",
+      "name": "Edit Fields9"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nostasite_meta",
+          "mode": "list",
+          "cachedResultName": "nostasite_meta"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_source",
+              "displayName": "id_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_modified_date",
+              "displayName": "last_modified_date",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1504,
+        864
+      ],
+      "id": "c0f0c731-5f48-455e-8948-7b3eb77aa973",
+      "name": "Insert Document Metadata2",
+      "executeOnce": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "nosta_siteembed",
+          "mode": "list",
+          "cachedResultName": "nosta_siteembed"
+        },
+        "options": {
+          "queryName": "match_nosta_siteembed"
+        }
+      },
+      "id": "1293c7c7-8f37-4755-bf90-addb9007560c",
+      "name": "Insert into Supabase Vectorstore2",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        1280
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "limit": 150,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1zJv_Yad3UVEAh-AW4Y6ZCQNlh3T4j4VT",
+            "mode": "list",
+            "cachedResultName": "Nosta_downloads",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1zJv_Yad3UVEAh-AW4Y6ZCQNlh3T4j4VT"
+          }
+        },
+        "options": {
+          "fields": [
+            "id",
+            "name",
+            "webViewLink",
+            "mimeType",
+            "*"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2720,
+        1264
+      ],
+      "id": "0901b7ed-5d33-4b83-8411-8ae735bd3e92",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id_source }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1040,
+        1280
+      ],
+      "id": "60224bee-e8fb-4cdc-a6f2-991cd6807171",
+      "name": "Google Drive3",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "=nostasite_meta",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ $json.file_title }}",
+            "url": "={{ $json.file_url }}",
+            "id_source": "={{ $json.file_id }}",
+            "last_modified_date": "={{ $json.last_modified_date }}"
+          },
+          "matchingColumns": [
+            "id_source"
+          ],
+          "schema": [
+            {
+              "id": "id_source",
+              "displayName": "id_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_modified_date",
+              "displayName": "last_modified_date",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1280,
+        1280
+      ],
+      "id": "f16f66e6-e2ee-4bdc-9461-553fd018d7db",
+      "name": "Insert Document Metadata",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": "n8n_chat"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -416,
+        496
+      ],
+      "id": "3b970edf-e4e7-4b36-bd29-b0a859dd2467",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Web Search tool only SAP websites",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{query}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 20,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [\"https://help.sap.com/docs/\",\"https://community.sap.com/\"],\n  \"exclude_domains\": []\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "query",
+              "description": "Search Querry",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        688,
+        176
+      ],
+      "id": "2ccc8e58-4e68-48f5-88e0-9ebe6f5db78c",
+      "name": "Web Search 2"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Web Search tool excluding SAP websites",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{query}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 20,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": [\"https://help.sap.com/docs/\",\"https://community.sap.com/\"]\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "query",
+              "description": "Search Querry",
+              "type": "string"
+            }
+          ]
+        },
+        "optimizeResponse": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        368,
+        368
+      ],
+      "id": "c74ce85a-a5d6-4ac9-93f5-28dc20773464",
+      "name": "Web Search 1"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to fetch all available documents, including the table schema if the file is a CSV or Excel file.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nostasite_meta",
+          "mode": "list",
+          "cachedResultName": "nostasite_meta"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        -176,
+        544
+      ],
+      "id": "dbc8b497-a553-4ea7-bbf1-6b2608f79c64",
+      "name": "List Documents",
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mistral-small-latest",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        464
+      ],
+      "id": "9198ac3d-528d-465c-ae45-509ca7e8aaa2",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+              "name": "chatInput",
+              "value": "={{ $json?.chatInput || $json.body.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+              "name": "sessionId",
+              "value": "={{ $json?.sessionId || $json.body.sessionId}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9fcfbb55-7cac-4f00-bb77-b9720fb560d0",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=AI Support Agent Prompt\nPersona\nYou are a helpful, intelligent AI support SD agent and are a proactive chat agent. Lead the conversation by asking open-ended questions and offering suggestions. Don’t wait for the user to guide the chat — keep it moving with helpful, friendly prompts. Anticipate needs, follow up thoughtfully, and make the user feel supported throughout.\n\nKnowledge Access Instructions\nPrimary Source: For every user question, always use the Supabase store (nosta_siteembed) as the primary source.\n\nInitial Search: Begin each query by searching only in Supabase (nosta_siteembed).\n\nSupabase Found: If relevant information is found in Supabase:\n\nRespond in English.\n\nProvide the textual information first.\n\n\n\nYou must cite the internal document name and provide the internal document URL.\n\nExample:\n\"For your reference, this information is based on the internal documentation related to Delivery Schedule with EDI Call-Off in SAP systems (Anwenderdoku_Lieferplan mit Abruf EDI). For more detailed guidance, you can access the internal document using the following \n\nSupabase Not Found: If no relevant information is found in Supabase, respond to the user with:\n\n\"The information you requested is not available in our internal documentation. Would you like me to do a Web search?\"\n\nWeb Search Permission:\n\nDo NOT use web search tools automatically.\n\nWait for the user's explicit confirmation (e.g., \"Yes\", \"Okay\", \"Please do\", etc.).\n\nPerforming a Web Search:\n\nOnly after receiving user permission, perform a web search.\n\nUse both web search 1 and web search 2 tools.\n\nQueries must be a single string in English.\n\nClearly state that the information is from an external source.\n\nExample:\n\"This information comes from an external source (e.g., from a relevant website)...\"\n\nImportant Rules & Logic\nSearch Scope: After getting permission for a web search, use it only for the immediate response. Return to using Supabase for all subsequent queries unless the user explicitly asks for external help again.\n\nNo Data Found: If no data is found in Supabase or the web, respond with:\n\n\"At the moment, there is no information available to fully address this request based on current internal and external sources.\"\n\n\nFormat & Style Guidelines\nLanguage: All Supabase queries and all user responses must be in English.\n\nTone: Responses must be Professional, Clear, and helpful. They should be as concise as possible while remaining precise and well-structured.\n\nInstructional Format: For guide or instruction-based responses, only use the following format:\n\nStep-by-Step Guide\n\nThings To Consider\n\nFurther Understanding\n\nUnder \"Further Understanding,\" do not ask for related questions. Instead, provide two bullet points suggesting what topic to explore next based on the user's question.\n\nThings to Consider/Important Details/Common Pitfalls\nYou should actively work to avoid common errors and pay close attention to important details, ensuring none are overlooked while performing the task.",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -128,
+        96
+      ],
+      "id": "96353b64-89bb-4b79-bf1e-b5c11bf82ce4",
+      "name": "nosta site bot"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -3632,
+        2688
+      ],
+      "id": "6b501be3-9ebf-4ee3-baed-24ecf21acd67",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f4536df5-d0b1-4392-bf17-b8137fb31a44",
+              "name": "file_type",
+              "value": "={{ $json.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "77d782de-169d-4a46-8a8e-a3831c04d90f",
+              "name": "file_title",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "9bde4d7f-e4f3-4ebd-9338-dce1350f9eab",
+              "name": "file_url",
+              "value": "={{ $json.webViewLink }}",
+              "type": "string"
+            },
+            {
+              "id": "fae402c8-c486-4b57-8d28-bf669db6b442",
+              "name": "last_modified_date",
+              "value": "={{ $json.modifiedTime }}",
+              "type": "string"
+            },
+            {
+              "id": "866ce582-16e2-4869-ac77-13f248c187eb",
+              "name": "sharepoint_file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "42557e83-96a9-4685-b272-8020523aba8c",
+      "name": "Set File ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3216,
+        2688
+      ]
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "sharepoint_file_id",
+              "field2": "UniqueId"
+            },
+            {
+              "field1": "Last_modified_date",
+              "field2": "TimeLastModified"
+            },
+            {
+              "field1": "Loading Done",
+              "field2": "Exists"
+            }
+          ]
+        },
+        "fuzzyCompare": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        -4048,
+        2096
+      ],
+      "id": "dc3a96ef-27ce-47be-8567-006fff3df2f2",
+      "name": "Compare Datasets1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - SharePoint URL with Version Parameter\n// Use this in a \"Code\" node in n8n\n\nconst items = $input.all();\n\nconst outputItems = items.map(item => {\n  const data = item.json;\n  \n  // Use existing LinkingUrl if available\n  if (data.LinkingUrl) {\n    return {\n      json: {\n        ...data,\n        fileUrl: data.LinkingUrl\n      }\n    };\n  }\n  \n  // Construct versioned URL\n  let fileUrl = '';\n  \n  if (data.ServerRelativeUrl && data.ContentTag) {\n    // Base URL with server relative path\n    fileUrl = 'https://nosta.sharepoint.com' + data.ServerRelativeUrl;\n    \n    // Extract GUID from ContentTag and create version parameter\n    const guidMatch = data.ContentTag.match(/\\{([^}]+)\\}/);\n    if (guidMatch) {\n      const versionId = guidMatch[1].toLowerCase().replace(/-/g, '');\n      fileUrl += `?d=w${versionId}`;\n    }\n  }\n  \n  return {\n    json: {\n      ...data,\n      fileUrl: fileUrl\n    }\n  };\n});\n\nreturn outputItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3408,
+        2720
+      ],
+      "id": "f891eb82-de89-4733-b58c-9cb58ff2436a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "limit": 150,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1u6hXMfCqDV0VgufsfYmmda8IsMo0HETP",
+            "mode": "list",
+            "cachedResultName": "cleanedjson",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1u6hXMfCqDV0VgufsfYmmda8IsMo0HETP"
+          }
+        },
+        "options": {
+          "fields": [
+            "id",
+            "name",
+            "webViewLink",
+            "mimeType",
+            "*"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -3872,
+        2688
+      ],
+      "id": "5039f620-f1e7-457c-85c3-5360aacef384",
+      "name": "Google Drive1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2960,
+        2688
+      ],
+      "id": "6cce79aa-66ed-419b-a4aa-1076b4f8924d",
+      "name": "Google Drive4",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "=nostasite_meta",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ $json.file_title }}",
+            "url": "={{ $json.file_url }}",
+            "id_source": "={{ $json.file_id }}",
+            "last_modified_date": "={{ $json.last_modified_date }}"
+          },
+          "matchingColumns": [
+            "id_source"
+          ],
+          "schema": [
+            {
+              "id": "id_source",
+              "displayName": "id_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_modified_date",
+              "displayName": "last_modified_date",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -3456,
+        3120
+      ],
+      "id": "eb41ae5a-7f90-4d1d-9b34-b5352b5cdf3e",
+      "name": "Insert Document Metadata1",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2656,
+        2192
+      ],
+      "id": "d02a7632-01b9-41c2-b5b9-010e03ad0206",
+      "name": "AI Agent",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "639b4deb-04df-4b10-a146-65e83d98537a",
+              "name": "title",
+              "value": "={{ $json.data.page_title }} && {{ $json.data.title }}  ",
+              "type": "string"
+            },
+            {
+              "id": "a9c8c87e-86e5-48ac-b7e4-e5ac23b48ca9",
+              "name": "summary",
+              "value": "={{ $json.data.comprehensive_summary }}  ",
+              "type": "string"
+            },
+            {
+              "id": "8bdd5e0e-585c-4d39-a688-8994cf1145fd",
+              "name": "topics ",
+              "value": "={{ $json.data.key_topics }} ",
+              "type": "string"
+            },
+            {
+              "id": "0d5bfbfc-b1c0-4ecb-81c0-dd3b693ed302",
+              "name": "process markdown",
+              "value": "={{ $json.data.processed_markdown }}",
+              "type": "string"
+            },
+            {
+              "id": "1b3de282-470e-4f86-b5f7-374eb9f3a8c0",
+              "name": "raw markdwon",
+              "value": "={{ $json.data.raw_markdown }}",
+              "type": "string"
+            },
+            {
+              "id": "e58b64ff-4de6-41d5-8f0f-0738864be725",
+              "name": "cleaned markdown",
+              "value": "={{ $json.data.fit_markdown }}",
+              "type": "string"
+            },
+            {
+              "id": "0fcd4bf6-8083-4bfb-9b9e-53d0653e7ca9",
+              "name": "URL",
+              "value": "={{ $json.data.url}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2400,
+        2672
+      ],
+      "id": "d377163f-0374-4227-afaf-f727a869edf2",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -2752,
+        2688
+      ],
+      "id": "a4e34aad-aaa0-41c9-ad7f-54ca9a67feae",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "const DEFAULT_CHUNK_SIZE = 2000;   // chunk size\nconst DEFAULT_OVERLAP = 0.3;       // 30% overlap\n\nfunction splitTextWithOverlap(text, chunkSize, overlap) {\n  const step = Math.max(1, Math.floor(chunkSize * (1 - overlap)));\n  const parts = [];\n  for (let start = 0; start < text.length; start += step) {\n    parts.push(text.slice(start, start + chunkSize));\n  }\n  return parts;\n}\n\nfunction extractUrl(text) {\n  if (!text) return \"\";\n  const match = text.match(/https?:\\/\\/[^\\s)'\"<>]+/);\n  return match ? match[0] : \"\";\n}\n\nconst incoming = $input.item.json;\n\n// 1. Combine fields for embedding\nconst combinedText = [\n  incoming.summary || \"\",\n  incoming[\"cleaned markdown\"] || \"\",\n  incoming[\"process markdown\"] || \"\"\n].join(\"\\n\\n\");\n\n// 2. Pick only ONE URL\nlet url = incoming.url || \"\";\nif (!url) {\n  url = extractUrl(incoming[\"cleaned markdown\"]) || extractUrl(incoming[\"raw markdwon\"]);\n}\n\n// 3. Chunk\nconst parts = splitTextWithOverlap(combinedText, DEFAULT_CHUNK_SIZE, DEFAULT_OVERLAP);\n\n// 4. Build output with metadata\nlet charPos = 0;\nconst response = parts.map((part, idx) => {\n  const from = charPos;\n  const to = charPos + part.length;\n  const out = {\n    content: part,\n    metadata: {\n      title: incoming.title || \"\",\n      url,                 // ✅ only one URL\n      page: 1,\n      chunk_index: idx,\n      loc: { Characters: { from, to } }\n    }\n  };\n  charPos = to;\n  return { json: out };\n});\n\nreturn response;\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2192,
+        2672
+      ],
+      "id": "44d7b276-0ffc-469c-9e5a-a4268841938e",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.content }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "source_url",
+                "value": "={{ $json.metadata.url }}"
+              },
+              {
+                "name": "blobType",
+                "value": "application/jsonb"
+              },
+              {
+                "name": "loc",
+                "value": "={{ $json.metadata.loc }}"
+              },
+              {
+                "name": "title",
+                "value": "={{ $json.metadata.title }}"
+              },
+              {
+                "name": "page_no",
+                "value": "={{ $json.metadata.page }}"
+              },
+              {
+                "name": "topics",
+                "value": "={{ $('Edit Fields4').item.json['topics '] }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "6a6f53c3-a131-45af-b7ef-ab350a641f6b",
+      "name": "Default Data Loader1",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        -1536,
+        2704
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 100000
+      },
+      "id": "91ea55db-9751-476e-bdf5-fbb6220acb52",
+      "name": "Character Text Splitter1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -1616,
+        2928
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        2736
+      ],
+      "id": "31fa2405-4dbd-4d9a-b35e-1c3399bd4105",
+      "name": "Embeddings Mistral Cloud2",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "website_mark",
+          "mode": "list",
+          "cachedResultName": "website_mark"
+        },
+        "options": {
+          "queryName": "match_website_mark"
+        }
+      },
+      "id": "772dae61-c46e-4257-abbf-4ead3876bd69",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        -1808,
+        2384
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 8
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2608,
+        2688
+      ],
+      "id": "27d6cfd3-2f75-4b09-9869-64219a108ec5",
+      "name": "Wait1",
+      "webhookId": "d57cefa3-f499-4848-9816-f0b80bcd0d49"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1344,
+        2400
+      ],
+      "id": "0ec246f9-3f42-41e3-ac49-f0c3dc060db0",
+      "name": "Wait4",
+      "webhookId": "2e21183b-4e03-4dc1-aef7-b9805cf93a22"
+    },
+    {
+      "parameters": {
+        "tableName": "n8n_chat"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -2992,
+        3328
+      ],
+      "id": "74f70210-1aa0-4090-9883-8654b9c91ec7",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to fetch all available documents, including the table schema if the file is a CSV or Excel file.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "nostasite_meta",
+          "mode": "list",
+          "cachedResultName": "nostasite_meta"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        -2720,
+        3296
+      ],
+      "id": "ce559114-90b9-434e-aafb-9686def4b6da",
+      "name": "List Documents1",
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -4160,
+        2704
+      ],
+      "id": "9973a147-4087-40a1-8c11-fbf1418811b5",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-10-09T12:13:19.749Z",
+      "createdAt": "2025-10-09T12:13:19.749Z",
+      "role": "workflow:owner",
+      "workflowId": "i8WSzzvOr7dtSZ44",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-09T12:13:37.000Z",
+  "versionId": "bcfb22ef-0e15-495c-a621-a77e2563f5df"
+}
