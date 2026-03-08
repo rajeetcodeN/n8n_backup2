@@ -1,0 +1,579 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Incident Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Fetch Logs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Metrics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Recent Deployments",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Feature Flags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Logs": {
+      "main": [
+        [
+          {
+            "node": "Normalize and Denoise Logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize and Denoise Logs": {
+      "main": [
+        [
+          {
+            "node": "Merge Context Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Metrics": {
+      "main": [
+        [
+          {
+            "node": "Merge Context Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Recent Deployments": {
+      "main": [
+        [
+          {
+            "node": "Merge Context Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Feature Flags": {
+      "main": [
+        [
+          {
+            "node": "Merge Context Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Context Data": {
+      "main": [
+        [
+          {
+            "node": "Cluster Log Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Cluster Log Messages",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cluster Log Messages": {
+      "main": [
+        [
+          {
+            "node": "Identify Failure Patterns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identify Failure Patterns": {
+      "main": [
+        [
+          {
+            "node": "Time-Align Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Time-Align Events": {
+      "main": [
+        [
+          {
+            "node": "Root Cause Analysis Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Root Cause Analysis Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Root Cause Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Root Cause Analysis Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Root Cause Analysis Agent": {
+      "main": [
+        [
+          {
+            "node": "Create Incident Ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Cluster Log Messages",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-31T11:06:00.527Z",
+  "id": "eB8cb76knTFPsJsB",
+  "isArchived": false,
+  "meta": null,
+  "name": "Autonomous Log Intelligence and Root Cause Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "incident-trigger",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "782d2084-852a-44c8-894f-bd93b28c0923",
+      "name": "Incident Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1920,
+        32
+      ],
+      "webhookId": "0cc0d20b-7d38-46a0-8831-069fb016f0fb"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "logsApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__Logs API endpoint URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "metricsApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__Metrics API endpoint URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "deploymentsApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__Deployments API endpoint URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "featureFlagsApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__Feature flags API endpoint URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "timeWindowMinutes",
+              "value": 30,
+              "type": "number"
+            },
+            {
+              "id": "id-6",
+              "name": "slackChannel",
+              "value": "<__PLACEHOLDER_VALUE__Slack channel ID for incident tickets__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "62318160-bdf0-4a7d-b132-949e2c2a2419",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2144,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.logsApiUrl }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "minutes",
+              "value": "={{ $('Workflow Configuration').first().json.timeWindowMinutes }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "f45e9aa2-8be8-4314-8b15-101a13dc54b4",
+      "name": "Fetch Logs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2368,
+        -256
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.metricsApiUrl }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "minutes",
+              "value": "={{ $('Workflow Configuration').first().json.timeWindowMinutes }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "c26025c2-c5c4-41d8-b8fe-db79212a999e",
+      "name": "Fetch Metrics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2592,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.deploymentsApiUrl }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "minutes",
+              "value": "={{ $('Workflow Configuration').first().json.timeWindowMinutes }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "bb58c732-5317-4440-b79b-48b97731eb4c",
+      "name": "Fetch Recent Deployments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2592,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.featureFlagsApiUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "c0a93da8-c141-4d93-bf74-2157e2d8af37",
+      "name": "Fetch Feature Flags",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2592,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalize and Denoise Logs\n// This code processes raw logs to extract meaningful error information\n\nconst items = $input.all();\nconst normalizedLogs = [];\n\n// Define noise patterns to filter out\nconst noisePatterns = [\n  /debug/i,\n  /info/i,\n  /trace/i,\n  /verbose/i\n];\n\n// Process each log entry\nfor (const item of items) {\n  const logData = item.json;\n  \n  // Skip if log level is noise\n  const logLevel = logData.level || logData.severity || '';\n  const isNoise = noisePatterns.some(pattern => pattern.test(logLevel));\n  \n  if (isNoise) {\n    continue;\n  }\n  \n  // Extract key fields\n  const normalizedLog = {\n    timestamp: logData.timestamp || logData.time || logData['@timestamp'] || new Date().toISOString(),\n    level: (logLevel || 'unknown').toLowerCase(),\n    message: logData.message || logData.msg || logData.text || '',\n    sessionId: logData.sessionId || logData.session_id || logData.requestId || logData.request_id || logData.traceId || 'unknown',\n    service: logData.service || logData.serviceName || logData.app || 'unknown',\n    error: logData.error || logData.exception || logData.stack || null,\n    metadata: {\n      host: logData.host || logData.hostname,\n      environment: logData.environment || logData.env,\n      userId: logData.userId || logData.user_id,\n      endpoint: logData.endpoint || logData.path || logData.url\n    }\n  };\n  \n  // Only include logs with error or warning level\n  if (normalizedLog.level === 'error' || normalizedLog.level === 'warn' || normalizedLog.level === 'warning' || normalizedLog.level === 'fatal' || normalizedLog.level === 'critical') {\n    normalizedLogs.push({\n      json: normalizedLog\n    });\n  }\n}\n\n// Group logs by session/request ID\nconst groupedLogs = {};\nfor (const log of normalizedLogs) {\n  const sessionId = log.json.sessionId;\n  if (!groupedLogs[sessionId]) {\n    groupedLogs[sessionId] = [];\n  }\n  groupedLogs[sessionId].push(log.json);\n}\n\n// Create output with grouped logs\nconst output = [];\nfor (const [sessionId, logs] of Object.entries(groupedLogs)) {\n  // Sort logs by timestamp\n  logs.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));\n  \n  output.push({\n    json: {\n      sessionId: sessionId,\n      logCount: logs.length,\n      firstError: logs[0].timestamp,\n      lastError: logs[logs.length - 1].timestamp,\n      service: logs[0].service,\n      errors: logs.map(log => ({\n        timestamp: log.timestamp,\n        level: log.level,\n        message: log.message,\n        error: log.error,\n        metadata: log.metadata\n      }))\n    }\n  });\n}\n\nreturn output.length > 0 ? output : [{ json: { message: 'No error logs found after denoising' } }];"
+      },
+      "id": "e0dcacd2-068b-4348-9eed-5edc0038014b",
+      "name": "Normalize and Denoise Logs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2592,
+        -256
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "ef012937-0efc-4056-87ea-d5b59c05c10b",
+      "name": "Merge Context Data",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2816,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3c3a179c-73de-443e-87fd-868b9a346c94",
+      "name": "OpenAI Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3040,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "id": "83ae32aa-a9e6-4bcb-9189-c01f54f16b38",
+      "name": "Cluster Log Messages",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        3040,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyze vector store clusters to identify dominant failure patterns\nconst items = $input.all();\n\n// Group items by cluster or similarity\nconst clusters = {};\nconst errorTypes = {};\n\nfor (const item of items) {\n  const data = item.json;\n  \n  // Extract error information\n  const errorType = data.error_type || data.level || data.severity || 'unknown';\n  const message = data.message || data.log || data.text || '';\n  const timestamp = data.timestamp || data.time || new Date().toISOString();\n  \n  // Count error types\n  if (!errorTypes[errorType]) {\n    errorTypes[errorType] = {\n      count: 0,\n      messages: [],\n      timestamps: []\n    };\n  }\n  errorTypes[errorType].count++;\n  errorTypes[errorType].messages.push(message);\n  errorTypes[errorType].timestamps.push(timestamp);\n  \n  // Group by cluster if available (from vector store)\n  const clusterId = data.cluster_id || data.group || 'default';\n  if (!clusters[clusterId]) {\n    clusters[clusterId] = {\n      id: clusterId,\n      size: 0,\n      errors: [],\n      errorTypes: {}\n    };\n  }\n  clusters[clusterId].size++;\n  clusters[clusterId].errors.push(data);\n  \n  if (!clusters[clusterId].errorTypes[errorType]) {\n    clusters[clusterId].errorTypes[errorType] = 0;\n  }\n  clusters[clusterId].errorTypes[errorType]++;\n}\n\n// Sort error types by frequency\nconst sortedErrorTypes = Object.entries(errorTypes)\n  .map(([type, data]) => ({\n    type,\n    count: data.count,\n    percentage: (data.count / items.length * 100).toFixed(2),\n    sample_messages: data.messages.slice(0, 5),\n    first_occurrence: data.timestamps.sort()[0],\n    last_occurrence: data.timestamps.sort()[data.timestamps.length - 1]\n  }))\n  .sort((a, b) => b.count - a.count);\n\n// Identify dominant patterns in each cluster\nconst clusterAnalysis = Object.values(clusters).map(cluster => {\n  const dominantError = Object.entries(cluster.errorTypes)\n    .sort((a, b) => b[1] - a[1])[0];\n  \n  return {\n    cluster_id: cluster.id,\n    size: cluster.size,\n    dominant_error_type: dominantError ? dominantError[0] : 'unknown',\n    dominant_error_count: dominantError ? dominantError[1] : 0,\n    error_diversity: Object.keys(cluster.errorTypes).length,\n    all_error_types: cluster.errorTypes\n  };\n}).sort((a, b) => b.size - a.size);\n\n// Calculate overall statistics\nconst totalErrors = items.length;\nconst uniqueErrorTypes = Object.keys(errorTypes).length;\nconst largestCluster = clusterAnalysis[0] || { size: 0 };\n\n// Return analysis results\nreturn [{\n  json: {\n    summary: {\n      total_errors: totalErrors,\n      unique_error_types: uniqueErrorTypes,\n      total_clusters: Object.keys(clusters).length,\n      largest_cluster_size: largestCluster.size\n    },\n    top_error_types: sortedErrorTypes.slice(0, 10),\n    cluster_analysis: clusterAnalysis,\n    failure_patterns: {\n      most_frequent_error: sortedErrorTypes[0]?.type || 'none',\n      most_frequent_count: sortedErrorTypes[0]?.count || 0,\n      error_concentration: sortedErrorTypes[0] ? \n        (sortedErrorTypes[0].count / totalErrors * 100).toFixed(2) + '%' : '0%'\n    },\n    raw_data: items.map(item => item.json)\n  }\n}];"
+      },
+      "id": "fcd5c80f-ed10-4b81-9821-5a6c89321899",
+      "name": "Identify Failure Patterns",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3392,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Time-align failure patterns with deployments, config changes, and traffic spikes\n// Correlate timestamps and identify causal relationships\n\nconst items = $input.all();\n\n// Extract and categorize events by type\nconst failurePatterns = [];\nconst deployments = [];\nconst configChanges = [];\nconst trafficSpikes = [];\n\nitems.forEach(item => {\n  const data = item.json;\n  \n  if (data.type === 'failure_pattern') {\n    failurePatterns.push(data);\n  } else if (data.type === 'deployment') {\n    deployments.push(data);\n  } else if (data.type === 'config_change') {\n    configChanges.push(data);\n  } else if (data.type === 'traffic_spike') {\n    trafficSpikes.push(data);\n  }\n});\n\n// Function to parse timestamps\nfunction parseTimestamp(ts) {\n  return new Date(ts).getTime();\n}\n\n// Function to find temporal correlations (within time window)\nfunction findCorrelations(failureEvent, events, windowMinutes = 30) {\n  const failureTime = parseTimestamp(failureEvent.timestamp);\n  const windowMs = windowMinutes * 60 * 1000;\n  \n  return events.filter(event => {\n    const eventTime = parseTimestamp(event.timestamp);\n    const timeDiff = failureTime - eventTime;\n    // Event should occur before or around the same time as failure\n    return timeDiff >= 0 && timeDiff <= windowMs;\n  }).map(event => ({\n    ...event,\n    timeDiffMinutes: Math.round((failureTime - parseTimestamp(event.timestamp)) / 60000),\n    correlationStrength: 1 - ((failureTime - parseTimestamp(event.timestamp)) / windowMs)\n  }));\n}\n\n// Correlate each failure pattern with potential causes\nconst correlatedEvents = failurePatterns.map(failure => {\n  const correlatedDeployments = findCorrelations(failure, deployments, 60);\n  const correlatedConfigChanges = findCorrelations(failure, configChanges, 30);\n  const correlatedTrafficSpikes = findCorrelations(failure, trafficSpikes, 15);\n  \n  // Calculate causal likelihood scores\n  const causalRelationships = [];\n  \n  correlatedDeployments.forEach(dep => {\n    causalRelationships.push({\n      type: 'deployment',\n      event: dep,\n      causalScore: dep.correlationStrength * 0.9, // Deployments are highly likely causes\n      reasoning: `Deployment occurred ${dep.timeDiffMinutes} minutes before failure`\n    });\n  });\n  \n  correlatedConfigChanges.forEach(config => {\n    causalRelationships.push({\n      type: 'config_change',\n      event: config,\n      causalScore: config.correlationStrength * 0.85,\n      reasoning: `Config change occurred ${config.timeDiffMinutes} minutes before failure`\n    });\n  });\n  \n  correlatedTrafficSpikes.forEach(spike => {\n    causalRelationships.push({\n      type: 'traffic_spike',\n      event: spike,\n      causalScore: spike.correlationStrength * 0.7,\n      reasoning: `Traffic spike occurred ${spike.timeDiffMinutes} minutes before failure`\n    });\n  });\n  \n  // Sort by causal score\n  causalRelationships.sort((a, b) => b.causalScore - a.causalScore);\n  \n  return {\n    json: {\n      failurePattern: failure,\n      correlatedEvents: {\n        deployments: correlatedDeployments,\n        configChanges: correlatedConfigChanges,\n        trafficSpikes: correlatedTrafficSpikes\n      },\n      causalRelationships: causalRelationships,\n      topLikelyCause: causalRelationships[0] || null,\n      timestamp: failure.timestamp\n    }\n  };\n});\n\nreturn correlatedEvents;"
+      },
+      "id": "b589c153-0985-434c-b777-c458f77a023a",
+      "name": "Time-Align Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3616,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "d7c4ee1e-ecb0-47e7-831a-5654a8d8a659",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        3840,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"rootCauses\": {\n\t\t\t\"type\": \"array\",\n\t\t\t\"items\": {\n\t\t\t\t\"type\": \"object\",\n\t\t\t\t\"properties\": {\n\t\t\t\t\t\"hypothesis\": {\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t},\n\t\t\t\t\t\"confidence\": {\n\t\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\t\"minimum\": 0,\n\t\t\t\t\t\t\"maximum\": 100\n\t\t\t\t\t},\n\t\t\t\t\t\"evidence\": {\n\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t\"recommendedAction\": {\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+      },
+      "id": "43b253d9-a62d-42e4-9941-ade794e49721",
+      "name": "Root Cause Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3968,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the following incident data and generate root cause hypotheses:\n\nFailure Patterns: {{ $json.failurePatterns }}\n\nTime-Aligned Events: {{ $json.correlatedEvents }}\n\nMetrics: {{ $json.metrics }}\n\nDeployments: {{ $json.deployments }}\n\nFeature Flags: {{ $json.featureFlags }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an expert Site Reliability Engineer specializing in incident analysis and root cause determination.\n\nYour task is to:\n1. Analyze the provided log clusters, failure patterns, and contextual data\n2. Identify probable root causes based on evidence\n3. Assign confidence scores (0-100) to each hypothesis based on strength of evidence\n4. Provide specific evidence supporting each hypothesis\n5. Recommend concrete actions (rollback, config change, scaling, etc.)\n\nConsider:\n- Temporal correlation between failures and deployments/config changes\n- Traffic patterns and resource utilization\n- Error message patterns and frequency\n- Feature flag changes\n- Historical incident patterns\n\nReturn structured output with multiple hypotheses ranked by confidence."
+        }
+      },
+      "id": "a97a3545-52b7-41b3-a30b-8b080bf159b5",
+      "name": "Root Cause Analysis Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        3840,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.slackChannel }}"
+        },
+        "text": "=🚨 *Incident Alert - Root Cause Analysis*\n\n*Incident ID:* {{ $('Incident Trigger').first().json.body.incidentId || 'N/A' }}\n*Timestamp:* {{ $now.format('yyyy-MM-dd HH:mm:ss') }}\n*Severity:* {{ $('Incident Trigger').first().json.body.severity || 'Unknown' }}\n\n---\n\n*Root Cause Hypotheses:*\n{{ $('Root Cause Analysis Agent').first().json.hypotheses ? $('Root Cause Analysis Agent').first().json.hypotheses.map((h, i) => `\n${i + 1}. *${h.cause}*\n   • Confidence: ${h.confidence}%\n   • Evidence: ${h.evidence}\n   • Impact: ${h.impact}`).join('\n') : 'No hypotheses generated' }}\n\n---\n\n*Recommended Actions:*\n{{ $('Root Cause Analysis Agent').first().json.recommendations ? $('Root Cause Analysis Agent').first().json.recommendations.map((r, i) => `${i + 1}. ${r}`).join('\n') : 'No recommendations available' }}\n\n---\n\n*Analysis Summary:*\n{{ $('Root Cause Analysis Agent').first().json.summary || 'Analysis in progress...' }}\n\n*Affected Services:* {{ $('Root Cause Analysis Agent').first().json.affectedServices ? $('Root Cause Analysis Agent').first().json.affectedServices.join(', ') : 'Unknown' }}\n*Correlation Score:* {{ $('Root Cause Analysis Agent').first().json.correlationScore || 'N/A' }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": true
+        }
+      },
+      "id": "3c399393-1b74-4d94-8a25-ae5f1244e572",
+      "name": "Create Incident Ticket",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        4192,
+        32
+      ],
+      "webhookId": "70232c37-1217-442f-82f4-3f40a1faa76c"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.errors }}",
+        "options": {}
+      },
+      "id": "b3ef8fdf-a8c3-41a6-9cbf-5941b4bfe0cc",
+      "name": "Document Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        3168,
+        256
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T11:06:00.534Z",
+      "createdAt": "2026-01-31T11:06:00.534Z",
+      "role": "workflow:owner",
+      "workflowId": "eB8cb76knTFPsJsB",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:08:29.150Z",
+  "versionId": "0e2a8f40-31f6-455e-b763-e5fff0eb14d9"
+}
