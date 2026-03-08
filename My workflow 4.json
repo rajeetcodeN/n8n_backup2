@@ -1,0 +1,37 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-02-24T04:50:43.508Z",
+  "id": "5D0GDbY7wbxPmwst",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 4",
+  "nodes": [],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-24T04:50:43.512Z",
+      "createdAt": "2026-02-24T04:50:43.512Z",
+      "role": "workflow:owner",
+      "workflowId": "5D0GDbY7wbxPmwst",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-27T17:51:46.447Z",
+  "versionId": "b3974fa8-a5bf-4aca-b3dc-b533568df0e2"
+}
