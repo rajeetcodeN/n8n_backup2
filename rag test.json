@@ -1,0 +1,37 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-01-31T11:12:23.971Z",
+  "id": "weywXA98G9YpBXa8",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "rag test",
+  "nodes": [],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T11:12:23.975Z",
+      "createdAt": "2026-01-31T11:12:23.975Z",
+      "role": "workflow:owner",
+      "workflowId": "weywXA98G9YpBXa8",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:22:07.693Z",
+  "versionId": "0be7d31f-a502-4720-b17f-7f00c702d2db"
+}
