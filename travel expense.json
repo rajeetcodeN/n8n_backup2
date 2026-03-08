@@ -1,0 +1,2575 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-08T18:50:39.117Z",
+    "createdAt": "2026-01-08T18:50:39.117Z",
+    "versionId": "68e58f69-6c28-4e9c-804d-5b24e9eb12e6",
+    "workflowId": "2QRwtlRMd4jV3297",
+    "nodes": [
+      {
+        "parameters": {
+          "options": {
+            "allowFileUploads": true
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -3344,
+          16
+        ],
+        "id": "eb9e49d2-1418-4070-9320-aaaa2a9c1b9e",
+        "name": "When chat message received",
+        "webhookId": "e9b7c8cd-997b-4c0a-abb8-d1f00be83282"
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "You are a data structuring assistant. Your task is to convert natural-language travel expense entries into structured JSON, following a strict schema.\n\nThe user may provide one or multiple expense entries in everyday language. You must interpret and extract:\n\n- Date: Transaction date in YYYY-MM-DD format. If date is ambiguous (e.g., “last Monday”), ask for clarification instead of guessing.\n- Vendor: Merchant or service provider name, exactly as stated or clearly implied.\n- Category: One of:\n  flight, hotel, car_rental, taxi_ridehail, rail, fuel, toll_parking,\n  meal, baggage_fee, visa_fee, conference, internet_roaming, other\n  Choose based on context. If unclear, use \"other\".\n- Location: City and country, if stated or can be directly derived from the given text. If unknown, set to null. Never invent data.\n- Amount: Final charge amount as a number (decimal allowed). No currency symbols in this field.\n- Currency: Three-letter ISO code (e.g., USD, EUR, INR). If a currency symbol is used and unambiguous, convert to ISO code. If unclear, set to null.\n\nRules:\n- One JSON object per expense entry.\n- Always output a JSON array, even for a single item.\n- No additional text in the reply — only the JSON array.\n- If the user provides multiple line items in a single sentence, separate them into multiple objects.\n- Normalize date formatting; do not leave dates unformatted.\n- Do not assume missing information — set fields to null if not explicitly known.\n- Numbers use standard dot-decimal notation (e.g., 45.60).\n- Preserve vendor names as they appear, except remove redundant all-caps formatting.\n\nJSON Schema (use this exact structure and key names):\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"Category\": null,\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n\nYour response must be valid JSON and only contain extracted structured data — no explanations, no markdown.\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          -2800,
+          16
+        ],
+        "id": "c7938c25-19a6-420d-aeda-4a4bdb54f27f",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": "mistral-medium-latest",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          -2832,
+          272
+        ],
+        "id": "a8fc6c78-f892-40d0-a072-7d47bc69fa6a",
+        "name": "Mistral Cloud Chat Model",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "a784b3b9-66f2-4673-b9a3-b7c875e9d17d",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -3344,
+          -976
+        ],
+        "id": "b58028a5-94c5-413d-95b8-8d6fde91c6ad",
+        "name": "Webhook",
+        "webhookId": "a784b3b9-66f2-4673-b9a3-b7c875e9d17d"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "578e388d-40ad-416b-b7f4-4382049949f1",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -3328,
+          -176
+        ],
+        "id": "9d991050-ab64-4591-bd27-f040220816d4",
+        "name": "Webhook1",
+        "webhookId": "578e388d-40ad-416b-b7f4-4382049949f1"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          -944,
+          -992
+        ],
+        "id": "41b44387-07ab-4285-a036-78202436a0e2",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ JSON.parse($json[\"data\"][0]).blocks[0].content }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -2208,
+          -1008
+        ],
+        "id": "866412d6-5634-4622-aaa2-8706eac24663",
+        "name": "Edit Fields8"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/ocr",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+          "options": {}
+        },
+        "id": "cb7da304-93d1-4fcb-9a80-19ce6da4981b",
+        "name": "Mistral DOC OCR1",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2224,
+          -1264
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ $json.pages[0].markdown }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -2000,
+          -1168
+        ],
+        "id": "fe41e5f3-c8c6-4ff9-a68e-6a05a1bc616f",
+        "name": "Edit Fields9"
+      },
+      {
+        "parameters": {
+          "method": "DELETE",
+          "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload').item.json.id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {}
+            ]
+          },
+          "options": {}
+        },
+        "id": "280cee36-c775-4354-8bc3-36d3fa0b1997",
+        "name": "Mistral file delete",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2000,
+          -1360
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "mode",
+                "value": "single"
+              },
+              {
+                "name": "output_type",
+                "value": "jsonl"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "files",
+                "inputDataFieldName": "data"
+              },
+              {
+                "name": "include_images",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -2416,
+          -1024
+        ],
+        "id": "e7b5715e-73bf-463e-a2f4-01296286fa33",
+        "name": "HTTP Request3",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/files",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "purpose",
+                "value": "ocr"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "file",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "432b0ed3-6cde-46c7-adf7-e59903bd692c",
+        "name": "Mistral Upload",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2672,
+          -1264
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "expiry",
+                "value": "1"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "bbd6af34-b88f-406a-95c8-03e95bbd4409",
+        "name": "Mistral Signed URL",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2448,
+          -1264
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2832,
+          -528
+        ],
+        "id": "8411d08e-fc94-4633-98ec-cf5f75772d86",
+        "name": "Code5"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -2896,
+          -1264
+        ],
+        "id": "f59c8dea-a081-4677-a1ef-66d808754d7f",
+        "name": "Code7"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/msword",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "509a71b4-8c1b-419b-8d8b-fc2c68b86bf2"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/msword",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "e492cbb6-eaca-42fa-95b6-8cb1363b1ead"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "44e10cb4-4d6a-41f4-a34d-f9f635e6c998"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.google-apps.document",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "33eaa3dd-d6c6-4fbb-a625-9db12fd6b13c"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "doc"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.ms-excel",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "298f79a3-fb4b-48c7-bed8-f9e26a4fafad"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b08acf48-8386-4017-8285-e134d0094482"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.google-apps.spreadsheet",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "8a5c4ec2-f2d9-4a98-b62b-b51e08ec6bd7"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "excel"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/jpeg",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "8f99c496-5acb-4577-8ee3-89267716697b"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/png",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "1a243663-2d4d-4004-b0be-77d61f69fd34"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/tiff",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "fdd3e440-3119-43c9-ba2c-b0ad4aa29454"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/jpg",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b7c6b1a4-cce5-4912-9c24-2bb7527d6d38"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/bmp",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "47c28737-9239-4ac9-a5cb-74e6843c07a6"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "image"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "8b8e621e-40b4-43cd-8bd6-220e55b9e9fc",
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "=application/pdf",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "pdf"
+              }
+            ]
+          },
+          "options": {
+            "allMatchingOutputs": false
+          }
+        },
+        "id": "d8b0047c-e748-483d-b21f-26e82e10e5fd",
+        "name": "Switch File Type",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3,
+        "position": [
+          -3120,
+          -1008
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "pdf",
+          "binaryPropertyName": "file",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          -2544,
+          -688
+        ],
+        "id": "bd8ddd7d-421b-4e55-9a17-189bc68d3638",
+        "name": "Extract from File2"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n\n\n\n{{ $json.text }}",
+          "options": {
+            "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\n## Task:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\n## Important Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n9. vendor_address: Use the merchant address from header/footer/payment block. Remove trailing legal suffix if duplicative.\n10. Participants: Extract all *person* entries listed as attendees, guests, or signatories.\n  For each participant, return an object with:\n  - name (string, full name as written)\n  - designation (string|null)\n  - company (string|null)\n  - address (string|null)\n  - is_employee (boolean) → true if the participant’s company is \"nosta GmbH\" or \"nosta\" (case-insensitive); otherwise false.\n  Exclude company names, brands, or stores listed alone.\n  If no individual names appear, set Participants = null.\n\n## Output Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\n## JSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"vendor_address\":null,\n    \"Category\": null,\n    \"Participants\":[\n      {\n        \"name\": null,\n        \"designation\": null,\n        \"company\": null,\n        \"address\": null,\n        \"is_employee\": null\n      }\n    ],\n\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          -1776,
+          -976
+        ],
+        "id": "e10df21b-5bb3-4c26-8f24-86a1d4525ca5",
+        "name": "AI Agent5"
+      },
+      {
+        "parameters": {
+          "model": "mistral-medium-latest",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          -1712,
+          -752
+        ],
+        "id": "ac879c36-2657-4a22-9e81-b5754f79f1f0",
+        "name": "Mistral Cloud Chat Model6",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4f0cd863-7593-471b-9c43-743c0f7602c1",
+                "name": "output",
+                "value": "={{ $json.output }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1424,
+          -976
+        ],
+        "id": "8b8daa86-1b34-42f3-97f0-955457526eb1",
+        "name": "Edit Fields11"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Get the raw string\nconst raw = $input.first().json.output;\n\n// Helper: remove ```json ... ``` fences if present\nfunction stripFences(s) {\n  if (typeof s !== 'string') return s;\n  return s.trim()\n    .replace(/^```[a-zA-Z]*\\s*/i, '')   // leading ``` or ```json\n    .replace(/```[\\s]*$/i, '')          // trailing ```\n    .trim();\n}\n\n// Helper: robust JSON parse (handles double-encoded JSON too)\nfunction robustParse(s) {\n  if (typeof s !== 'string') return s;\n  let t = stripFences(s);\n  try { return JSON.parse(t); } catch (e1) {}\n  // Sometimes the JSON is stringified twice\n  try { return JSON.parse(JSON.parse(t)); } catch (e2) {}\n  // Fallback: try to extract the first {...} block\n  const m = t.match(/\\{[\\s\\S]*\\}$/);\n  if (m) { return JSON.parse(m[0]); }\n  throw new Error('Could not parse JSON from `output` – check the upstream node.');\n}\n\nconst parsed = robustParse(raw);\nreturn [{ json: parsed }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1168,
+          -720
+        ],
+        "id": "d6cddb90-fb36-4a7b-860b-496cc413535e",
+        "name": "Code9",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "9ba91ffa-0d70-4526-9ef7-6eb3cf2ebdd1",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -1712,
+          -176
+        ],
+        "id": "1be2e0cf-4116-422c-b310-33093766cfc1",
+        "name": "Webhook2",
+        "webhookId": "9ba91ffa-0d70-4526-9ef7-6eb3cf2ebdd1"
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "=# 🧭 Travel Reimbursement & Policy Compliance Assistant — Top-Tier Final Prompt\n\nYou are a **Travel Reimbursement & Policy Compliance Assistant AI**.  \nYour responsibility is to analyze employee travel expenses, determine reimbursement eligibility, verify compliance with company travel and finance policies, and generate a professional, detailed, and audit-ready reimbursement report.\n\nYou function as a **smart, impartial, and supportive auditor** — focused on fairness, transparency, and complete policy alignment.  \nYour report must be clear enough for employees, detailed enough for finance teams, and formal enough for auditors.\n\n---\n\n## 🎯 Core Objectives\n1. **Accuracy** – Verify every amount, receipt, date, and vendor entry for correctness.  \n2. **Compliance** – Apply company travel policies consistently and cite relevant rules.  \n3. **Transparency** – Explain all decisions, not just outcomes.  \n4. **Coaching** – Guide the employee on how to correct missing or unclear items.  \n5. **Audit Readiness** – Present a report that can be submitted directly to an internal or external audit.\n\n---\n\n## ⚙️ Responsibilities and Logic Flow\n\n### 1️⃣ Input Review\n- Parse all trip and expense information provided.  \n- Normalize:\n  - Dates → `YYYY-MM-DD`\n  - Currencies → ISO codes (EUR, USD, INR, etc.)\n  - Vendor names → consistent capitalization and formatting.  \n- Detect and flag:\n  - Duplicate expenses or overlapping dates.  \n  - Missing mandatory data fields.  \n  - Arithmetic mismatches between totals and itemized lines.\n\n### 2️⃣ Financial & Data Validation\n- Recalculate totals to confirm integrity.  \n- Identify unconverted currencies, personal/non-business items, or incomplete entries.  \n- Ensure each expense includes **date, vendor, category, amount, currency, and receipt proof**.  \n- Verify conversions use approved exchange rates and note their sources.\n\n### 3️⃣ Policy Compliance Evaluation\nApply company travel policy across all expenses:\n\n| Category | Example Policy Rules |\n|-----------|---------------------|\n| **Hotel/Lodging** | Nightly cap, room type, taxes included, receipt required. |\n| **Meals** | Daily cap or per-diem allowance; alcohol excluded. |\n| **Flights** | Economy only unless pre-approved; baggage fee limits. |\n| **Ground Transport** | Daily taxi/ridehail limit; mileage documentation for rentals. |\n| **Miscellaneous** | Visa, tolls, parking — allowed with receipts. |\n\nEach policy deviation must include:\n- Severity: 🔴 High / 🟠 Medium / 🟢 Low  \n- Rule or limit referenced.  \n- Submitted value vs. allowed limit.  \n- Evidence and action required to fix.\n\n### 4️⃣ Gap Detection & Coaching\n- Compare trip timeline vs. submitted expenses.  \n- Identify missing or improbable elements, such as:\n  - Flights recorded without ground transport.\n  - Meals missing on active travel days.\n  - Overnight stays without lodging entries.\n- Produce a **To-Add Checklist** including:\n  - Item name  \n  - Date(s)  \n  - Suggested category  \n  - Reason expected  \n  - Proof required  \n- Offer constructive guidance to complete or justify gaps.\n\n### 5️⃣ Decisioning & Reimbursement Calculation\nFor each expense:\n- Approve if within policy.  \n- Mark pending if clarification or receipt is needed.  \n- Deny or adjust if non-compliant.\n\nSummarize as:\n- **Eligible Amount:** fully approved items.  \n- **Pending Verification:** items awaiting proof or explanation.  \n- **Non-Compliant Amount:** denied or adjusted amounts.  \n- **Final Reimbursable:** total eligible after adjustments.\n\nProvide a concise reasoning paragraph for overall decision.\n\n### 6️⃣ Compliance Summary & Audit Notes\n- Provide overall compliance score or confidence percentage.  \n- Summarize total issues by severity.  \n- State if the report is **ready for reimbursement** or **requires review**.  \n- Include audit notes describing:\n  - Data quality and completeness.  \n  - Whether findings were data-based or inferred.  \n  - If human review is advised.  \n  - Confidence rating in accuracy (%).\n\n### 7️⃣ Insights & Future Recommendations\nEnd every report with actionable advice to improve future submissions, for example:\n- “Book hotels through the corporate portal to auto-attach invoices.”  \n- “Submit receipts daily to avoid end-of-trip gaps.”  \n- “Use company card for high-value purchases for automatic verification.”  \n- “Cross-check expense categories before submission to maintain policy accuracy.”\n\nEach recommendation should identify:\n- **Category:** Policy / Documentation / Budget / Planning.  \n- **Benefit:** Why it matters (faster approval, fewer rejections, cost savings).\n\n---\n\n## 📋 Required Report Sections\nYour final report must contain the following sections, written clearly and professionally:\n\n1. **Trip Details** – employee, location, purpose, travel dates, total amount, number of expenses.  \n2. **Expense Breakdown** – detailed line-by-line table with policy evaluation and remarks.  \n3. **Policy Compliance Findings** – all issues listed with severity, evidence, and corrective steps.  \n4. **Gap Analysis & To-Add Checklist** – list of missing or inconsistent expenses.  \n5. **💶 Reimbursement Recommendation**  \n   - **Eligible Amount:** €XXX.XX  \n   - **Pending Verification:** €XX.XX  \n   - **Non-Compliant Amount:** €XX.XX  \n   - **Final Recommendation:** ✅ Approved / ⚠️ Partial / ❌ Needs Revision  \n6. **💡 Recommendations for Future Trips**  \n   - Provide 3–5 concise, actionable improvements tailored to this employee’s data.  \n7. **🧠 Confidence & Audit Note**  \n   - Generated by *AI Expense Compliance Assistant*  \n   - Findings are based on provided data and inferred policy alignment.  \n   - Subject to final human audit and approval.  \n   - Include a confidence percentage and any caveats (e.g., “Receipts missing for 1 item; confidence = 92%”).  \n\n---\n\n## 💼 Tone & Communication Style\n- Professional, respectful, objective.  \n- Supportive toward the employee; factual toward finance and audit.  \n- Use formal business English, short sentences, and clear structure.  \n- Never fabricate or assume details beyond provided data.  \n- Always include reasoning for any flagged or denied item.  \n- Keep the language audit-safe: precise, traceable, and compliant.\n\n---\n\n## 🧱 Guiding Principles\n- **Fairness:** Every valid expense should be approved.  \n- **Consistency:** Apply identical policy logic to all employees.  \n- **Traceability:** Each figure and decision should link back to evidence.  \n- **Completeness:** No category, date, or policy rule left unaddressed.  \n- **Readability:** The final report should be clear for employees and auditors alike.\n\n---\n\n## 🏁 Expected Outcome\nProduce a polished, end-to-end reimbursement analysis that:\n- Lists every expense and its compliance result.  \n- Summarizes issues and missing items.  \n- Calculates final eligible reimbursement clearly.  \n- Provides actionable recommendations for next time.  \n- Ends with a confident, transparent audit statement.  \n\nThe final output should read like a professional compliance report prepared by an experienced travel finance auditor — clear, factual, justified, and ready for official submission.\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          -1040,
+          -144
+        ],
+        "id": "b1e713e2-6586-442b-aa34-c48a9dd66aca",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          -1120,
+          176
+        ],
+        "id": "5e99e932-3560-42d0-8577-c2f4272a0b70",
+        "name": "Mistral Cloud Chat Model1",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          -2656,
+          256
+        ],
+        "id": "ecc5ecec-bbf2-45e9-bd5f-3e076f0e7c4a",
+        "name": "Simple Memory"
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          -992,
+          144
+        ],
+        "id": "457791c8-b7e6-493d-b33e-8e7a30612d0b",
+        "name": "Simple Memory1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+                "name": "chatInput",
+                "value": "={{ $json.chatInput || $json.body?.chatInput || $json.body?.[0]?.chatInput }}",
+                "type": "string"
+              },
+              {
+                "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+                "name": "sessionId",
+                "value": "={{ $json.sessionId || $json.body?.sessionId || $json.body?.[0]?.sessionId }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "1ec235a4-bdaa-4dd9-b3a8-4d002eaec4ba",
+        "name": "Edit Fields1",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -3088,
+          -176
+        ]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+                "name": "chatInput",
+                "value": "={{ $json.chatInput || $json.body?.chatInput || $json.body?.[0]?.chatInput }}",
+                "type": "string"
+              },
+              {
+                "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+                "name": "sessionId",
+                "value": "={{ $json.sessionId || $json.body?.sessionId || $json.body?.[0]?.sessionId }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "22f0d1e7-d442-46c3-a329-ae75bab5506a",
+        "name": "Edit Fields",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1456,
+          -144
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/files",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "purpose",
+                "value": "ocr"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "file",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "abe78e75-842b-47a3-b837-7f40ecb1e047",
+        "name": "Mistral Upload3",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2656,
+          -528
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "expiry",
+                "value": "24"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "de366c13-2708-4ec1-b8ee-277ff4ca7d14",
+        "name": "Mistral Signed URL3",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2448,
+          -528
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/ocr",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"type\": \"image_url\",\n    \"image_url\": \"{{ $json.url }}\"\n  }\n}",
+          "options": {}
+        },
+        "id": "ffbe1f0e-1585-4a08-aeff-ba447010e008",
+        "name": "Mistral IMAGE OCR2",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2240,
+          -528
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ $json.pages[0].markdown }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -2016,
+          -640
+        ],
+        "id": "a155aab7-ff6f-46dd-b41f-b457cf6582b0",
+        "name": "Edit Fields10"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n\n\n\n{{ $json.text }}",
+          "options": {
+            "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\nTask:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\nImportant Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n\nOutput Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\nJSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"Category\": null,\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          -2256,
+          -112
+        ],
+        "id": "b9dea63b-56e5-4b8e-b442-d73735ca6334",
+        "name": "AI Agent6"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "options": {
+            "passthroughBinaryImages": true
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          -2768,
+          -1008
+        ],
+        "id": "a27fee4e-6faa-475c-b638-3b9798f00957",
+        "name": "AI Agent2"
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "You are a Travel Reimbursement & Policy Compliance Assistant AI.\n\nYour mission is to analyze employee travel expenses, determine reimbursement eligibility, ensure compliance with company travel policy, and proactively guide employees to complete any missing or inconsistent parts of their report. You act as a smart, supportive auditor focused on fairness, accuracy, and a smooth reimbursement experience.\n\nCore Responsibilities:\n1) Review Inputs\n   - Analyze travel expenses (dates, vendors, amounts, currency, categories), policy details, and any analytics/itinerary summaries.\n   - Normalize dates (YYYY-MM-DD), currencies (ISO codes), and vendor names when clearly intended.\n\n2) Validate Financial & Data Integrity\n   - Verify totals, detect duplicates, and spot personal or non-business items.\n   - Confirm categorization (flight, hotel, meal, taxi/ridehail, rail, fuel, toll/parking, etc.) and correct if clearly implied.\n   - Ensure conversions are only performed when approved exchange rates are provided.\n\n3) Policy Compliance\n   - Apply spend caps (hotel nightly caps, taxi-per-day limits), per diem vs. actuals rules, flight class eligibility, baggage add-ons, and receipt/documentation requirements.\n   - Rate each finding by severity (High/Medium/Low) and clearly cite the rule in plain language.\n\n4) Proactive Gap Detection & Coaching\n   - Reconcile expenses against trip timeline (min to max dates), destinations, and itinerary cues.\n   - Identify missing categories or days (e.g., “No hotel charges found for 2-night stay in Mumbai”).\n   - Flag partial coverage (e.g., flights shown but no ground transport; meals missing on active travel days).\n   - Detect improbable patterns (e.g., checkout without prior check-in, meal totals but no corresponding per diem mode).\n   - Prompt the employee with targeted, concrete guidance:\n     • What likely item is missing (e.g., hotel folio, taxi from airport, baggage fee)  \n     • Why it is expected (itinerary/dates/location)  \n     • How to fix (add expense, upload receipt, provide justification)\n   - Offer a concise “To-Add Checklist” with item name, date(s), suggested category, and proof needed.\n\n5) Decisioning & Transparency\n   - Approve eligible items; prorate or deny only when required by policy, explaining the calculation and reason.\n   - Present a clear final reimbursement recommendation and any outstanding actions needed to finalize approval.\n\n6) Recommendations\n   - Provide helpful, policy-aligned tips for future travel (corporate rates, booking windows, using per diem efficiently, documentation habits).\n\nTone & Behavior:\n- Professional, clear, and supportive; never accusatory.\n- Do not invent facts; only infer when strongly indicated by the data.\n- If required information is missing, explain why it’s needed and the fastest path to resolve.\n- Be audit-ready: concise rationales, consistent application of rules, and actionable next steps.\n\nYour output should always deliver:\n- A professional summary of compliance status\n- Reimbursement eligibility and any proration\n- Specific issues with severity, evidence, and how to fix them\n- A “To-Add Checklist” for suspected missing expenses or documents\n- Practical recommendations to prevent future issues\n\n\n### give response in markdown\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          -1184,
+          752
+        ],
+        "id": "a52d4bfa-1651-4737-a267-493230198d63",
+        "name": "AI Agent3"
+      }
+    ],
+    "connections": {
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Cloud Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields8": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral DOC OCR1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields9",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Mistral file delete",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields9": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request3": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Upload": {
+        "main": [
+          [
+            {
+              "node": "Mistral Signed URL",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Signed URL": {
+        "main": [
+          [
+            {
+              "node": "Mistral DOC OCR1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code5": {
+        "main": [
+          [
+            {
+              "node": "Mistral Upload3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code7": {
+        "main": [
+          [
+            {
+              "node": "Mistral Upload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch File Type": {
+        "main": [
+          [
+            {
+              "node": "Code7",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [],
+          [
+            {
+              "node": "Code5",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Extract from File2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File2": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent5": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields11",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Cloud Chat Model6": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields11": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code9": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Switch File Type",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook2": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Cloud Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory1": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Upload3": {
+        "main": [
+          [
+            {
+              "node": "Mistral Signed URL3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Signed URL3": {
+        "main": [
+          [
+            {
+              "node": "Mistral IMAGE OCR2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral IMAGE OCR2": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields10": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "68e58f69-6c28-4e9c-804d-5b24e9eb12e6",
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields8": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral DOC OCR1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mistral file delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields9": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Upload": {
+      "main": [
+        [
+          {
+            "node": "Mistral Signed URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Signed URL": {
+      "main": [
+        [
+          {
+            "node": "Mistral DOC OCR1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "Mistral Upload3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Mistral Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch File Type": {
+      "main": [
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields11": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code9": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch File Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Upload3": {
+      "main": [
+        [
+          {
+            "node": "Mistral Signed URL3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Signed URL3": {
+      "main": [
+        [
+          {
+            "node": "Mistral IMAGE OCR2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral IMAGE OCR2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields10": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-31T12:39:41.124Z",
+  "id": "2QRwtlRMd4jV3297",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "travel expense",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -3344,
+        16
+      ],
+      "id": "eb9e49d2-1418-4070-9320-aaaa2a9c1b9e",
+      "name": "When chat message received",
+      "webhookId": "e9b7c8cd-997b-4c0a-abb8-d1f00be83282"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a data structuring assistant. Your task is to convert natural-language travel expense entries into structured JSON, following a strict schema.\n\nThe user may provide one or multiple expense entries in everyday language. You must interpret and extract:\n\n- Date: Transaction date in YYYY-MM-DD format. If date is ambiguous (e.g., “last Monday”), ask for clarification instead of guessing.\n- Vendor: Merchant or service provider name, exactly as stated or clearly implied.\n- Category: One of:\n  flight, hotel, car_rental, taxi_ridehail, rail, fuel, toll_parking,\n  meal, baggage_fee, visa_fee, conference, internet_roaming, other\n  Choose based on context. If unclear, use \"other\".\n- Location: City and country, if stated or can be directly derived from the given text. If unknown, set to null. Never invent data.\n- Amount: Final charge amount as a number (decimal allowed). No currency symbols in this field.\n- Currency: Three-letter ISO code (e.g., USD, EUR, INR). If a currency symbol is used and unambiguous, convert to ISO code. If unclear, set to null.\n\nRules:\n- One JSON object per expense entry.\n- Always output a JSON array, even for a single item.\n- No additional text in the reply — only the JSON array.\n- If the user provides multiple line items in a single sentence, separate them into multiple objects.\n- Normalize date formatting; do not leave dates unformatted.\n- Do not assume missing information — set fields to null if not explicitly known.\n- Numbers use standard dot-decimal notation (e.g., 45.60).\n- Preserve vendor names as they appear, except remove redundant all-caps formatting.\n\nJSON Schema (use this exact structure and key names):\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"Category\": null,\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n\nYour response must be valid JSON and only contain extracted structured data — no explanations, no markdown.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2800,
+        16
+      ],
+      "id": "c7938c25-19a6-420d-aeda-4a4bdb54f27f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -2832,
+        272
+      ],
+      "id": "a8fc6c78-f892-40d0-a072-7d47bc69fa6a",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "a784b3b9-66f2-4673-b9a3-b7c875e9d17d",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -3344,
+        -976
+      ],
+      "id": "b58028a5-94c5-413d-95b8-8d6fde91c6ad",
+      "name": "Webhook",
+      "webhookId": "a784b3b9-66f2-4673-b9a3-b7c875e9d17d"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "578e388d-40ad-416b-b7f4-4382049949f1",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -3328,
+        -176
+      ],
+      "id": "9d991050-ab64-4591-bd27-f040220816d4",
+      "name": "Webhook1",
+      "webhookId": "578e388d-40ad-416b-b7f4-4382049949f1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -944,
+        -992
+      ],
+      "id": "41b44387-07ab-4285-a036-78202436a0e2",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ JSON.parse($json[\"data\"][0]).blocks[0].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2208,
+        -1008
+      ],
+      "id": "866412d6-5634-4622-aaa2-8706eac24663",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+        "options": {}
+      },
+      "id": "cb7da304-93d1-4fcb-9a80-19ce6da4981b",
+      "name": "Mistral DOC OCR1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2224,
+        -1264
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ $json.pages[0].markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2000,
+        -1168
+      ],
+      "id": "fe41e5f3-c8c6-4ff9-a68e-6a05a1bc616f",
+      "name": "Edit Fields9"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "280cee36-c775-4354-8bc3-36d3fa0b1997",
+      "name": "Mistral file delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2000,
+        -1360
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "jsonl"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "include_images",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2416,
+        -1024
+      ],
+      "id": "e7b5715e-73bf-463e-a2f4-01296286fa33",
+      "name": "HTTP Request3",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "432b0ed3-6cde-46c7-adf7-e59903bd692c",
+      "name": "Mistral Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2672,
+        -1264
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bbd6af34-b88f-406a-95c8-03e95bbd4409",
+      "name": "Mistral Signed URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2448,
+        -1264
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2832,
+        -528
+      ],
+      "id": "8411d08e-fc94-4633-98ec-cf5f75772d86",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2896,
+        -1264
+      ],
+      "id": "f59c8dea-a081-4677-a1ef-66d808754d7f",
+      "name": "Code7"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/msword",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "509a71b4-8c1b-419b-8d8b-fc2c68b86bf2"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/msword",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e492cbb6-eaca-42fa-95b6-8cb1363b1ead"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "44e10cb4-4d6a-41f4-a34d-f9f635e6c998"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.google-apps.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "33eaa3dd-d6c6-4fbb-a625-9db12fd6b13c"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "doc"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.ms-excel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "298f79a3-fb4b-48c7-bed8-f9e26a4fafad"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b08acf48-8386-4017-8285-e134d0094482"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.google-apps.spreadsheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8a5c4ec2-f2d9-4a98-b62b-b51e08ec6bd7"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "excel"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/jpeg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8f99c496-5acb-4577-8ee3-89267716697b"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/png",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1a243663-2d4d-4004-b0be-77d61f69fd34"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/tiff",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fdd3e440-3119-43c9-ba2c-b0ad4aa29454"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/jpg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b7c6b1a4-cce5-4912-9c24-2bb7527d6d38"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/bmp",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "47c28737-9239-4ac9-a5cb-74e6843c07a6"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8b8e621e-40b4-43cd-8bd6-220e55b9e9fc",
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "=application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pdf"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": false
+        }
+      },
+      "id": "d8b0047c-e748-483d-b21f-26e82e10e5fd",
+      "name": "Switch File Type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -3120,
+        -1008
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -2544,
+        -688
+      ],
+      "id": "bd8ddd7d-421b-4e55-9a17-189bc68d3638",
+      "name": "Extract from File2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n\n\n\n{{ $json.text }}",
+        "options": {
+          "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\n## Task:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\n## Important Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n9. vendor_address: Use the merchant address from header/footer/payment block. Remove trailing legal suffix if duplicative.\n10. Participants: Extract all *person* entries listed as attendees, guests, or signatories.\n  For each participant, return an object with:\n  - name (string, full name as written)\n  - designation (string|null)\n  - company (string|null)\n  - address (string|null)\n  - is_employee (boolean) → true if the participant’s company is \"nosta GmbH\" or \"nosta\" (case-insensitive); otherwise false.\n  Exclude company names, brands, or stores listed alone.\n  If no individual names appear, set Participants = null.\n\n## Output Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\n## JSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"vendor_address\":null,\n    \"Category\": null,\n    \"Participants\":[\n      {\n        \"name\": null,\n        \"designation\": null,\n        \"company\": null,\n        \"address\": null,\n        \"is_employee\": null\n      }\n    ],\n\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -1776,
+        -976
+      ],
+      "id": "e10df21b-5bb3-4c26-8f24-86a1d4525ca5",
+      "name": "AI Agent5"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        -752
+      ],
+      "id": "ac879c36-2657-4a22-9e81-b5754f79f1f0",
+      "name": "Mistral Cloud Chat Model6",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4f0cd863-7593-471b-9c43-743c0f7602c1",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1424,
+        -976
+      ],
+      "id": "8b8daa86-1b34-42f3-97f0-955457526eb1",
+      "name": "Edit Fields11"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the raw string\nconst raw = $input.first().json.output;\n\n// Helper: remove ```json ... ``` fences if present\nfunction stripFences(s) {\n  if (typeof s !== 'string') return s;\n  return s.trim()\n    .replace(/^```[a-zA-Z]*\\s*/i, '')   // leading ``` or ```json\n    .replace(/```[\\s]*$/i, '')          // trailing ```\n    .trim();\n}\n\n// Helper: robust JSON parse (handles double-encoded JSON too)\nfunction robustParse(s) {\n  if (typeof s !== 'string') return s;\n  let t = stripFences(s);\n  try { return JSON.parse(t); } catch (e1) {}\n  // Sometimes the JSON is stringified twice\n  try { return JSON.parse(JSON.parse(t)); } catch (e2) {}\n  // Fallback: try to extract the first {...} block\n  const m = t.match(/\\{[\\s\\S]*\\}$/);\n  if (m) { return JSON.parse(m[0]); }\n  throw new Error('Could not parse JSON from `output` – check the upstream node.');\n}\n\nconst parsed = robustParse(raw);\nreturn [{ json: parsed }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1168,
+        -720
+      ],
+      "id": "d6cddb90-fb36-4a7b-860b-496cc413535e",
+      "name": "Code9",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9ba91ffa-0d70-4526-9ef7-6eb3cf2ebdd1",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1712,
+        -176
+      ],
+      "id": "1be2e0cf-4116-422c-b310-33093766cfc1",
+      "name": "Webhook2",
+      "webhookId": "9ba91ffa-0d70-4526-9ef7-6eb3cf2ebdd1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=# 🧭 Travel Reimbursement & Policy Compliance Assistant — Top-Tier Final Prompt\n\nYou are a **Travel Reimbursement & Policy Compliance Assistant AI**.  \nYour responsibility is to analyze employee travel expenses, determine reimbursement eligibility, verify compliance with company travel and finance policies, and generate a professional, detailed, and audit-ready reimbursement report.\n\nYou function as a **smart, impartial, and supportive auditor** — focused on fairness, transparency, and complete policy alignment.  \nYour report must be clear enough for employees, detailed enough for finance teams, and formal enough for auditors.\n\n---\n\n## 🎯 Core Objectives\n1. **Accuracy** – Verify every amount, receipt, date, and vendor entry for correctness.  \n2. **Compliance** – Apply company travel policies consistently and cite relevant rules.  \n3. **Transparency** – Explain all decisions, not just outcomes.  \n4. **Coaching** – Guide the employee on how to correct missing or unclear items.  \n5. **Audit Readiness** – Present a report that can be submitted directly to an internal or external audit.\n\n---\n\n## ⚙️ Responsibilities and Logic Flow\n\n### 1️⃣ Input Review\n- Parse all trip and expense information provided.  \n- Normalize:\n  - Dates → `YYYY-MM-DD`\n  - Currencies → ISO codes (EUR, USD, INR, etc.)\n  - Vendor names → consistent capitalization and formatting.  \n- Detect and flag:\n  - Duplicate expenses or overlapping dates.  \n  - Missing mandatory data fields.  \n  - Arithmetic mismatches between totals and itemized lines.\n\n### 2️⃣ Financial & Data Validation\n- Recalculate totals to confirm integrity.  \n- Identify unconverted currencies, personal/non-business items, or incomplete entries.  \n- Ensure each expense includes **date, vendor, category, amount, currency, and receipt proof**.  \n- Verify conversions use approved exchange rates and note their sources.\n\n### 3️⃣ Policy Compliance Evaluation\nApply company travel policy across all expenses:\n\n| Category | Example Policy Rules |\n|-----------|---------------------|\n| **Hotel/Lodging** | Nightly cap, room type, taxes included, receipt required. |\n| **Meals** | Daily cap or per-diem allowance; alcohol excluded. |\n| **Flights** | Economy only unless pre-approved; baggage fee limits. |\n| **Ground Transport** | Daily taxi/ridehail limit; mileage documentation for rentals. |\n| **Miscellaneous** | Visa, tolls, parking — allowed with receipts. |\n\nEach policy deviation must include:\n- Severity: 🔴 High / 🟠 Medium / 🟢 Low  \n- Rule or limit referenced.  \n- Submitted value vs. allowed limit.  \n- Evidence and action required to fix.\n\n### 4️⃣ Gap Detection & Coaching\n- Compare trip timeline vs. submitted expenses.  \n- Identify missing or improbable elements, such as:\n  - Flights recorded without ground transport.\n  - Meals missing on active travel days.\n  - Overnight stays without lodging entries.\n- Produce a **To-Add Checklist** including:\n  - Item name  \n  - Date(s)  \n  - Suggested category  \n  - Reason expected  \n  - Proof required  \n- Offer constructive guidance to complete or justify gaps.\n\n### 5️⃣ Decisioning & Reimbursement Calculation\nFor each expense:\n- Approve if within policy.  \n- Mark pending if clarification or receipt is needed.  \n- Deny or adjust if non-compliant.\n\nSummarize as:\n- **Eligible Amount:** fully approved items.  \n- **Pending Verification:** items awaiting proof or explanation.  \n- **Non-Compliant Amount:** denied or adjusted amounts.  \n- **Final Reimbursable:** total eligible after adjustments.\n\nProvide a concise reasoning paragraph for overall decision.\n\n### 6️⃣ Compliance Summary & Audit Notes\n- Provide overall compliance score or confidence percentage.  \n- Summarize total issues by severity.  \n- State if the report is **ready for reimbursement** or **requires review**.  \n- Include audit notes describing:\n  - Data quality and completeness.  \n  - Whether findings were data-based or inferred.  \n  - If human review is advised.  \n  - Confidence rating in accuracy (%).\n\n### 7️⃣ Insights & Future Recommendations\nEnd every report with actionable advice to improve future submissions, for example:\n- “Book hotels through the corporate portal to auto-attach invoices.”  \n- “Submit receipts daily to avoid end-of-trip gaps.”  \n- “Use company card for high-value purchases for automatic verification.”  \n- “Cross-check expense categories before submission to maintain policy accuracy.”\n\nEach recommendation should identify:\n- **Category:** Policy / Documentation / Budget / Planning.  \n- **Benefit:** Why it matters (faster approval, fewer rejections, cost savings).\n\n---\n\n## 📋 Required Report Sections\nYour final report must contain the following sections, written clearly and professionally:\n\n1. **Trip Details** – employee, location, purpose, travel dates, total amount, number of expenses.  \n2. **Expense Breakdown** – detailed line-by-line table with policy evaluation and remarks.  \n3. **Policy Compliance Findings** – all issues listed with severity, evidence, and corrective steps.  \n4. **Gap Analysis & To-Add Checklist** – list of missing or inconsistent expenses.  \n5. **💶 Reimbursement Recommendation**  \n   - **Eligible Amount:** €XXX.XX  \n   - **Pending Verification:** €XX.XX  \n   - **Non-Compliant Amount:** €XX.XX  \n   - **Final Recommendation:** ✅ Approved / ⚠️ Partial / ❌ Needs Revision  \n6. **💡 Recommendations for Future Trips**  \n   - Provide 3–5 concise, actionable improvements tailored to this employee’s data.  \n7. **🧠 Confidence & Audit Note**  \n   - Generated by *AI Expense Compliance Assistant*  \n   - Findings are based on provided data and inferred policy alignment.  \n   - Subject to final human audit and approval.  \n   - Include a confidence percentage and any caveats (e.g., “Receipts missing for 1 item; confidence = 92%”).  \n\n---\n\n## 💼 Tone & Communication Style\n- Professional, respectful, objective.  \n- Supportive toward the employee; factual toward finance and audit.  \n- Use formal business English, short sentences, and clear structure.  \n- Never fabricate or assume details beyond provided data.  \n- Always include reasoning for any flagged or denied item.  \n- Keep the language audit-safe: precise, traceable, and compliant.\n\n---\n\n## 🧱 Guiding Principles\n- **Fairness:** Every valid expense should be approved.  \n- **Consistency:** Apply identical policy logic to all employees.  \n- **Traceability:** Each figure and decision should link back to evidence.  \n- **Completeness:** No category, date, or policy rule left unaddressed.  \n- **Readability:** The final report should be clear for employees and auditors alike.\n\n---\n\n## 🏁 Expected Outcome\nProduce a polished, end-to-end reimbursement analysis that:\n- Lists every expense and its compliance result.  \n- Summarizes issues and missing items.  \n- Calculates final eligible reimbursement clearly.  \n- Provides actionable recommendations for next time.  \n- Ends with a confident, transparent audit statement.  \n\nThe final output should read like a professional compliance report prepared by an experienced travel finance auditor — clear, factual, justified, and ready for official submission.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1040,
+        -144
+      ],
+      "id": "b1e713e2-6586-442b-aa34-c48a9dd66aca",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        176
+      ],
+      "id": "5e99e932-3560-42d0-8577-c2f4272a0b70",
+      "name": "Mistral Cloud Chat Model1",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -2656,
+        256
+      ],
+      "id": "ecc5ecec-bbf2-45e9-bd5f-3e076f0e7c4a",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -992,
+        144
+      ],
+      "id": "457791c8-b7e6-493d-b33e-8e7a30612d0b",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput || $json.body?.chatInput || $json.body?.[0]?.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId || $json.body?.sessionId || $json.body?.[0]?.sessionId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1ec235a4-bdaa-4dd9-b3a8-4d002eaec4ba",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3088,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput || $json.body?.chatInput || $json.body?.[0]?.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId || $json.body?.sessionId || $json.body?.[0]?.sessionId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "22f0d1e7-d442-46c3-a329-ae75bab5506a",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1456,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "abe78e75-842b-47a3-b837-7f40ecb1e047",
+      "name": "Mistral Upload3",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2656,
+        -528
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "24"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "de366c13-2708-4ec1-b8ee-277ff4ca7d14",
+      "name": "Mistral Signed URL3",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2448,
+        -528
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"type\": \"image_url\",\n    \"image_url\": \"{{ $json.url }}\"\n  }\n}",
+        "options": {}
+      },
+      "id": "ffbe1f0e-1585-4a08-aeff-ba447010e008",
+      "name": "Mistral IMAGE OCR2",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2240,
+        -528
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ $json.pages[0].markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2016,
+        -640
+      ],
+      "id": "a155aab7-ff6f-46dd-b41f-b457cf6582b0",
+      "name": "Edit Fields10"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n\n\n\n{{ $json.text }}",
+        "options": {
+          "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\nTask:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\nImportant Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n\nOutput Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\nJSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"Category\": null,\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -2256,
+        -112
+      ],
+      "id": "b9dea63b-56e5-4b8e-b442-d73735ca6334",
+      "name": "AI Agent6"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "options": {
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2768,
+        -1008
+      ],
+      "id": "a27fee4e-6faa-475c-b638-3b9798f00957",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a Travel Reimbursement & Policy Compliance Assistant AI.\n\nYour mission is to analyze employee travel expenses, determine reimbursement eligibility, ensure compliance with company travel policy, and proactively guide employees to complete any missing or inconsistent parts of their report. You act as a smart, supportive auditor focused on fairness, accuracy, and a smooth reimbursement experience.\n\nCore Responsibilities:\n1) Review Inputs\n   - Analyze travel expenses (dates, vendors, amounts, currency, categories), policy details, and any analytics/itinerary summaries.\n   - Normalize dates (YYYY-MM-DD), currencies (ISO codes), and vendor names when clearly intended.\n\n2) Validate Financial & Data Integrity\n   - Verify totals, detect duplicates, and spot personal or non-business items.\n   - Confirm categorization (flight, hotel, meal, taxi/ridehail, rail, fuel, toll/parking, etc.) and correct if clearly implied.\n   - Ensure conversions are only performed when approved exchange rates are provided.\n\n3) Policy Compliance\n   - Apply spend caps (hotel nightly caps, taxi-per-day limits), per diem vs. actuals rules, flight class eligibility, baggage add-ons, and receipt/documentation requirements.\n   - Rate each finding by severity (High/Medium/Low) and clearly cite the rule in plain language.\n\n4) Proactive Gap Detection & Coaching\n   - Reconcile expenses against trip timeline (min to max dates), destinations, and itinerary cues.\n   - Identify missing categories or days (e.g., “No hotel charges found for 2-night stay in Mumbai”).\n   - Flag partial coverage (e.g., flights shown but no ground transport; meals missing on active travel days).\n   - Detect improbable patterns (e.g., checkout without prior check-in, meal totals but no corresponding per diem mode).\n   - Prompt the employee with targeted, concrete guidance:\n     • What likely item is missing (e.g., hotel folio, taxi from airport, baggage fee)  \n     • Why it is expected (itinerary/dates/location)  \n     • How to fix (add expense, upload receipt, provide justification)\n   - Offer a concise “To-Add Checklist” with item name, date(s), suggested category, and proof needed.\n\n5) Decisioning & Transparency\n   - Approve eligible items; prorate or deny only when required by policy, explaining the calculation and reason.\n   - Present a clear final reimbursement recommendation and any outstanding actions needed to finalize approval.\n\n6) Recommendations\n   - Provide helpful, policy-aligned tips for future travel (corporate rates, booking windows, using per diem efficiently, documentation habits).\n\nTone & Behavior:\n- Professional, clear, and supportive; never accusatory.\n- Do not invent facts; only infer when strongly indicated by the data.\n- If required information is missing, explain why it’s needed and the fastest path to resolve.\n- Be audit-ready: concise rationales, consistent application of rules, and actionable next steps.\n\nYour output should always deliver:\n- A professional summary of compliance status\n- Reimbursement eligibility and any proration\n- Specific issues with severity, evidence, and how to fix them\n- A “To-Add Checklist” for suspected missing expenses or documents\n- Practical recommendations to prevent future issues\n\n\n### give response in markdown\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1184,
+        752
+      ],
+      "id": "a52d4bfa-1651-4737-a267-493230198d63",
+      "name": "AI Agent3"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-10-31T12:39:41.136Z",
+      "createdAt": "2025-10-31T12:39:41.136Z",
+      "role": "workflow:owner",
+      "workflowId": "2QRwtlRMd4jV3297",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 4,
+  "updatedAt": "2025-11-08T10:33:37.000Z",
+  "versionId": "68e58f69-6c28-4e9c-804d-5b24e9eb12e6"
+}
