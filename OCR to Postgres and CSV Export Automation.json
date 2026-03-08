@@ -1,0 +1,508 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Document Upload Form": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Upload": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Check File Size",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check File Size": {
+      "main": [
+        [
+          {
+            "node": "Check MIME Type",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Validation Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check MIME Type": {
+      "main": [
+        [
+          {
+            "node": "Generate Document Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Validation Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Document Metadata": {
+      "main": [
+        [
+          {
+            "node": "Check for Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check for Duplicate": {
+      "main": [
+        [
+          {
+            "node": "Is Duplicate?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Duplicate?": {
+      "main": [
+        [
+          {
+            "node": "Return Duplicate Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert Document Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Document Record": {
+      "main": [
+        [
+          {
+            "node": "Return Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-31T11:20:03.003Z",
+  "id": "SNzVm8k031fuoyeI",
+  "isArchived": false,
+  "meta": null,
+  "name": "OCR to Postgres and CSV Export Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Tax Document Upload",
+        "formDescription": "Upload tax-related documents (invoices, 1099, W-2, receipts) for automated processing",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Select Document",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "acceptFileTypes": ".pdf, .png, .jpg, .jpeg",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "be5b474f-eb1c-43c4-8e16-5f11ff882edd",
+      "name": "Document Upload Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -1824,
+        -256
+      ],
+      "webhookId": "a3b4e154-f4c2-4abd-a375-95c736e0ad9e"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "document-upload",
+        "responseMode": "lastNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "aeea38c0-b94f-4e0d-9407-b738cb00b465",
+      "name": "Webhook Upload",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1824,
+        -64
+      ],
+      "webhookId": "9c0daf7e-e571-4344-bcc5-45abc485bfbe"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "maxFileSizeMB",
+              "value": 50,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "allowedMimeTypes",
+              "value": "application/pdf,image/png,image/jpeg",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "storageBasePath",
+              "value": "/tmp/tax-documents",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "dc1bcba4-e141-435d-bce6-1fcffbe9a36e",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1600,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $binary.data.fileSize }}",
+              "rightValue": "={{ $('Workflow Configuration').item.json.maxFileSizeMB * 1024 * 1024 }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "644f7d9a-6d00-40db-9f8d-664f13f3f479",
+      "name": "Check File Size",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1376,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Workflow Configuration').item.json.allowedMimeTypes }}",
+              "rightValue": "={{ $binary.data.mimeType }}",
+              "operator": {
+                "type": "array",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1b45f4d8-2c8f-4439-9da5-1d76a702b979",
+      "name": "Check MIME Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1152,
+        -224
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const crypto = require('crypto');\n\n// Get binary data from the uploaded file\nconst binaryData = $binary.data;\nconst buffer = Buffer.from(binaryData.data, 'base64');\n\n// Calculate SHA-256 hash of file content\nconst hash = crypto.createHash('sha256').update(buffer).digest('hex');\n\n// Generate UUID for document_id\nconst documentId = crypto.randomUUID();\n\n// Extract file metadata\nconst fileName = binaryData.fileName || 'unknown';\nconst fileSize = buffer.length;\nconst mimeType = binaryData.mimeType || 'application/octet-stream';\n\n// Get current timestamp\nconst uploadedAt = new Date().toISOString();\n\n// Determine source (form or webhook)\nconst source = $node.name.includes('Form') ? 'form' : 'webhook';\n\n// Return metadata and preserve binary data\nreturn {\n  json: {\n    document_id: documentId,\n    file_name: fileName,\n    file_size: fileSize,\n    mime_type: mimeType,\n    file_hash: hash,\n    uploaded_at: uploadedAt,\n    source: source\n  },\n  binary: {\n    data: binaryData\n  }\n};"
+      },
+      "id": "3ab31b93-38f0-49eb-b942-a22bd41f7c25",
+      "name": "Generate Document Metadata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT document_id, status FROM documents WHERE file_hash = $1 LIMIT 1",
+        "options": {
+          "queryReplacement": "={{ $json.file_hash }}"
+        }
+      },
+      "id": "1779fec2-cfb7-404c-8d6a-dc73f505c928",
+      "name": "Check for Duplicate",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -704,
+        -272
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Check for Duplicate').item.json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3406e402-3058-4013-9459-8baef73aa1ec",
+      "name": "Is Duplicate?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -480,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO documents (document_id, file_hash, file_name, file_size, mime_type, source, status, created_at) VALUES ($1, $2, $3, $4, $5, $6, 'received', NOW()) RETURNING *",
+        "options": {
+          "queryReplacement": "={{ $('Generate Document Metadata').item.json.document_id }},={{ $('Generate Document Metadata').item.json.file_hash }},={{ $('Generate Document Metadata').item.json.file_name }},={{ $('Generate Document Metadata').item.json.file_size }},={{ $('Generate Document Metadata').item.json.mime_type }},={{ $('Generate Document Metadata').item.json.source }}"
+        }
+      },
+      "id": "f2ed92f3-5d1e-4a48-bffe-d801133ec704",
+      "name": "Insert Document Record",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -256,
+        -368
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "message",
+              "value": "Document uploaded successfully",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "document_id",
+              "value": "={{ $('Generate Document Metadata').item.json.document_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "18634ca4-cc53-47ae-ac33-11e8be541396",
+      "name": "Return Success Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        -368
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "status",
+              "value": "duplicate",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "message",
+              "value": "Document already exists (duplicate detected via file hash)",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "existing_document_id",
+              "value": "={{ $('Check for Duplicate').item.json[0].document_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "68e90dea-9e4f-4f27-be36-0a58fe964d90",
+      "name": "Return Duplicate Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -256,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "status",
+              "value": "error",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "message",
+              "value": "File validation failed: invalid size or file type",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "allowed_types",
+              "value": "PDF, PNG, JPEG",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "max_size_mb",
+              "value": "={{ $('Workflow Configuration').item.json.maxFileSizeMB }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "27b6abe3-4228-4ca2-87be-05097060ee01",
+      "name": "Return Validation Error",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -928,
+        -64
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T11:20:03.009Z",
+      "createdAt": "2026-01-31T11:20:03.009Z",
+      "role": "workflow:owner",
+      "workflowId": "SNzVm8k031fuoyeI",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:22:49.765Z",
+  "versionId": "d244b5f6-e605-43c6-b515-1da666fd3165"
+}
