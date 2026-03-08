@@ -1,0 +1,2033 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-08T18:50:39.117Z",
+    "createdAt": "2026-01-08T18:50:39.117Z",
+    "versionId": "e526f27d-42fd-4027-9a4a-25b54048a349",
+    "workflowId": "5lO1BJcpwpqngg4C",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -1712,
+          1344
+        ],
+        "id": "bf997fc6-dcd2-48a4-8964-932ad40f2d17",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -1232,
+          1344
+        ],
+        "id": "40d82f1a-670b-4e64-aec1-420c3008728d",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+                "name": "file_id",
+                "value": "={{ $json.id }}",
+                "type": "string"
+              },
+              {
+                "id": "f4536df5-d0b1-4392-bf17-b8137fb31a44",
+                "name": "file_type",
+                "value": "={{ $json.mimeType }}",
+                "type": "string"
+              },
+              {
+                "id": "77d782de-169d-4a46-8a8e-a3831c04d90f",
+                "name": "file_title",
+                "value": "={{ $json.name }}",
+                "type": "string"
+              },
+              {
+                "id": "9bde4d7f-e4f3-4ebd-9338-dce1350f9eab",
+                "name": "file_url",
+                "value": "={{ $json.webViewLink }}",
+                "type": "string"
+              },
+              {
+                "id": "fae402c8-c486-4b57-8d28-bf669db6b442",
+                "name": "last_modified_date",
+                "value": "={{ $json.modifiedTime }}",
+                "type": "string"
+              },
+              {
+                "id": "866ce582-16e2-4869-ac77-13f248c187eb",
+                "name": "file_id",
+                "value": "={{ $json.id }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "61766c6f-d571-48f5-9a34-5751c6d6942a",
+        "name": "Set File ID",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -816,
+          1344
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Code Node - SharePoint URL with Version Parameter\n// Use this in a \"Code\" node in n8n\n\nconst items = $input.all();\n\nconst outputItems = items.map(item => {\n  const data = item.json;\n  \n  // Use existing LinkingUrl if available\n  if (data.LinkingUrl) {\n    return {\n      json: {\n        ...data,\n        fileUrl: data.LinkingUrl\n      }\n    };\n  }\n  \n  // Construct versioned URL\n  let fileUrl = '';\n  \n  if (data.ServerRelativeUrl && data.ContentTag) {\n    // Base URL with server relative path\n    fileUrl = 'https://nosta.sharepoint.com' + data.ServerRelativeUrl;\n    \n    // Extract GUID from ContentTag and create version parameter\n    const guidMatch = data.ContentTag.match(/\\{([^}]+)\\}/);\n    if (guidMatch) {\n      const versionId = guidMatch[1].toLowerCase().replace(/-/g, '');\n      fileUrl += `?d=w${versionId}`;\n    }\n  }\n  \n  return {\n    json: {\n      ...data,\n      fileUrl: fileUrl\n    }\n  };\n});\n\nreturn outputItems;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1008,
+          1360
+        ],
+        "id": "fb587ee1-30d1-409e-af88-1694bacd63ea",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "resource": "fileFolder",
+          "searchMethod": "query",
+          "limit": 150,
+          "filter": {
+            "folderId": {
+              "__rl": true,
+              "value": "1_uELEkUbjrhgdtE5z10VvbCTyzleqrKg",
+              "mode": "list",
+              "cachedResultName": "material batch process",
+              "cachedResultUrl": "https://drive.google.com/drive/folders/1_uELEkUbjrhgdtE5z10VvbCTyzleqrKg"
+            }
+          },
+          "options": {
+            "fields": [
+              "id",
+              "name",
+              "webViewLink",
+              "mimeType",
+              "*"
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          -1472,
+          1344
+        ],
+        "id": "6a387377-884a-40d5-965f-5f1056d66d52",
+        "name": "Google Drive1",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $json.file_id }}",
+            "mode": "id"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          -672,
+          1344
+        ],
+        "id": "db4c2754-cca4-4926-bd3f-9888ba69991e",
+        "name": "Google Drive4",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "c5ba8c06-eb00-4765-a721-f2cf6e447e8e",
+                "name": "Material",
+                "value": "={{ $json.Material }}",
+                "type": "string"
+              },
+              {
+                "id": "639b4deb-04df-4b10-a146-65e83d98537a",
+                "name": "Materialkurztext",
+                "value": "={{ $json.Materialkurztext }}",
+                "type": "string"
+              },
+              {
+                "id": "b7684013-5701-4b0d-ae24-06f1d3f7670e",
+                "name": "Profitcenter",
+                "value": "={{ $json.Profitcenter }}",
+                "type": "string"
+              },
+              {
+                "id": "7140ba3e-d2f3-4feb-a3c1-89a345d6f53e",
+                "name": "Bestandsmenge",
+                "value": "={{ $json.Bestandsmenge }}",
+                "type": "string"
+              },
+              {
+                "id": "5b578677-f80d-482e-9399-db76356697ac",
+                "name": "Mengeneinheit",
+                "value": "={{ $json.Mengeneinheit }}",
+                "type": "string"
+              },
+              {
+                "id": "205f3a55-ea31-4c16-95ef-0606a36c22a6",
+                "name": "screw_thread",
+                "value": "={{ $json.parsed_screw_thread }}",
+                "type": "string"
+              },
+              {
+                "id": "35511bbf-0e1e-49c7-8a4f-336351cb134e",
+                "name": "dimensions",
+                "value": "={{ $json.parsed_dimensions }}",
+                "type": "string"
+              },
+              {
+                "id": "2c3ad597-922d-4232-b9e2-0c1910c1db0e",
+                "name": "item_type",
+                "value": "={{ $json.parsed_item_type}}",
+                "type": "string"
+              },
+              {
+                "id": "0d1644bb-3d9d-4f12-81cb-42b63803fd35",
+                "name": "original_text",
+                "value": "={{ $json.parsed_original_text }}",
+                "type": "string"
+              },
+              {
+                "id": "49c49e71-fea8-4d84-a1ce-5e1c1b3058db",
+                "name": "diameter_mm",
+                "value": "={{ $json.parsed_diameter_mm }}",
+                "type": "string"
+              },
+              {
+                "id": "1f5fa0b4-45a3-4b30-b4ff-0c60d77ce502",
+                "name": "thickness_mm",
+                "value": "={{ $json.parsed_thickness_mm }}",
+                "type": "string"
+              },
+              {
+                "id": "c7132032-fb6f-4511-ba72-993805f05c34",
+                "name": "hex_sw",
+                "value": "={{ $json.parsed_hex_sw }}",
+                "type": "string"
+              },
+              {
+                "id": "049d5fce-4e7e-4638-a030-bc0c4bd0e72a",
+                "name": "material_codes",
+                "value": "={{ $json.parsed_material_codes }}",
+                "type": "string"
+              },
+              {
+                "id": "8297f421-b01c-45ab-bad2-63483dbdd918",
+                "name": " standards",
+                "value": "={{ $json.parsed_standards }}",
+                "type": "string"
+              },
+              {
+                "id": "9251c9f7-e24d-4dda-a7a6-6f31c47d9526",
+                "name": "treatments_coatings",
+                "value": "={{ $json.parsed_treatments_coatings }}",
+                "type": "string"
+              },
+              {
+                "id": "5c44d6c9-cedb-49b2-9d00-0e72643f55da",
+                "name": "tolerances",
+                "value": "={{ $json.parsed_thickness_mm }}",
+                "type": "string"
+              },
+              {
+                "id": "7fecfd79-6d3b-48ab-aef0-07bc55bdbfc6",
+                "name": "config",
+                "value": "=tolerances:{{ $json.parsed_thickness_mm }}  \ntreatments_coatings:{{ $json.parsed_treatments_coatings }}\nstandards:{{ $json.parsed_standards }}\nmaterial_codes:{{ $json.parsed_material_codes }}\nhex_sw:{{ $json.parsed_hex_sw }}\nthickness_mm:{{ $json.parsed_thickness_mm }}\noriginal_text:{{ $json.parsed_original_text }}\nitem_type:{{ $json.parsed_item_type}}\ndimensions:{{ $json.parsed_dimensions }}\nscrew_thread:{{ $json.parsed_screw_thread }}\n\n\nMaterialkurztext:{{ $json.Materialkurztext }}\nMaterial:{{ $json.Material }}\ndescription:{{ $json.parsed_description }}",
+                "type": "string"
+              },
+              {
+                "id": "cc58da4e-a093-4656-9f7f-ff41bd7be8f9",
+                "name": "description",
+                "value": "={{ $json.parsed_description }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          192,
+          1360
+        ],
+        "id": "065ea985-1144-49bc-bbd3-fce939c5e552",
+        "name": "Edit Fields4"
+      },
+      {
+        "parameters": {
+          "operation": "fromJson",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          -448,
+          1344
+        ],
+        "id": "2c4777a8-5261-4a79-9b83-41895a930313",
+        "name": "Extract from File"
+      },
+      {
+        "parameters": {
+          "jsonMode": "expressionData",
+          "jsonData": "={{ $json.config }}",
+          "options": {
+            "metadata": {
+              "metadataValues": [
+                {
+                  "name": "description",
+                  "value": "={{ $json.description }}"
+                },
+                {
+                  "name": "Bestandsmenge",
+                  "value": "={{ $json.Bestandsmenge }}"
+                },
+                {
+                  "name": "Profitcenter",
+                  "value": "={{ $json.Profitcenter }}"
+                },
+                {
+                  "name": "Mengeneinheit",
+                  "value": "={{ $json.Mengeneinheit }}"
+                },
+                {
+                  "name": "description",
+                  "value": "={{ $json.original_text }}"
+                }
+              ]
+            }
+          }
+        },
+        "id": "63f41c33-7e99-4a97-894c-fc86a63af856",
+        "name": "Default Data Loader1",
+        "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+        "typeVersion": 1,
+        "position": [
+          928,
+          1568
+        ]
+      },
+      {
+        "parameters": {
+          "chunkSize": 100000
+        },
+        "id": "0b1a154f-2ad6-4c5c-9ebb-e4e0d1a06332",
+        "name": "Character Text Splitter1",
+        "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+        "typeVersion": 1,
+        "position": [
+          976,
+          1712
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          752,
+          1632
+        ],
+        "id": "0db443bc-6113-4ea4-9511-a42bc588a34f",
+        "name": "Embeddings Mistral Cloud2",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "insert",
+          "tableName": {
+            "__rl": true,
+            "value": "material_vector",
+            "mode": "list",
+            "cachedResultName": "material_vector"
+          },
+          "options": {
+            "queryName": "match_material"
+          }
+        },
+        "id": "4e59e64b-b12b-41ba-8e96-526a52ac95fa",
+        "name": "Insert into Supabase Vectorstore",
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+        "typeVersion": 1,
+        "position": [
+          848,
+          1344
+        ],
+        "credentials": {
+          "supabaseApi": {
+            "id": "SRxOZEWNZgLbKLus",
+            "name": "Supabase account dbt test RN"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 1
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1184,
+          1344
+        ],
+        "id": "d07a9e26-ff4d-4ce3-a6fe-e56eaf323e0d",
+        "name": "Wait4",
+        "webhookId": "2e21183b-4e03-4dc1-aef7-b9805cf93a22"
+      },
+      {
+        "parameters": {
+          "batchSize": "=1",
+          "options": {
+            "reset": false
+          }
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -96,
+          1360
+        ],
+        "id": "eca7f075-ebc9-4873-a36c-b456d078a310",
+        "name": "Loop Over Items1"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          -304,
+          1344
+        ],
+        "id": "34320d50-2b4d-4a13-acee-7b1cbe8e1012",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const d = item.json;\n  const description = `${d.Name}. `\n    + `Item number ${d[\"Item Number\"]}. `\n    + (d.Materials ? `Made of ${d.Materials}. ` : \"\")\n    + (d[\"Width (mm)\"] ? `Width ${d[\"Width (mm)\"]} mm. ` : \"\")\n    + (d[\"Length (mm)\"] ? `Length ${d[\"Length (mm)\"]} mm. ` : \"\")\n    + (d.Thread ? `Thread ${d.Thread}. ` : \"\")\n    + (d[\"Profile Width (mm)\"] ? `Profile width ${d[\"Profile Width (mm)\"]} mm. ` : \"\")\n    + (d.Version ? `Version ${d.Version}.` : \"\");\n  \n  return { json: { description: description.trim() } };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2672,
+          960
+        ],
+        "id": "3ee4178d-a326-433c-800c-eeca40eb3078",
+        "name": "Code in JavaScript2"
+      },
+      {
+        "parameters": {
+          "tableId": "materials",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "material",
+                "fieldValue": "={{ $json.Material }}"
+              },
+              {
+                "fieldId": "materialkurztext",
+                "fieldValue": "={{ $json.Materialkurztext }}"
+              },
+              {
+                "fieldId": "profitcenter",
+                "fieldValue": "={{ $json.Profitcenter }}"
+              },
+              {
+                "fieldId": "bestandsmenge",
+                "fieldValue": "={{ $json.Bestandsmenge }}"
+              },
+              {
+                "fieldId": "mengeneinheit",
+                "fieldValue": "={{ $json.Mengeneinheit }}"
+              },
+              {
+                "fieldId": "original_text",
+                "fieldValue": "={{ $json.original_tex }}"
+              },
+              {
+                "fieldId": "description",
+                "fieldValue": "={{ $json.description }}"
+              },
+              {
+                "fieldId": "item_type",
+                "fieldValue": "={{ $json.item_type }}"
+              },
+              {
+                "fieldId": "screw_thread",
+                "fieldValue": "={{ $json.screw_thread }}"
+              },
+              {
+                "fieldId": "dimensions",
+                "fieldValue": "={{ $json.dimensions }}"
+              },
+              {
+                "fieldId": "diameter_mm",
+                "fieldValue": "={{ $json.diameter_mm }}"
+              },
+              {
+                "fieldId": "thickness_mm",
+                "fieldValue": "={{ $json.thickness_mm }}"
+              },
+              {
+                "fieldId": "hex_sw",
+                "fieldValue": "={{ $json.hex_sw }}"
+              },
+              {
+                "fieldId": "material_codes",
+                "fieldValue": "={{ $json.material_codes }}"
+              },
+              {
+                "fieldId": "standards",
+                "fieldValue": "={{ $json[' standards'] }}"
+              },
+              {
+                "fieldId": "treatments_coatings",
+                "fieldValue": "={{ $json.treatments_coatings }}"
+              },
+              {
+                "fieldId": "tolerances",
+                "fieldValue": "={{ $json.tolerances }}"
+              },
+              {
+                "fieldId": "config",
+                "fieldValue": "={{ $json.config }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          192,
+          1024
+        ],
+        "id": "cb013839-0f8d-4b79-8c06-01f75b6bf140",
+        "name": "Create a row",
+        "credentials": {
+          "supabaseApi": {
+            "id": "SRxOZEWNZgLbKLus",
+            "name": "Supabase account dbt test RN"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "retrieve-as-tool",
+          "toolName": "documents",
+          "toolDescription": "Use RAG to look up information in the knowledgebase.",
+          "tableName": {
+            "__rl": true,
+            "value": "material_vector",
+            "mode": "list",
+            "cachedResultName": "material_vector"
+          },
+          "topK": 15,
+          "options": {
+            "queryName": "match_material"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+        "typeVersion": 1,
+        "position": [
+          208,
+          2768
+        ],
+        "id": "d967f9c9-9167-4633-8f40-e71ac6d038f6",
+        "name": "Supabase Vector Store",
+        "credentials": {
+          "supabaseApi": {
+            "id": "SRxOZEWNZgLbKLus",
+            "name": "Supabase account dbt test RN"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": "mistral-medium-latest",
+          "options": {
+            "temperature": 0.7
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          -272,
+          2784
+        ],
+        "id": "0bddc35a-a965-4b1c-81f9-591986cf8232",
+        "name": "Mistral Cloud Chat Model4",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+                "name": "chatInput",
+                "value": "={{ $json.chatInput || $json.body[0].chatInput }}",
+                "type": "string"
+              },
+              {
+                "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+                "name": "sessionId",
+                "value": "={{ $json.sessionId || $json.body[0].sessionId }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "cdca6b73-5480-4c82-ad20-29bbe9bfff96",
+        "name": "Edit Fields11",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2016,
+          1680
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          192,
+          2944
+        ],
+        "id": "d145381d-c017-4201-92cc-ef27ed1908c7",
+        "name": "Embeddings Mistral Cloud",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 15
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          16,
+          2720
+        ],
+        "id": "9920e1a0-c0ed-4e83-bf29-18f610d50995",
+        "name": "Simple Memory1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+                "name": "chatInput",
+                "value": "={{ $json.chatInput || $json.body?.chatInput || $json.body?.[0]?.chatInput }}",
+                "type": "string"
+              },
+              {
+                "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+                "name": "sessionId",
+                "value": "={{ $json.sessionId || $json.body?.sessionId || $json.body?.[0]?.sessionId }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "2b7c2b31-b236-4776-8f62-2862f76c19d9",
+        "name": "Edit Fields1",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -272,
+          2336
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -592,
+          2528
+        ],
+        "id": "1dd60b06-63aa-4f95-9bba-a090bddca577",
+        "name": "When chat message received",
+        "webhookId": "eb68e2a8-279c-4e95-8c06-43e93c1a41aa"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.chatInput }}",
+          "options": {
+            "systemMessage": "=## 🧠 Persona: Nosta GmbH – AI Material Support Agent\n\nYou are a **helpful, intelligent AI assistant** working for **Nosta GmbH**.  \nYour mission is to **automatically find alternative materials** that are:\n\n1. Closest in **technical composition and properties**,  \n2. **Available in stock**, and  \n3. **More profitable** for the company.\n\n---\n\n### 🔍 Knowledge Access Instructions\n\n- **Primary Source:** Always query the **Supabase store → `material_vector`** for every material reference or lookup.\n- Use **vector similarity search** to identify the most compatible or matching materials.\n- Fetch and compare the following data:\n  - Material name and category  \n  - Mechanical and chemical properties  \n  - Stock availability  \n  - Profit margin and cost efficiency  \n\n---\n\n### 🧾 Output Format (When Alternatives Are Found)\n\nWhen suitable alternatives are retrieved from Supabase, display them in the following structured markdown format:\n\n#### ✅ Alternative Material Suggestion\n\n**Original Material:** `{{original_material_name}}`  \n**Suggested Alternative:** `{{alternative_material_name}}`\n\n**Why it’s a good match:**\n- Property similarity score: `{{similarity_score}}`\n- Equivalent or improved performance: `{{property_summary}}`\n- In-stock and ready for dispatch: `{{stock_status}}`\n- More profitable for Nosta: `{{profit_comparison}}`\n\n**Configuration Comparison Table:**\n\n| Property  | Original  | Alternative  | Comment  |\n|-----------|-----------|--------------|----------|\ntheir config and all other specs\n\n\n\n**Stock & Profit Summary:**\n- 🏷️ **Available Stock:** {{stock_qty}} units  \n- 💰 **Profit Margin:** {{profit_percent}}% higher than original  \n- 🏭 **Supplier:** {{supplier_name}}  \n\n---\n\n### 🧩 Behavior Rules\n\n1. **Always query Supabase** (`material_vector`) for each material request or comparison.  \n2. always use supbase tool  \n3. Rank results by:\n   - ✅ Similarity (closest technical match)  \n   - 📦 Availability (in stock first)  \n   - 💰 Profitability (higher margin prioritized)  \n4. If no alternative exists, respond with:\n   > “No similar material currently available in Supabase. Suggest creating a reorder request.”\n5. always provide alternative which are of similar dimensions or more in height not less. \n6. always try to give multiple alternative and very important always give output in tabular form for easy understanding and add  space betweem coloumn data so that its readable and easy to understand.  elements shoul well spaced\n\n\n| marerial name | dimension | profit center |stock |\n|---------      |--------   |-------------- |--------|\n| ...           | ...       | ...           | ..    |\n\n---\n\n\n",
+            "returnIntermediateSteps": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.7,
+        "position": [
+          0,
+          2512
+        ],
+        "id": "b0c8ac9a-7457-493c-8be7-40e639d6ebc3",
+        "name": "ai agent alternative material"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "294801bb-565e-4d46-a75d-5c4b0f26a18b",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -544,
+          2336
+        ],
+        "id": "0eeec3c3-c3ae-4aea-9229-99a28cace779",
+        "name": "Webhook",
+        "webhookId": "294801bb-565e-4d46-a75d-5c4b0f26a18b"
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Google Drive1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set File ID": {
+        "main": [
+          [
+            {
+              "node": "Google Drive4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Set File ID",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive1": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive4": {
+        "main": [
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields4": {
+        "main": [
+          [
+            {
+              "node": "Insert into Supabase Vectorstore",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Default Data Loader1": {
+        "ai_document": [
+          [
+            {
+              "node": "Insert into Supabase Vectorstore",
+              "type": "ai_document",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Character Text Splitter1": {
+        "ai_textSplitter": [
+          [
+            {
+              "node": "Default Data Loader1",
+              "type": "ai_textSplitter",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings Mistral Cloud2": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Insert into Supabase Vectorstore",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert into Supabase Vectorstore": {
+        "main": [
+          [
+            {
+              "node": "Wait4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait4": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items1": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Edit Fields4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript2": {
+        "main": [
+          []
+        ]
+      },
+      "Create a row": {
+        "main": [
+          []
+        ]
+      },
+      "Supabase Vector Store": {
+        "ai_tool": [
+          [
+            {
+              "node": "ai agent alternative material",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Cloud Chat Model4": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "ai agent alternative material",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings Mistral Cloud": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Supabase Vector Store",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory1": {
+        "ai_memory": [
+          [
+            {
+              "node": "ai agent alternative material",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "ai agent alternative material",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "ai agent alternative material",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "e526f27d-42fd-4027-9a4a-25b54048a349",
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set File ID": {
+      "main": [
+        [
+          {
+            "node": "Google Drive4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive4": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert into Supabase Vectorstore": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        []
+      ]
+    },
+    "Create a row": {
+      "main": [
+        []
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "ai agent alternative material",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "ai agent alternative material",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "ai agent alternative material",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "ai agent alternative material",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "ai agent alternative material",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-22T14:03:12.865Z",
+  "id": "5lO1BJcpwpqngg4C",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "material test",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        1344
+      ],
+      "id": "bf997fc6-dcd2-48a4-8964-932ad40f2d17",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1232,
+        1344
+      ],
+      "id": "40d82f1a-670b-4e64-aec1-420c3008728d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f4536df5-d0b1-4392-bf17-b8137fb31a44",
+              "name": "file_type",
+              "value": "={{ $json.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "77d782de-169d-4a46-8a8e-a3831c04d90f",
+              "name": "file_title",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "9bde4d7f-e4f3-4ebd-9338-dce1350f9eab",
+              "name": "file_url",
+              "value": "={{ $json.webViewLink }}",
+              "type": "string"
+            },
+            {
+              "id": "fae402c8-c486-4b57-8d28-bf669db6b442",
+              "name": "last_modified_date",
+              "value": "={{ $json.modifiedTime }}",
+              "type": "string"
+            },
+            {
+              "id": "866ce582-16e2-4869-ac77-13f248c187eb",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "61766c6f-d571-48f5-9a34-5751c6d6942a",
+      "name": "Set File ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -816,
+        1344
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - SharePoint URL with Version Parameter\n// Use this in a \"Code\" node in n8n\n\nconst items = $input.all();\n\nconst outputItems = items.map(item => {\n  const data = item.json;\n  \n  // Use existing LinkingUrl if available\n  if (data.LinkingUrl) {\n    return {\n      json: {\n        ...data,\n        fileUrl: data.LinkingUrl\n      }\n    };\n  }\n  \n  // Construct versioned URL\n  let fileUrl = '';\n  \n  if (data.ServerRelativeUrl && data.ContentTag) {\n    // Base URL with server relative path\n    fileUrl = 'https://nosta.sharepoint.com' + data.ServerRelativeUrl;\n    \n    // Extract GUID from ContentTag and create version parameter\n    const guidMatch = data.ContentTag.match(/\\{([^}]+)\\}/);\n    if (guidMatch) {\n      const versionId = guidMatch[1].toLowerCase().replace(/-/g, '');\n      fileUrl += `?d=w${versionId}`;\n    }\n  }\n  \n  return {\n    json: {\n      ...data,\n      fileUrl: fileUrl\n    }\n  };\n});\n\nreturn outputItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        1360
+      ],
+      "id": "fb587ee1-30d1-409e-af88-1694bacd63ea",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "limit": 150,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1_uELEkUbjrhgdtE5z10VvbCTyzleqrKg",
+            "mode": "list",
+            "cachedResultName": "material batch process",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1_uELEkUbjrhgdtE5z10VvbCTyzleqrKg"
+          }
+        },
+        "options": {
+          "fields": [
+            "id",
+            "name",
+            "webViewLink",
+            "mimeType",
+            "*"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1472,
+        1344
+      ],
+      "id": "6a387377-884a-40d5-965f-5f1056d66d52",
+      "name": "Google Drive1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -672,
+        1344
+      ],
+      "id": "db4c2754-cca4-4926-bd3f-9888ba69991e",
+      "name": "Google Drive4",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c5ba8c06-eb00-4765-a721-f2cf6e447e8e",
+              "name": "Material",
+              "value": "={{ $json.Material }}",
+              "type": "string"
+            },
+            {
+              "id": "639b4deb-04df-4b10-a146-65e83d98537a",
+              "name": "Materialkurztext",
+              "value": "={{ $json.Materialkurztext }}",
+              "type": "string"
+            },
+            {
+              "id": "b7684013-5701-4b0d-ae24-06f1d3f7670e",
+              "name": "Profitcenter",
+              "value": "={{ $json.Profitcenter }}",
+              "type": "string"
+            },
+            {
+              "id": "7140ba3e-d2f3-4feb-a3c1-89a345d6f53e",
+              "name": "Bestandsmenge",
+              "value": "={{ $json.Bestandsmenge }}",
+              "type": "string"
+            },
+            {
+              "id": "5b578677-f80d-482e-9399-db76356697ac",
+              "name": "Mengeneinheit",
+              "value": "={{ $json.Mengeneinheit }}",
+              "type": "string"
+            },
+            {
+              "id": "205f3a55-ea31-4c16-95ef-0606a36c22a6",
+              "name": "screw_thread",
+              "value": "={{ $json.parsed_screw_thread }}",
+              "type": "string"
+            },
+            {
+              "id": "35511bbf-0e1e-49c7-8a4f-336351cb134e",
+              "name": "dimensions",
+              "value": "={{ $json.parsed_dimensions }}",
+              "type": "string"
+            },
+            {
+              "id": "2c3ad597-922d-4232-b9e2-0c1910c1db0e",
+              "name": "item_type",
+              "value": "={{ $json.parsed_item_type}}",
+              "type": "string"
+            },
+            {
+              "id": "0d1644bb-3d9d-4f12-81cb-42b63803fd35",
+              "name": "original_text",
+              "value": "={{ $json.parsed_original_text }}",
+              "type": "string"
+            },
+            {
+              "id": "49c49e71-fea8-4d84-a1ce-5e1c1b3058db",
+              "name": "diameter_mm",
+              "value": "={{ $json.parsed_diameter_mm }}",
+              "type": "string"
+            },
+            {
+              "id": "1f5fa0b4-45a3-4b30-b4ff-0c60d77ce502",
+              "name": "thickness_mm",
+              "value": "={{ $json.parsed_thickness_mm }}",
+              "type": "string"
+            },
+            {
+              "id": "c7132032-fb6f-4511-ba72-993805f05c34",
+              "name": "hex_sw",
+              "value": "={{ $json.parsed_hex_sw }}",
+              "type": "string"
+            },
+            {
+              "id": "049d5fce-4e7e-4638-a030-bc0c4bd0e72a",
+              "name": "material_codes",
+              "value": "={{ $json.parsed_material_codes }}",
+              "type": "string"
+            },
+            {
+              "id": "8297f421-b01c-45ab-bad2-63483dbdd918",
+              "name": " standards",
+              "value": "={{ $json.parsed_standards }}",
+              "type": "string"
+            },
+            {
+              "id": "9251c9f7-e24d-4dda-a7a6-6f31c47d9526",
+              "name": "treatments_coatings",
+              "value": "={{ $json.parsed_treatments_coatings }}",
+              "type": "string"
+            },
+            {
+              "id": "5c44d6c9-cedb-49b2-9d00-0e72643f55da",
+              "name": "tolerances",
+              "value": "={{ $json.parsed_thickness_mm }}",
+              "type": "string"
+            },
+            {
+              "id": "7fecfd79-6d3b-48ab-aef0-07bc55bdbfc6",
+              "name": "config",
+              "value": "=tolerances:{{ $json.parsed_thickness_mm }}  \ntreatments_coatings:{{ $json.parsed_treatments_coatings }}\nstandards:{{ $json.parsed_standards }}\nmaterial_codes:{{ $json.parsed_material_codes }}\nhex_sw:{{ $json.parsed_hex_sw }}\nthickness_mm:{{ $json.parsed_thickness_mm }}\noriginal_text:{{ $json.parsed_original_text }}\nitem_type:{{ $json.parsed_item_type}}\ndimensions:{{ $json.parsed_dimensions }}\nscrew_thread:{{ $json.parsed_screw_thread }}\n\n\nMaterialkurztext:{{ $json.Materialkurztext }}\nMaterial:{{ $json.Material }}\ndescription:{{ $json.parsed_description }}",
+              "type": "string"
+            },
+            {
+              "id": "cc58da4e-a093-4656-9f7f-ff41bd7be8f9",
+              "name": "description",
+              "value": "={{ $json.parsed_description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        1360
+      ],
+      "id": "065ea985-1144-49bc-bbd3-fce939c5e552",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        1344
+      ],
+      "id": "2c4777a8-5261-4a79-9b83-41895a930313",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.config }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "description",
+                "value": "={{ $json.description }}"
+              },
+              {
+                "name": "Bestandsmenge",
+                "value": "={{ $json.Bestandsmenge }}"
+              },
+              {
+                "name": "Profitcenter",
+                "value": "={{ $json.Profitcenter }}"
+              },
+              {
+                "name": "Mengeneinheit",
+                "value": "={{ $json.Mengeneinheit }}"
+              },
+              {
+                "name": "description",
+                "value": "={{ $json.original_text }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "63f41c33-7e99-4a97-894c-fc86a63af856",
+      "name": "Default Data Loader1",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        928,
+        1568
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 100000
+      },
+      "id": "0b1a154f-2ad6-4c5c-9ebb-e4e0d1a06332",
+      "name": "Character Text Splitter1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        976,
+        1712
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        752,
+        1632
+      ],
+      "id": "0db443bc-6113-4ea4-9511-a42bc588a34f",
+      "name": "Embeddings Mistral Cloud2",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "material_vector",
+          "mode": "list",
+          "cachedResultName": "material_vector"
+        },
+        "options": {
+          "queryName": "match_material"
+        }
+      },
+      "id": "4e59e64b-b12b-41ba-8e96-526a52ac95fa",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        848,
+        1344
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1184,
+        1344
+      ],
+      "id": "d07a9e26-ff4d-4ce3-a6fe-e56eaf323e0d",
+      "name": "Wait4",
+      "webhookId": "2e21183b-4e03-4dc1-aef7-b9805cf93a22"
+    },
+    {
+      "parameters": {
+        "batchSize": "=1",
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -96,
+        1360
+      ],
+      "id": "eca7f075-ebc9-4873-a36c-b456d078a310",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        1344
+      ],
+      "id": "34320d50-2b4d-4a13-acee-7b1cbe8e1012",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const d = item.json;\n  const description = `${d.Name}. `\n    + `Item number ${d[\"Item Number\"]}. `\n    + (d.Materials ? `Made of ${d.Materials}. ` : \"\")\n    + (d[\"Width (mm)\"] ? `Width ${d[\"Width (mm)\"]} mm. ` : \"\")\n    + (d[\"Length (mm)\"] ? `Length ${d[\"Length (mm)\"]} mm. ` : \"\")\n    + (d.Thread ? `Thread ${d.Thread}. ` : \"\")\n    + (d[\"Profile Width (mm)\"] ? `Profile width ${d[\"Profile Width (mm)\"]} mm. ` : \"\")\n    + (d.Version ? `Version ${d.Version}.` : \"\");\n  \n  return { json: { description: description.trim() } };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2672,
+        960
+      ],
+      "id": "3ee4178d-a326-433c-800c-eeca40eb3078",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "tableId": "materials",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "material",
+              "fieldValue": "={{ $json.Material }}"
+            },
+            {
+              "fieldId": "materialkurztext",
+              "fieldValue": "={{ $json.Materialkurztext }}"
+            },
+            {
+              "fieldId": "profitcenter",
+              "fieldValue": "={{ $json.Profitcenter }}"
+            },
+            {
+              "fieldId": "bestandsmenge",
+              "fieldValue": "={{ $json.Bestandsmenge }}"
+            },
+            {
+              "fieldId": "mengeneinheit",
+              "fieldValue": "={{ $json.Mengeneinheit }}"
+            },
+            {
+              "fieldId": "original_text",
+              "fieldValue": "={{ $json.original_tex }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $json.description }}"
+            },
+            {
+              "fieldId": "item_type",
+              "fieldValue": "={{ $json.item_type }}"
+            },
+            {
+              "fieldId": "screw_thread",
+              "fieldValue": "={{ $json.screw_thread }}"
+            },
+            {
+              "fieldId": "dimensions",
+              "fieldValue": "={{ $json.dimensions }}"
+            },
+            {
+              "fieldId": "diameter_mm",
+              "fieldValue": "={{ $json.diameter_mm }}"
+            },
+            {
+              "fieldId": "thickness_mm",
+              "fieldValue": "={{ $json.thickness_mm }}"
+            },
+            {
+              "fieldId": "hex_sw",
+              "fieldValue": "={{ $json.hex_sw }}"
+            },
+            {
+              "fieldId": "material_codes",
+              "fieldValue": "={{ $json.material_codes }}"
+            },
+            {
+              "fieldId": "standards",
+              "fieldValue": "={{ $json[' standards'] }}"
+            },
+            {
+              "fieldId": "treatments_coatings",
+              "fieldValue": "={{ $json.treatments_coatings }}"
+            },
+            {
+              "fieldId": "tolerances",
+              "fieldValue": "={{ $json.tolerances }}"
+            },
+            {
+              "fieldId": "config",
+              "fieldValue": "={{ $json.config }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        192,
+        1024
+      ],
+      "id": "cb013839-0f8d-4b79-8c06-01f75b6bf140",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "documents",
+        "toolDescription": "Use RAG to look up information in the knowledgebase.",
+        "tableName": {
+          "__rl": true,
+          "value": "material_vector",
+          "mode": "list",
+          "cachedResultName": "material_vector"
+        },
+        "topK": 15,
+        "options": {
+          "queryName": "match_material"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        2768
+      ],
+      "id": "d967f9c9-9167-4633-8f40-e71ac6d038f6",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        2784
+      ],
+      "id": "0bddc35a-a965-4b1c-81f9-591986cf8232",
+      "name": "Mistral Cloud Chat Model4",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput || $json.body[0].chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId || $json.body[0].sessionId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cdca6b73-5480-4c82-ad20-29bbe9bfff96",
+      "name": "Edit Fields11",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2016,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        192,
+        2944
+      ],
+      "id": "d145381d-c017-4201-92cc-ef27ed1908c7",
+      "name": "Embeddings Mistral Cloud",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        16,
+        2720
+      ],
+      "id": "9920e1a0-c0ed-4e83-bf29-18f610d50995",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput || $json.body?.chatInput || $json.body?.[0]?.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId || $json.body?.sessionId || $json.body?.[0]?.sessionId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2b7c2b31-b236-4776-8f62-2862f76c19d9",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -272,
+        2336
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -592,
+        2528
+      ],
+      "id": "1dd60b06-63aa-4f95-9bba-a090bddca577",
+      "name": "When chat message received",
+      "webhookId": "eb68e2a8-279c-4e95-8c06-43e93c1a41aa"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=## 🧠 Persona: Nosta GmbH – AI Material Support Agent\n\nYou are a **helpful, intelligent AI assistant** working for **Nosta GmbH**.  \nYour mission is to **automatically find alternative materials** that are:\n\n1. Closest in **technical composition and properties**,  \n2. **Available in stock**, and  \n3. **More profitable** for the company.\n\n---\n\n### 🔍 Knowledge Access Instructions\n\n- **Primary Source:** Always query the **Supabase store → `material_vector`** for every material reference or lookup.\n- Use **vector similarity search** to identify the most compatible or matching materials.\n- Fetch and compare the following data:\n  - Material name and category  \n  - Mechanical and chemical properties  \n  - Stock availability  \n  - Profit margin and cost efficiency  \n\n---\n\n### 🧾 Output Format (When Alternatives Are Found)\n\nWhen suitable alternatives are retrieved from Supabase, display them in the following structured markdown format:\n\n#### ✅ Alternative Material Suggestion\n\n**Original Material:** `{{original_material_name}}`  \n**Suggested Alternative:** `{{alternative_material_name}}`\n\n**Why it’s a good match:**\n- Property similarity score: `{{similarity_score}}`\n- Equivalent or improved performance: `{{property_summary}}`\n- In-stock and ready for dispatch: `{{stock_status}}`\n- More profitable for Nosta: `{{profit_comparison}}`\n\n**Configuration Comparison Table:**\n\n| Property  | Original  | Alternative  | Comment  |\n|-----------|-----------|--------------|----------|\ntheir config and all other specs\n\n\n\n**Stock & Profit Summary:**\n- 🏷️ **Available Stock:** {{stock_qty}} units  \n- 💰 **Profit Margin:** {{profit_percent}}% higher than original  \n- 🏭 **Supplier:** {{supplier_name}}  \n\n---\n\n### 🧩 Behavior Rules\n\n1. **Always query Supabase** (`material_vector`) for each material request or comparison.  \n2. always use supbase tool  \n3. Rank results by:\n   - ✅ Similarity (closest technical match)  \n   - 📦 Availability (in stock first)  \n   - 💰 Profitability (higher margin prioritized)  \n4. If no alternative exists, respond with:\n   > “No similar material currently available in Supabase. Suggest creating a reorder request.”\n5. always provide alternative which are of similar dimensions or more in height not less. \n6. always try to give multiple alternative and very important always give output in tabular form for easy understanding and add  space betweem coloumn data so that its readable and easy to understand.  elements shoul well spaced\n\n\n| marerial name | dimension | profit center |stock |\n|---------      |--------   |-------------- |--------|\n| ...           | ...       | ...           | ..    |\n\n---\n\n\n",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        0,
+        2512
+      ],
+      "id": "b0c8ac9a-7457-493c-8be7-40e639d6ebc3",
+      "name": "ai agent alternative material"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "294801bb-565e-4d46-a75d-5c4b0f26a18b",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -544,
+        2336
+      ],
+      "id": "0eeec3c3-c3ae-4aea-9229-99a28cace779",
+      "name": "Webhook",
+      "webhookId": "294801bb-565e-4d46-a75d-5c4b0f26a18b"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-10-22T14:03:12.871Z",
+      "createdAt": "2025-10-22T14:03:12.871Z",
+      "role": "workflow:owner",
+      "workflowId": "5lO1BJcpwpqngg4C",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2025-11-07T08:15:56.000Z",
+  "versionId": "e526f27d-42fd-4027-9a4a-25b54048a349"
+}
