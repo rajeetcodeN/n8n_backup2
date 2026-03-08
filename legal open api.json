@@ -1,0 +1,3170 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-08T18:50:39.117Z",
+    "createdAt": "2026-01-08T18:50:39.117Z",
+    "versionId": "b323fe12-3e57-426d-9970-f7a29cd6fe42",
+    "workflowId": "qFuaKsnWmlubmsEy",
+    "nodes": [
+      {
+        "parameters": {
+          "public": true,
+          "initialMessages": "Hi there! 👋\nHow can I assist you today?",
+          "options": {
+            "allowFileUploads": true,
+            "loadPreviousSession": "memory",
+            "subtitle": "",
+            "title": "Welcome to Nosta!",
+            "customCss": ":root {\n  /* Brand Colors (Nosta) */\n  --chat--color-primary: #009EE3; /* Nosta Azure‑blue */\n  --chat--color-primary-shade-50: #007bb8;\n  --chat--color-primary-shade-100: #005d8f;\n  --chat--color-secondary: #582DC6; /* Nosta Violet accent */\n  --chat--color-secondary-shade-50: #461fa1;\n  --chat--color-secondary-shade-100: #36197a;\n  --chat--color-white: #FFFFFF;\n  --chat--color-light: #E4E4E4; /* light grey surfaces & borders */\n  --chat--color-light-shade-50: #d1d1d1;\n  --chat--color-light-shade-100: #bdbdbd;\n  --chat--color-medium: #B5BCC9;\n  --chat--color-dark: #000000; /* solid black text */\n  --chat--color-disabled: #9FA6B2;\n  --chat--color-typing: #555555;\n  --chat--header-height: 4rem;\n\n  /* Layout & Fonts */\n  --chat--spacing: 1rem;\n  --chat--border-radius: 0.5rem;\n  --chat--font-family: 'Roboto', system-ui, sans-serif;\n  --chat--heading-font-family: 'Poppins', system-ui, sans-serif;\n\n  /* Window */\n  --chat--window--width: 420px;\n  --chat--window--height: 600px;\n  --chat--window--z-index: 9999;\n  --chat--window--border: 1px solid var(--chat--color-light-shade-100);\n  --chat--window--border-radius: var(--chat--border-radius);\n\n  /* Header */\n  --chat--header--padding: 0.75rem;                    /* 50% less height */\n  --chat--header--background: var(--chat--color-primary-shade-100); /* deeper blue */\n  --chat--header--color: var(--chat--color-white);\n  --chat--heading--font-size: 1.8em;\n  --chat--subtitle--font-size: 1rem;\n  --chat--subtitle--line-height: 1.5;\n\n  /* Messages */\n  --chat--message--font-size: 1rem;\n  --chat--message--padding: 0.8rem 1rem;\n  --chat--message--border-radius: var(--chat--border-radius);\n  --chat--message--margin-bottom: 0.35rem; /* less spacing */\n  --chat--message-line-height: 1.6;\n  --chat--message--bot--background: #97979738;\n  --chat--message--bot--color: var(--chat--color-dark);\n  --chat--message--user--background: var(--chat--color-primary);\n  --chat--message--user--color: var(--chat--color-white);\n  --chat--message--pre--background: #e8ecf1;\n\n  /* Input */\n  --chat--textarea--height: 52px;\n  --chat--input--background: var(--chat--color-white);\n  --chat--input--text-color: var(--chat--color-dark);\n  --chat--input--padding: 0.75rem 1rem;\n  --chat--input--border: 1px solid var(--chat--color-light-shade-50);\n  --chat--input--border-radius: var(--chat--border-radius);\n\n  /* Buttons */\n  --chat--button--background: var(--chat--color-secondary);\n  --chat--button--color: var(--chat--color-white);\n  --chat--button--hover--background: var(--chat--color-secondary-shade-50);\n  --chat--button--hover--color: var(--chat--color-white);\n  --chat--button--padding: 0.5rem 1.2rem;\n  --chat--button--border-radius: var(--chat--border-radius);\n\n  /* Footer */\n  --chat--body--background: var(--chat--color-light);\n  --chat--footer--background: var(--chat--color-white);\n  --chat--footer--color: var(--chat--color-dark);\n}\n\n/* Structure */\nbody {\n  margin: 0;\n  font-family: var(--chat--font-family);\n  background: var(--chat--body--background);\n}\n\n.chat-window {\n  width: var(--chat--window--width);\n  height: var(--chat--window--height);\n  margin: 2rem auto;\n  border: var(--chat--window--border);\n  border-radius: var(--chat--window--border-radius);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);\n}\n\n.chat-layout .chat-header {\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: right center;\n    background-image: url(https://www.nosta.com/wp-content/themes/kd-theme/resources/img/nosta.jpg);\n    display: flex;\n    flex-direction: row;\n    justify-content: space-evenly;\n    align-items: center;\n    gap: 1em;\n    height: var(--chat--header-height);\n    padding: var(--chat--header--padding);\n    background-color: var(--chat--header--background);\n    color: var(--chat--header--color);\n    border-top: var(--chat--header--border-top);\n    border-bottom: var(--chat--header--border-bottom);\n    border-left: var(--chat--header--border-left);\n    border-right: var(--chat--header--border-right);\n}\n\n.chat-logo {\n  height: 40px;\n  width: auto;\n}\n\n.chat-header-text h1 {\n  margin: 0;\n  font-family: var(--chat--heading-font-family);\n  font-weight: 600;\n  font-size: var(--chat--heading--font-size);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n}\n\n.chat-header-text p {\n  margin: 0.25rem 0 0;\n  font-size: var(--chat--subtitle--font-size);\n  line-height: var(--chat--subtitle--line-height);\n}\n\n/* Chat body */\n.chat-body {\n  flex: 1;\n  padding: var(--chat--spacing);\n  background: var(--chat--body--background);\n  overflow-y: auto;\n}\n\n.chat-message {\n  padding: var(--chat--message--padding);\n  margin-bottom: var(--chat--message--margin-bottom);\n  border-radius: var(--chat--message--border-radius);\n  font-size: var(--chat--message--font-size);\n  line-height: var(--chat--message-line-height);\n  max-width: 80%;\n  box-shadow: 0px 5px 9px 3px rgb(0 0 0 / 12%);\n  width: fit-content;\n}\n\n.chat-message.bot {\n  background: var(--chat--message--bot--background);\n  color: var(--chat--message--bot--color);\n  border-left: 3px solid var(--chat--color-primary);\n}\n\n.chat-message.user {\n  background: var(--chat--message--user--background);\n  color: var(--chat--message--user--color);\n  border-left: 3px solid var(--chat--color-secondary);\n  margin-left: auto;\n}\n\n/* Footer */\n.chat-footer {\n  background: var(--chat--footer--background);\n  padding: 0.5rem 1rem;\n  border-top: 1px solid var(--chat--color-light-shade-100);\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n}\n\n.chat-footer textarea {\n  flex-grow: 1;\n  resize: none;\n  padding: var(--chat--input--padding);\n  height: var(--chat--textarea--height);\n  border: var(--chat--input--border);\n  border-radius: var(--chat--input--border-radius);\n  font-family: var(--chat--font-family);\n  font-size: 1rem;\n  color: var(--chat--input--text-color);\n  background: var(--chat--input--background);\n}\n\n.chat-send-button {\n  background: var(--chat--button--background);\n  color: var(--chat--button--color);\n  border: none;\n  padding: var(--chat--button--padding);\n  border-radius: var(--chat--button--border-radius);\n  font-size: 1.25rem;\n  cursor: pointer;\n  transition: background 0.2s;\n}\n\n.chat-send-button:hover {\n  background: var(--chat--button--hover--background);\n}\n\nimg {\n    width: -webkit-fill-available;\n}"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -304,
+          1168
+        ],
+        "id": "116fb769-d651-45dc-b7f1-7472b448b6a0",
+        "name": "When chat message received",
+        "webhookId": "c9ec7097-c0e1-4336-a7dc-68a4241e4e9e"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "463448a5-b323-4682-8674-24bee0df163b",
+                "leftValue": "={{ $json.files }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "array",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          144,
+          368
+        ],
+        "id": "bffb9397-103a-4e40-9e4d-1506291eef43",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "$binary",
+          "options": {
+            "destinationFieldName": "data",
+            "includeBinary": true
+          }
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          384,
+          288
+        ],
+        "id": "8cb14648-053d-4865-9dc8-3bcba85a9569",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "mode",
+                "value": "single"
+              },
+              {
+                "name": "output_type",
+                "value": "jsonl"
+              },
+              {
+                "name": "include_images",
+                "value": "false"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "files",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          816,
+          288
+        ],
+        "id": "f9359b86-89b1-41e4-a16d-0a98a46236bc",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "operation": "upload",
+          "bucketName": "temp",
+          "fileName": "abc",
+          "binaryData": false,
+          "fileContent": "={{ $json.data[0] }}",
+          "additionalFields": {
+            "acl": "private",
+            "grantFullControl": false,
+            "grantRead": false,
+            "parentFolderKey": "try"
+          }
+        },
+        "type": "n8n-nodes-base.s3",
+        "typeVersion": 1,
+        "position": [
+          -224,
+          0
+        ],
+        "id": "97a5764b-3f04-4a57-ab83-36202d8dd520",
+        "name": "S3",
+        "credentials": {
+          "s3": {
+            "id": "yNoPO0CbsXSK0d48",
+            "name": "S3 account dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $('When chat message received').item.json.chatInput }}",
+          "options": {
+            "systemMessage": "=You are a Legal AI Agent working for the company \"nosta\", a German manufacturer of precision-milled parts. Your responsibility is to carefully analyze uploaded legal documents (e.g., contracts, NDAs, quality agreements) and verify them against the internal legal and business requirements of nosta.\n\n## All review criteria must be strictly based on the provided Legal AI Agent document (nosta policy guide). The agent must verify uploaded contracts against these specific instructions 1:1.\n\nAlways follow the steps and instructions below. Use only the tools provided.\n\n---\n\n🔧 Tool Usage Instructions\n\n- Document Access:  \n  Always use the `Supabase Get` tool to retrieve uploaded legal documents for analysis.\n\n- Document Deletion:  \n  If the user requests deletion of a document (single or all), use the `Supabase Delete` tool with the appropriate file reference(s).\n\n---\n\n📌 Step 1: Recognize Contract Type & Involved Parties\n\nClassify and summarize basic metadata:\n- Identify contract type: Framework Agreement, NDA, Quality Agreement (QAA), Logistics Agreement, Pricing Agreement, Tooling Agreement, etc.\n- Identify all parties: customer, supplier, subsidiaries.\n- Note contract term, renewal rules, and termination clauses.\n- Mention annexes, technical references, or external documents.\n\n---\n\n📌 Step 2: General Legal Compliance Review\n\nReview these standard legal elements:\n- Jurisdiction:  \n  Prefer “Amtsgericht Dillingen” or “Handelsgericht Augsburg”. If not possible, Swiss law is an acceptable alternative.\n\n- Confidentiality:  \n  Must comply with GHV Level 1–3:\n  - Level 1: Data can be shared with service providers.\n  - Level 2–3: Transfer may require customer approval.\n  Verify level and compliance.\n\n- Export Control / Sanctions:  \n  Must comply with EU Regulation 428/2009, EAR, and U.S. law. Flag any sanction-related language for review.\n\n- Compliance Clauses:  \n  Must include anti-corruption, CSR, and sustainability statements.\n\n- Data Protection:  \n  Must comply with GDPR. Pay attention to international data transfers.\n\n---\n\n📌 Step 3: Nosta-Specific Policy Compliance\n\nEvaluate document content based on nosta’s internal expectations:\n- The contract must allow project-specific flexibility.\n- Do not accept automatic obligations that harm nosta’s interests.\n- Material approval steps and forecast freeze periods must be defined.\n- Excess/shortfall delivery clauses should be deleted or flagged.\n- Process changes must require coordination with nosta’s production/purchasing teams.\n- Flexibility requirements must not bypass internal process limits.\n- Buyer must inspect incoming goods immediately and report issues.\n- Warranty clauses under the German BGB must be reviewed or rejected.\n- Nosta must retain the right to choose how to address defects (repair/replace).\n- Product recall, liability, and insurance obligations must be stated clearly.\n- Spare part pricing policies must be included.\n- Customer audit access must be limited to clearly defined areas.\n\n---\n\n📌 Step 4: Rate Risk Levels (Traffic Light System)\n\nApply a color-coded risk level for each clause:\n\n- 🔴 Critical  \n  Clause is harmful to nosta, unclear, or unacceptable. Requires revision or removal.\n\n- 🟡 Medium  \n  Clause may be acceptable but has risk. Should be clarified or negotiated.\n\n- 🟢 Green  \n  Clause complies with nosta’s internal and legal standards.\n\n✅ For each 🔴 or 🟡 clause, propose a better alternative or revision.\n\n---\n\n📌 Step 5: Answer User Questions Clearly\n\nWhen a user asks a question about the contract (e.g., \"Is the liability clause okay?\"):\n1. Use Supabase Get to retrieve the uploaded document.\n2. Locate the clause that matches the question.\n3. Compare it against nosta’s policies (above).\n4. Respond with:\n   - A quote of the relevant clause.\n   - Risk level (🔴, 🟡, 🟢).\n   - A short legal/business justification.\n   - A suggestion for improvement (if needed).\n\n---\n\n🧭 Final Guidelines\n\n- Respond in a professional, structured, and legally sound tone.\n- Avoid making assumptions not grounded in the document or nosta's policy.\n- Be concise, actionable, and confident in your recommendations.\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          1568,
+          272
+        ],
+        "id": "980d6c27-c093-49a4-b091-60782248583b",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "bucketName": "temp",
+          "fileKey": "abc"
+        },
+        "type": "n8n-nodes-base.s3",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "ef08fdaa-86cc-4a21-bb30-b360c76f4500",
+        "name": "S31",
+        "credentials": {
+          "s3": {
+            "id": "yNoPO0CbsXSK0d48",
+            "name": "S3 account dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "tableId": "temp_table",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "session_id",
+                "fieldValue": "={{ $('When chat message received').item.json.sessionId }}"
+              },
+              {
+                "fieldId": "file",
+                "fieldValue": "={{ $json.data[0].parseJson().blocks }}"
+              },
+              {
+                "fieldId": "file_name",
+                "fieldValue": "={{ $json.data[0].parseJson().source }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          288
+        ],
+        "id": "0215ce5d-62df-4dc5-b58b-e6366b40a948",
+        "name": "Supabase",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.1,
+        "position": [
+          1264,
+          368
+        ],
+        "id": "03d671ce-5c41-4c03-a1ab-cdd23c054309",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "temp_table",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "session_id",
+                "condition": "eq",
+                "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabaseTool",
+        "typeVersion": 1,
+        "position": [
+          1728,
+          480
+        ],
+        "id": "3aaeff17-9f6e-4c07-904d-f10b41a57e50",
+        "name": "Supabase Get",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "tableId": "temp_table",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "session_id",
+                "condition": "eq",
+                "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+              },
+              {
+                "keyName": "file_name",
+                "condition": "eq",
+                "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions1_Field_Value', `Provide the file name to delete`, 'string') }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabaseTool",
+        "typeVersion": 1,
+        "position": [
+          1840,
+          480
+        ],
+        "id": "c32bc49b-ec14-4c0e-b46f-6f2212a99de9",
+        "name": "Supabase Delete",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const binaryKeys = Object.keys(item.binary || {});\n  const firstKey = binaryKeys[0];\n\n  if (!firstKey) {\n    return item;\n  }\n\n  return {\n    json: item.json,\n    binary: {\n      data: item.binary[firstKey]\n    }\n  };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          608,
+          288
+        ],
+        "id": "f9582a46-d513-402a-b565-c69d2d29d284",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 10
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          -336,
+          1536
+        ],
+        "id": "e533ef30-a9b2-40a4-868c-314939d9207f",
+        "name": "Simple Memory"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "463448a5-b323-4682-8674-24bee0df163b",
+                "leftValue": "={{ $json.files }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "array",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          208,
+          1248
+        ],
+        "id": "ef839c2f-2ec2-4d09-b131-99bd3b293685",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "$binary",
+          "options": {
+            "destinationFieldName": "data",
+            "includeBinary": true
+          }
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          448,
+          1072
+        ],
+        "id": "09d1cdfe-c6b5-494b-87b4-cbe99ee7d3f3",
+        "name": "Split Out1"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "mode",
+                "value": "single"
+              },
+              {
+                "name": "output_type",
+                "value": "jsonl"
+              },
+              {
+                "name": "include_images",
+                "value": "false"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "files",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          864,
+          1040
+        ],
+        "id": "5c17996f-7002-4e18-8523-492fc567b55f",
+        "name": "HTTP Request2"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $('When chat message received').item.json.chatInput }}",
+          "options": {
+            "systemMessage": "=You are a Legal AI Agent working for the company \"nosta\", a German manufacturer of precision-milled parts. Your responsibility is to carefully analyze uploaded legal documents (e.g., contracts, NDAs, quality agreements) and verify them against the internal legal and business requirements of nosta.\n\n## All review criteria must be strictly based on the provided Legal AI Agent document (nosta policy guide). The agent must verify uploaded contracts against these specific instructions 1:1.\n\nAlways follow the steps and instructions below. Use only the tools provided.\n\n---\n\n🔧 Tool Usage Instructions\n\n- Document Access:  \n  Always use the `Supabase Get` tool to retrieve uploaded legal documents for analysis.\n\n- Document Deletion:  \n  If the user requests deletion of a document (single or all), use the `Supabase Delete` tool with the appropriate file reference(s).\n\n{{ $json.data }}\n\n🧭 Final Guidelines\n\n- Respond in a professional, structured, and legally sound tone.\n- Avoid making assumptions not grounded in the document or nosta's policy.\n- Be concise, actionable, and confident in your recommendations.\n- Give response in german language.\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          1856,
+          1280
+        ],
+        "id": "0b035255-ed51-4061-ae36-81bba6f94a99",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.2,
+        "position": [
+          1840,
+          1504
+        ],
+        "id": "b0e63d26-ecfe-4de1-a3d3-cf0729772f2b",
+        "name": "HTTP Request3",
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "tableId": "temp_table",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "session_id",
+                "fieldValue": "={{ $('When chat message received').item.json.sessionId }}"
+              },
+              {
+                "fieldId": "file",
+                "fieldValue": "={{ $json.data[0].parseJson().blocks }}"
+              },
+              {
+                "fieldId": "file_name",
+                "fieldValue": "={{ $json.data[0].parseJson().source }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1056,
+          992
+        ],
+        "id": "93959cef-4b4a-414d-8475-ed6fbba5b95d",
+        "name": "Supabase1",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.1,
+        "position": [
+          1296,
+          1248
+        ],
+        "id": "dde6c1d6-675c-4f6c-82cc-75eea581f4e9",
+        "name": "Merge1"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "temp_table",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "session_id",
+                "condition": "eq",
+                "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabaseTool",
+        "typeVersion": 1,
+        "position": [
+          1968,
+          1504
+        ],
+        "id": "b548b1f5-c91b-4b58-a038-6ba22320072d",
+        "name": "Supabase Get1",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "tableId": "temp_table",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "session_id",
+                "condition": "eq",
+                "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+              },
+              {
+                "keyName": "file_name",
+                "condition": "eq",
+                "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions1_Field_Value', `Provide the file name to delete`, 'string') }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabaseTool",
+        "typeVersion": 1,
+        "position": [
+          2080,
+          1504
+        ],
+        "id": "5d6322e0-9ca6-4d1e-8eba-bb261f6fd247",
+        "name": "Supabase Delete1",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const binaryKeys = Object.keys(item.binary || {});\n  const firstKey = binaryKeys[0];\n\n  if (!firstKey) {\n    return item;\n  }\n\n  return {\n    json: item.json,\n    binary: {\n      data: item.binary[firstKey]\n    }\n  };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          640,
+          1040
+        ],
+        "id": "3efca1f6-0dae-4e38-89c7-5f748a58fe81",
+        "name": "Code1"
+      },
+      {
+        "parameters": {
+          "resource": "fileFolder",
+          "queryString": "prompt",
+          "filter": {
+            "driveId": {
+              "mode": "list",
+              "value": "My Drive"
+            },
+            "folderId": {
+              "__rl": true,
+              "value": "1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU",
+              "mode": "list",
+              "cachedResultName": "Legal Prompt",
+              "cachedResultUrl": "https://drive.google.com/drive/folders/1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU"
+            }
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          976,
+          2432
+        ],
+        "id": "e6924658-1b4a-4f83-9f6e-94437bc22278",
+        "name": "Google Drive1",
+        "alwaysOutputData": true,
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "3e42fe37-02d3-498d-ab0c-030cb6002e1c",
+                "leftValue": "={{ $json.id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1136,
+          2432
+        ],
+        "id": "d381d07b-494b-4fa8-8d33-9f94bc45dfdf",
+        "name": "If2"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -880,
+          2080
+        ],
+        "id": "6aff583c-2865-4aae-a330-a783dce5fef5",
+        "name": "When clicking ‘Test workflow’"
+      },
+      {
+        "parameters": {
+          "resource": "fileFolder",
+          "searchMethod": "query",
+          "queryString": "not fullText contains 'prompt.txt'",
+          "filter": {
+            "driveId": {
+              "mode": "list",
+              "value": "My Drive"
+            },
+            "folderId": {
+              "__rl": true,
+              "value": "1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU",
+              "mode": "list",
+              "cachedResultName": "Legal Prompt",
+              "cachedResultUrl": "https://drive.google.com/drive/folders/1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU"
+            },
+            "whatToSearch": "files"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          1296,
+          2512
+        ],
+        "id": "f0435c27-e406-465f-b6d2-363cb3acbcb2",
+        "name": "Google Drive",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $json.id }}",
+            "mode": "id"
+          },
+          "options": {
+            "googleFileConversion": {
+              "conversion": {
+                "docsToFormat": "text/plain"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          1440,
+          2512
+        ],
+        "id": "cf157df3-b6eb-464a-810b-3aee8571c547",
+        "name": "Google Drive2",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "mode",
+                "value": "single"
+              },
+              {
+                "name": "output_type",
+                "value": "text"
+              },
+              {
+                "name": "include_images",
+                "value": "false"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "files",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1616,
+          2512
+        ],
+        "id": "e675a78d-dde9-419e-972b-492a5110276a",
+        "name": "HTTP Request4"
+      },
+      {
+        "parameters": {
+          "operation": "toText",
+          "sourceProperty": "message.content",
+          "options": {
+            "fileName": "prompt.txt"
+          }
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          2064,
+          2512
+        ],
+        "id": "0fb2542d-3e80-4183-8e1c-2a261bf74d49",
+        "name": "Convert to File"
+      },
+      {
+        "parameters": {
+          "name": "prompt.txt",
+          "driveId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU",
+            "mode": "list",
+            "cachedResultName": "Legal Prompt",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          2288,
+          2512
+        ],
+        "id": "a8d9b420-575d-45b5-8bcb-621af323d635",
+        "name": "Google Drive3",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $json.id }}",
+            "mode": "id"
+          },
+          "options": {
+            "googleFileConversion": {
+              "conversion": {
+                "docsToFormat": "text/plain"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          2944,
+          2400
+        ],
+        "id": "2f6f6e9b-3d9f-43a9-946a-3c538f28b2a0",
+        "name": "Google Drive4",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "3a50fb9a-1176-48eb-b430-d795ebca2ce2",
+                "name": "id",
+                "value": "={{ $('Google Drive3').item.json.id }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2496,
+          2512
+        ],
+        "id": "812e910a-a4da-4cd5-b0d7-2cff56df61db",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "74a6fd50-30cd-4814-b415-0e40f955432f",
+                "name": "id",
+                "value": "={{ $('Google Drive1').item.json.id }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2176,
+          2384
+        ],
+        "id": "81aa6695-2fe7-4de1-89f2-3d6dc7b889c3",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.1,
+        "position": [
+          2720,
+          2400
+        ],
+        "id": "e38beeb8-e71a-41f4-a9f0-c5ba7d3dcb39",
+        "name": "Merge2"
+      },
+      {
+        "parameters": {
+          "operation": "text",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          3168,
+          2400
+        ],
+        "id": "eb59e1ed-ea73-495f-b2a0-8503dd509557",
+        "name": "Extract from File"
+      },
+      {
+        "parameters": {
+          "url": "https://nsebtjqnfydjgjtigsiq.supabase.co/storage/v1/object/public/prompt//prompt.txt",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          80,
+          1424
+        ],
+        "id": "76668858-1977-42ac-8de4-59d005adcc5b",
+        "name": "HTTP Request5",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "resource": "fileFolder",
+          "searchMethod": "query",
+          "queryString": "not fullText contains 'prompt.txt'",
+          "filter": {
+            "driveId": {
+              "mode": "list",
+              "value": "My Drive"
+            },
+            "folderId": {
+              "__rl": true,
+              "value": "1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU",
+              "mode": "list",
+              "cachedResultName": "Legal Prompt",
+              "cachedResultUrl": "https://drive.google.com/drive/folders/1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU"
+            },
+            "whatToSearch": "files"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          336,
+          1648
+        ],
+        "id": "78a1c83c-9fcf-442b-8a9d-3c6838eb563c",
+        "name": "Google Drive7",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $json.id }}",
+            "mode": "id"
+          },
+          "options": {
+            "googleFileConversion": {
+              "conversion": {
+                "docsToFormat": "text/plain"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          560,
+          1648
+        ],
+        "id": "2539239e-5a2a-450c-99e0-3c295969bbee",
+        "name": "Google Drive8",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "8TJAGPnMBWLtBC4X",
+            "name": "Google Drive dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "mode",
+                "value": "single"
+              },
+              {
+                "name": "output_type",
+                "value": "text"
+              },
+              {
+                "name": "include_images",
+                "value": "false"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "files",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          784,
+          1648
+        ],
+        "id": "f4049caa-a7b2-4894-877f-d537bfc5878c",
+        "name": "HTTP Request6"
+      },
+      {
+        "parameters": {
+          "operation": "toText",
+          "sourceProperty": "message.content",
+          "options": {
+            "fileName": "prompt.txt"
+          }
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          1376,
+          1648
+        ],
+        "id": "392b057e-1fba-483f-a49d-c19d12e435fc",
+        "name": "Convert to File1"
+      },
+      {
+        "parameters": {
+          "operation": "upload",
+          "bucketName": "prompt",
+          "fileName": "=",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.s3",
+        "typeVersion": 1,
+        "position": [
+          1600,
+          1728
+        ],
+        "id": "33d5a8bc-58a0-4600-bd2e-52f0809c463d",
+        "name": "S32",
+        "credentials": {
+          "s3": {
+            "id": "a5RCyrjrPuJBcN4k",
+            "name": "S3 account 2 ayan"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": "mistral-medium-latest",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          1664,
+          1520
+        ],
+        "id": "ecedeead-2572-4a58-86da-e7d5d8d1e412",
+        "name": "Mistral Cloud Chat Model",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "11ba9a43-9039-45c1-9339-7f1dfb961417",
+                "name": "prompt",
+                "value": "create a set of instruction from the user message. give output in english.  help me write a good prompt for a Legal AI Agent I’m building in n8n for my company \"nosta\", a German manufacturer of precision-milled parts. The workflow is read,: the user uploads a legal document (like a contract or NDA) and asks questions. The AI should review the document and answer based on nosta's internal legal and business requirements. I’ve been told by the nosta legal team to use the attached guidance documents as the reference. The agent should check uploaded documents exactly 1:1 against this guidance.  Can you write a clear and professional system prompt that tells the agent how to do this review properly? It should include:    * Identifying contract type and parties    *Checking legal compliance (jurisdiction, GDPR, export rules, CSR, etc.)    *Verifying nosta-specific clauses (like delivery, audits, warranties)    *Giving traffic light risk ratings     *Suggesting improvements for any risky or unclear clauses    *The agent’s tone should be professional, structured, and aligned with compliance standards.",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1024,
+          1552
+        ],
+        "id": "fa6b4658-9455-4da0-9a85-207e422d6919",
+        "name": "Edit Fields2"
+      }
+    ],
+    "connections": {
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "HTTP Request5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Supabase",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "S3": {
+        "main": [
+          [
+            {
+              "node": "S31",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Get": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Delete": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "When chat message received",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Split Out1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Split Out1": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request2": {
+        "main": [
+          [
+            {
+              "node": "Supabase1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request3": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase1": {
+        "main": [
+          [
+            {
+              "node": "Merge1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge1": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Get1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Delete1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive1": {
+        "main": [
+          [
+            {
+              "node": "If2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If2": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Google Drive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive": {
+        "main": [
+          [
+            {
+              "node": "Google Drive2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive2": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request4": {
+        "main": [
+          [
+            {
+              "node": "Convert to File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convert to File": {
+        "main": [
+          [
+            {
+              "node": "Google Drive3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive3": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive4": {
+        "main": [
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Merge2",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Merge2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge2": {
+        "main": [
+          [
+            {
+              "node": "Google Drive4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request5": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Google Drive7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive7": {
+        "main": [
+          [
+            {
+              "node": "Google Drive8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive8": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request6": {
+        "main": [
+          [
+            {
+              "node": "Convert to File1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convert to File1": {
+        "main": [
+          [
+            {
+              "node": "S32",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "S32": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Cloud Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "b323fe12-3e57-426d-9970-f7a29cd6fe42",
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "S3": {
+      "main": [
+        [
+          {
+            "node": "S31",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Get": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Delete": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "When chat message received",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Get1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Delete1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Google Drive2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Drive3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive4": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Google Drive4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Drive7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive7": {
+      "main": [
+        [
+          {
+            "node": "Google Drive8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive8": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "S32",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "S32": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-13T11:56:16.911Z",
+  "id": "qFuaKsnWmlubmsEy",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "legal open api",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nHow can I assist you today?",
+        "options": {
+          "allowFileUploads": true,
+          "loadPreviousSession": "memory",
+          "subtitle": "",
+          "title": "Welcome to Nosta!",
+          "customCss": ":root {\n  /* Brand Colors (Nosta) */\n  --chat--color-primary: #009EE3; /* Nosta Azure‑blue */\n  --chat--color-primary-shade-50: #007bb8;\n  --chat--color-primary-shade-100: #005d8f;\n  --chat--color-secondary: #582DC6; /* Nosta Violet accent */\n  --chat--color-secondary-shade-50: #461fa1;\n  --chat--color-secondary-shade-100: #36197a;\n  --chat--color-white: #FFFFFF;\n  --chat--color-light: #E4E4E4; /* light grey surfaces & borders */\n  --chat--color-light-shade-50: #d1d1d1;\n  --chat--color-light-shade-100: #bdbdbd;\n  --chat--color-medium: #B5BCC9;\n  --chat--color-dark: #000000; /* solid black text */\n  --chat--color-disabled: #9FA6B2;\n  --chat--color-typing: #555555;\n  --chat--header-height: 4rem;\n\n  /* Layout & Fonts */\n  --chat--spacing: 1rem;\n  --chat--border-radius: 0.5rem;\n  --chat--font-family: 'Roboto', system-ui, sans-serif;\n  --chat--heading-font-family: 'Poppins', system-ui, sans-serif;\n\n  /* Window */\n  --chat--window--width: 420px;\n  --chat--window--height: 600px;\n  --chat--window--z-index: 9999;\n  --chat--window--border: 1px solid var(--chat--color-light-shade-100);\n  --chat--window--border-radius: var(--chat--border-radius);\n\n  /* Header */\n  --chat--header--padding: 0.75rem;                    /* 50% less height */\n  --chat--header--background: var(--chat--color-primary-shade-100); /* deeper blue */\n  --chat--header--color: var(--chat--color-white);\n  --chat--heading--font-size: 1.8em;\n  --chat--subtitle--font-size: 1rem;\n  --chat--subtitle--line-height: 1.5;\n\n  /* Messages */\n  --chat--message--font-size: 1rem;\n  --chat--message--padding: 0.8rem 1rem;\n  --chat--message--border-radius: var(--chat--border-radius);\n  --chat--message--margin-bottom: 0.35rem; /* less spacing */\n  --chat--message-line-height: 1.6;\n  --chat--message--bot--background: #97979738;\n  --chat--message--bot--color: var(--chat--color-dark);\n  --chat--message--user--background: var(--chat--color-primary);\n  --chat--message--user--color: var(--chat--color-white);\n  --chat--message--pre--background: #e8ecf1;\n\n  /* Input */\n  --chat--textarea--height: 52px;\n  --chat--input--background: var(--chat--color-white);\n  --chat--input--text-color: var(--chat--color-dark);\n  --chat--input--padding: 0.75rem 1rem;\n  --chat--input--border: 1px solid var(--chat--color-light-shade-50);\n  --chat--input--border-radius: var(--chat--border-radius);\n\n  /* Buttons */\n  --chat--button--background: var(--chat--color-secondary);\n  --chat--button--color: var(--chat--color-white);\n  --chat--button--hover--background: var(--chat--color-secondary-shade-50);\n  --chat--button--hover--color: var(--chat--color-white);\n  --chat--button--padding: 0.5rem 1.2rem;\n  --chat--button--border-radius: var(--chat--border-radius);\n\n  /* Footer */\n  --chat--body--background: var(--chat--color-light);\n  --chat--footer--background: var(--chat--color-white);\n  --chat--footer--color: var(--chat--color-dark);\n}\n\n/* Structure */\nbody {\n  margin: 0;\n  font-family: var(--chat--font-family);\n  background: var(--chat--body--background);\n}\n\n.chat-window {\n  width: var(--chat--window--width);\n  height: var(--chat--window--height);\n  margin: 2rem auto;\n  border: var(--chat--window--border);\n  border-radius: var(--chat--window--border-radius);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);\n}\n\n.chat-layout .chat-header {\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: right center;\n    background-image: url(https://www.nosta.com/wp-content/themes/kd-theme/resources/img/nosta.jpg);\n    display: flex;\n    flex-direction: row;\n    justify-content: space-evenly;\n    align-items: center;\n    gap: 1em;\n    height: var(--chat--header-height);\n    padding: var(--chat--header--padding);\n    background-color: var(--chat--header--background);\n    color: var(--chat--header--color);\n    border-top: var(--chat--header--border-top);\n    border-bottom: var(--chat--header--border-bottom);\n    border-left: var(--chat--header--border-left);\n    border-right: var(--chat--header--border-right);\n}\n\n.chat-logo {\n  height: 40px;\n  width: auto;\n}\n\n.chat-header-text h1 {\n  margin: 0;\n  font-family: var(--chat--heading-font-family);\n  font-weight: 600;\n  font-size: var(--chat--heading--font-size);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n}\n\n.chat-header-text p {\n  margin: 0.25rem 0 0;\n  font-size: var(--chat--subtitle--font-size);\n  line-height: var(--chat--subtitle--line-height);\n}\n\n/* Chat body */\n.chat-body {\n  flex: 1;\n  padding: var(--chat--spacing);\n  background: var(--chat--body--background);\n  overflow-y: auto;\n}\n\n.chat-message {\n  padding: var(--chat--message--padding);\n  margin-bottom: var(--chat--message--margin-bottom);\n  border-radius: var(--chat--message--border-radius);\n  font-size: var(--chat--message--font-size);\n  line-height: var(--chat--message-line-height);\n  max-width: 80%;\n  box-shadow: 0px 5px 9px 3px rgb(0 0 0 / 12%);\n  width: fit-content;\n}\n\n.chat-message.bot {\n  background: var(--chat--message--bot--background);\n  color: var(--chat--message--bot--color);\n  border-left: 3px solid var(--chat--color-primary);\n}\n\n.chat-message.user {\n  background: var(--chat--message--user--background);\n  color: var(--chat--message--user--color);\n  border-left: 3px solid var(--chat--color-secondary);\n  margin-left: auto;\n}\n\n/* Footer */\n.chat-footer {\n  background: var(--chat--footer--background);\n  padding: 0.5rem 1rem;\n  border-top: 1px solid var(--chat--color-light-shade-100);\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n}\n\n.chat-footer textarea {\n  flex-grow: 1;\n  resize: none;\n  padding: var(--chat--input--padding);\n  height: var(--chat--textarea--height);\n  border: var(--chat--input--border);\n  border-radius: var(--chat--input--border-radius);\n  font-family: var(--chat--font-family);\n  font-size: 1rem;\n  color: var(--chat--input--text-color);\n  background: var(--chat--input--background);\n}\n\n.chat-send-button {\n  background: var(--chat--button--background);\n  color: var(--chat--button--color);\n  border: none;\n  padding: var(--chat--button--padding);\n  border-radius: var(--chat--button--border-radius);\n  font-size: 1.25rem;\n  cursor: pointer;\n  transition: background 0.2s;\n}\n\n.chat-send-button:hover {\n  background: var(--chat--button--hover--background);\n}\n\nimg {\n    width: -webkit-fill-available;\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -304,
+        1168
+      ],
+      "id": "116fb769-d651-45dc-b7f1-7472b448b6a0",
+      "name": "When chat message received",
+      "webhookId": "c9ec7097-c0e1-4336-a7dc-68a4241e4e9e"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "463448a5-b323-4682-8674-24bee0df163b",
+              "leftValue": "={{ $json.files }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        144,
+        368
+      ],
+      "id": "bffb9397-103a-4e40-9e4d-1506291eef43",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "$binary",
+        "options": {
+          "destinationFieldName": "data",
+          "includeBinary": true
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        384,
+        288
+      ],
+      "id": "8cb14648-053d-4865-9dc8-3bcba85a9569",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "jsonl"
+            },
+            {
+              "name": "include_images",
+              "value": "false"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        816,
+        288
+      ],
+      "id": "f9359b86-89b1-41e4-a16d-0a98a46236bc",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "temp",
+        "fileName": "abc",
+        "binaryData": false,
+        "fileContent": "={{ $json.data[0] }}",
+        "additionalFields": {
+          "acl": "private",
+          "grantFullControl": false,
+          "grantRead": false,
+          "parentFolderKey": "try"
+        }
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        0
+      ],
+      "id": "97a5764b-3f04-4a57-ab83-36202d8dd520",
+      "name": "S3",
+      "credentials": {
+        "s3": {
+          "id": "yNoPO0CbsXSK0d48",
+          "name": "S3 account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=You are a Legal AI Agent working for the company \"nosta\", a German manufacturer of precision-milled parts. Your responsibility is to carefully analyze uploaded legal documents (e.g., contracts, NDAs, quality agreements) and verify them against the internal legal and business requirements of nosta.\n\n## All review criteria must be strictly based on the provided Legal AI Agent document (nosta policy guide). The agent must verify uploaded contracts against these specific instructions 1:1.\n\nAlways follow the steps and instructions below. Use only the tools provided.\n\n---\n\n🔧 Tool Usage Instructions\n\n- Document Access:  \n  Always use the `Supabase Get` tool to retrieve uploaded legal documents for analysis.\n\n- Document Deletion:  \n  If the user requests deletion of a document (single or all), use the `Supabase Delete` tool with the appropriate file reference(s).\n\n---\n\n📌 Step 1: Recognize Contract Type & Involved Parties\n\nClassify and summarize basic metadata:\n- Identify contract type: Framework Agreement, NDA, Quality Agreement (QAA), Logistics Agreement, Pricing Agreement, Tooling Agreement, etc.\n- Identify all parties: customer, supplier, subsidiaries.\n- Note contract term, renewal rules, and termination clauses.\n- Mention annexes, technical references, or external documents.\n\n---\n\n📌 Step 2: General Legal Compliance Review\n\nReview these standard legal elements:\n- Jurisdiction:  \n  Prefer “Amtsgericht Dillingen” or “Handelsgericht Augsburg”. If not possible, Swiss law is an acceptable alternative.\n\n- Confidentiality:  \n  Must comply with GHV Level 1–3:\n  - Level 1: Data can be shared with service providers.\n  - Level 2–3: Transfer may require customer approval.\n  Verify level and compliance.\n\n- Export Control / Sanctions:  \n  Must comply with EU Regulation 428/2009, EAR, and U.S. law. Flag any sanction-related language for review.\n\n- Compliance Clauses:  \n  Must include anti-corruption, CSR, and sustainability statements.\n\n- Data Protection:  \n  Must comply with GDPR. Pay attention to international data transfers.\n\n---\n\n📌 Step 3: Nosta-Specific Policy Compliance\n\nEvaluate document content based on nosta’s internal expectations:\n- The contract must allow project-specific flexibility.\n- Do not accept automatic obligations that harm nosta’s interests.\n- Material approval steps and forecast freeze periods must be defined.\n- Excess/shortfall delivery clauses should be deleted or flagged.\n- Process changes must require coordination with nosta’s production/purchasing teams.\n- Flexibility requirements must not bypass internal process limits.\n- Buyer must inspect incoming goods immediately and report issues.\n- Warranty clauses under the German BGB must be reviewed or rejected.\n- Nosta must retain the right to choose how to address defects (repair/replace).\n- Product recall, liability, and insurance obligations must be stated clearly.\n- Spare part pricing policies must be included.\n- Customer audit access must be limited to clearly defined areas.\n\n---\n\n📌 Step 4: Rate Risk Levels (Traffic Light System)\n\nApply a color-coded risk level for each clause:\n\n- 🔴 Critical  \n  Clause is harmful to nosta, unclear, or unacceptable. Requires revision or removal.\n\n- 🟡 Medium  \n  Clause may be acceptable but has risk. Should be clarified or negotiated.\n\n- 🟢 Green  \n  Clause complies with nosta’s internal and legal standards.\n\n✅ For each 🔴 or 🟡 clause, propose a better alternative or revision.\n\n---\n\n📌 Step 5: Answer User Questions Clearly\n\nWhen a user asks a question about the contract (e.g., \"Is the liability clause okay?\"):\n1. Use Supabase Get to retrieve the uploaded document.\n2. Locate the clause that matches the question.\n3. Compare it against nosta’s policies (above).\n4. Respond with:\n   - A quote of the relevant clause.\n   - Risk level (🔴, 🟡, 🟢).\n   - A short legal/business justification.\n   - A suggestion for improvement (if needed).\n\n---\n\n🧭 Final Guidelines\n\n- Respond in a professional, structured, and legally sound tone.\n- Avoid making assumptions not grounded in the document or nosta's policy.\n- Be concise, actionable, and confident in your recommendations.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1568,
+        272
+      ],
+      "id": "980d6c27-c093-49a4-b091-60782248583b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "bucketName": "temp",
+        "fileKey": "abc"
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ef08fdaa-86cc-4a21-bb30-b360c76f4500",
+      "name": "S31",
+      "credentials": {
+        "s3": {
+          "id": "yNoPO0CbsXSK0d48",
+          "name": "S3 account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "temp_table",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $('When chat message received').item.json.sessionId }}"
+            },
+            {
+              "fieldId": "file",
+              "fieldValue": "={{ $json.data[0].parseJson().blocks }}"
+            },
+            {
+              "fieldId": "file_name",
+              "fieldValue": "={{ $json.data[0].parseJson().source }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        288
+      ],
+      "id": "0215ce5d-62df-4dc5-b58b-e6366b40a948",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1264,
+        368
+      ],
+      "id": "03d671ce-5c41-4c03-a1ab-cdd23c054309",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "temp_table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        480
+      ],
+      "id": "3aaeff17-9f6e-4c07-904d-f10b41a57e50",
+      "name": "Supabase Get",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "temp_table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+            },
+            {
+              "keyName": "file_name",
+              "condition": "eq",
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions1_Field_Value', `Provide the file name to delete`, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        480
+      ],
+      "id": "c32bc49b-ec14-4c0e-b46f-6f2212a99de9",
+      "name": "Supabase Delete",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const binaryKeys = Object.keys(item.binary || {});\n  const firstKey = binaryKeys[0];\n\n  if (!firstKey) {\n    return item;\n  }\n\n  return {\n    json: item.json,\n    binary: {\n      data: item.binary[firstKey]\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        288
+      ],
+      "id": "f9582a46-d513-402a-b565-c69d2d29d284",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        1536
+      ],
+      "id": "e533ef30-a9b2-40a4-868c-314939d9207f",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "463448a5-b323-4682-8674-24bee0df163b",
+              "leftValue": "={{ $json.files }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        1248
+      ],
+      "id": "ef839c2f-2ec2-4d09-b131-99bd3b293685",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "$binary",
+        "options": {
+          "destinationFieldName": "data",
+          "includeBinary": true
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        448,
+        1072
+      ],
+      "id": "09d1cdfe-c6b5-494b-87b4-cbe99ee7d3f3",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "jsonl"
+            },
+            {
+              "name": "include_images",
+              "value": "false"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        864,
+        1040
+      ],
+      "id": "5c17996f-7002-4e18-8523-492fc567b55f",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=You are a Legal AI Agent working for the company \"nosta\", a German manufacturer of precision-milled parts. Your responsibility is to carefully analyze uploaded legal documents (e.g., contracts, NDAs, quality agreements) and verify them against the internal legal and business requirements of nosta.\n\n## All review criteria must be strictly based on the provided Legal AI Agent document (nosta policy guide). The agent must verify uploaded contracts against these specific instructions 1:1.\n\nAlways follow the steps and instructions below. Use only the tools provided.\n\n---\n\n🔧 Tool Usage Instructions\n\n- Document Access:  \n  Always use the `Supabase Get` tool to retrieve uploaded legal documents for analysis.\n\n- Document Deletion:  \n  If the user requests deletion of a document (single or all), use the `Supabase Delete` tool with the appropriate file reference(s).\n\n{{ $json.data }}\n\n🧭 Final Guidelines\n\n- Respond in a professional, structured, and legally sound tone.\n- Avoid making assumptions not grounded in the document or nosta's policy.\n- Be concise, actionable, and confident in your recommendations.\n- Give response in german language.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1856,
+        1280
+      ],
+      "id": "0b035255-ed51-4061-ae36-81bba6f94a99",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        1504
+      ],
+      "id": "b0e63d26-ecfe-4de1-a3d3-cf0729772f2b",
+      "name": "HTTP Request3",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "tableId": "temp_table",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $('When chat message received').item.json.sessionId }}"
+            },
+            {
+              "fieldId": "file",
+              "fieldValue": "={{ $json.data[0].parseJson().blocks }}"
+            },
+            {
+              "fieldId": "file_name",
+              "fieldValue": "={{ $json.data[0].parseJson().source }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        992
+      ],
+      "id": "93959cef-4b4a-414d-8475-ed6fbba5b95d",
+      "name": "Supabase1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1296,
+        1248
+      ],
+      "id": "dde6c1d6-675c-4f6c-82cc-75eea581f4e9",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "temp_table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        1504
+      ],
+      "id": "b548b1f5-c91b-4b58-a038-6ba22320072d",
+      "name": "Supabase Get1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "temp_table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+            },
+            {
+              "keyName": "file_name",
+              "condition": "eq",
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions1_Field_Value', `Provide the file name to delete`, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        1504
+      ],
+      "id": "5d6322e0-9ca6-4d1e-8eba-bb261f6fd247",
+      "name": "Supabase Delete1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const binaryKeys = Object.keys(item.binary || {});\n  const firstKey = binaryKeys[0];\n\n  if (!firstKey) {\n    return item;\n  }\n\n  return {\n    json: item.json,\n    binary: {\n      data: item.binary[firstKey]\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        1040
+      ],
+      "id": "3efca1f6-0dae-4e38-89c7-5f748a58fe81",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "prompt",
+        "filter": {
+          "driveId": {
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU",
+            "mode": "list",
+            "cachedResultName": "Legal Prompt",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        976,
+        2432
+      ],
+      "id": "e6924658-1b4a-4f83-9f6e-94437bc22278",
+      "name": "Google Drive1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3e42fe37-02d3-498d-ab0c-030cb6002e1c",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1136,
+        2432
+      ],
+      "id": "d381d07b-494b-4fa8-8d33-9f94bc45dfdf",
+      "name": "If2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        2080
+      ],
+      "id": "6aff583c-2865-4aae-a330-a783dce5fef5",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "queryString": "not fullText contains 'prompt.txt'",
+        "filter": {
+          "driveId": {
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU",
+            "mode": "list",
+            "cachedResultName": "Legal Prompt",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU"
+          },
+          "whatToSearch": "files"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1296,
+        2512
+      ],
+      "id": "f0435c27-e406-465f-b6d2-363cb3acbcb2",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1440,
+        2512
+      ],
+      "id": "cf157df3-b6eb-464a-810b-3aee8571c547",
+      "name": "Google Drive2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "text"
+            },
+            {
+              "name": "include_images",
+              "value": "false"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1616,
+        2512
+      ],
+      "id": "e675a78d-dde9-419e-972b-492a5110276a",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "message.content",
+        "options": {
+          "fileName": "prompt.txt"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2064,
+        2512
+      ],
+      "id": "0fb2542d-3e80-4183-8e1c-2a261bf74d49",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "name": "prompt.txt",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU",
+          "mode": "list",
+          "cachedResultName": "Legal Prompt",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2288,
+        2512
+      ],
+      "id": "a8d9b420-575d-45b5-8bcb-621af323d635",
+      "name": "Google Drive3",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2944,
+        2400
+      ],
+      "id": "2f6f6e9b-3d9f-43a9-946a-3c538f28b2a0",
+      "name": "Google Drive4",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3a50fb9a-1176-48eb-b430-d795ebca2ce2",
+              "name": "id",
+              "value": "={{ $('Google Drive3').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2496,
+        2512
+      ],
+      "id": "812e910a-a4da-4cd5-b0d7-2cff56df61db",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "74a6fd50-30cd-4814-b415-0e40f955432f",
+              "name": "id",
+              "value": "={{ $('Google Drive1').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2176,
+        2384
+      ],
+      "id": "81aa6695-2fe7-4de1-89f2-3d6dc7b889c3",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        2720,
+        2400
+      ],
+      "id": "e38beeb8-e71a-41f4-a9f0-c5ba7d3dcb39",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        3168,
+        2400
+      ],
+      "id": "eb59e1ed-ea73-495f-b2a0-8503dd509557",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "url": "https://nsebtjqnfydjgjtigsiq.supabase.co/storage/v1/object/public/prompt//prompt.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        1424
+      ],
+      "id": "76668858-1977-42ac-8de4-59d005adcc5b",
+      "name": "HTTP Request5",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "queryString": "not fullText contains 'prompt.txt'",
+        "filter": {
+          "driveId": {
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU",
+            "mode": "list",
+            "cachedResultName": "Legal Prompt",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1a5pasFQv0aSzWbzuWM20BHSdLyR7TgLU"
+          },
+          "whatToSearch": "files"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        336,
+        1648
+      ],
+      "id": "78a1c83c-9fcf-442b-8a9d-3c6838eb563c",
+      "name": "Google Drive7",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        560,
+        1648
+      ],
+      "id": "2539239e-5a2a-450c-99e0-3c295969bbee",
+      "name": "Google Drive8",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "text"
+            },
+            {
+              "name": "include_images",
+              "value": "false"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        784,
+        1648
+      ],
+      "id": "f4049caa-a7b2-4894-877f-d537bfc5878c",
+      "name": "HTTP Request6"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "message.content",
+        "options": {
+          "fileName": "prompt.txt"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        1648
+      ],
+      "id": "392b057e-1fba-483f-a49d-c19d12e435fc",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "prompt",
+        "fileName": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        1728
+      ],
+      "id": "33d5a8bc-58a0-4600-bd2e-52f0809c463d",
+      "name": "S32",
+      "credentials": {
+        "s3": {
+          "id": "a5RCyrjrPuJBcN4k",
+          "name": "S3 account 2 ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        1520
+      ],
+      "id": "ecedeead-2572-4a58-86da-e7d5d8d1e412",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11ba9a43-9039-45c1-9339-7f1dfb961417",
+              "name": "prompt",
+              "value": "create a set of instruction from the user message. give output in english.  help me write a good prompt for a Legal AI Agent I’m building in n8n for my company \"nosta\", a German manufacturer of precision-milled parts. The workflow is read,: the user uploads a legal document (like a contract or NDA) and asks questions. The AI should review the document and answer based on nosta's internal legal and business requirements. I’ve been told by the nosta legal team to use the attached guidance documents as the reference. The agent should check uploaded documents exactly 1:1 against this guidance.  Can you write a clear and professional system prompt that tells the agent how to do this review properly? It should include:    * Identifying contract type and parties    *Checking legal compliance (jurisdiction, GDPR, export rules, CSR, etc.)    *Verifying nosta-specific clauses (like delivery, audits, warranties)    *Giving traffic light risk ratings     *Suggesting improvements for any risky or unclear clauses    *The agent’s tone should be professional, structured, and aligned with compliance standards.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1024,
+        1552
+      ],
+      "id": "fa6b4658-9455-4da0-9a85-207e422d6919",
+      "name": "Edit Fields2"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "HTTP Request4": [
+      {
+        "json": {
+          "data": [
+            {
+              "id": "83519b69-186c-4d76-8f11-915fa7fce146",
+              "source": "Legal KI Agent 14072025.docx",
+              "text": "Legal KI Agent\n\nStufe 1: Unterstützung bei Vertragsprüfung\n\nStufe 2: Befüllung der Vertragsunterlagen\n\nBeschreibung Geschäftsmodell nosta:\n\nHersteller von Präzisionsfrästeilen Standard und nach Zeichnung\n\nAmtsgericht Dillingen, Deutschland\nHandelsgericht Augsburg, Deutschland\n\n…\n\nGenerelle Rahmenbedingungen\n\nVom Speziellen zum Generellen – das projektspezifische zählt in der Regel\n\nAlle Für die Firma schädigende sowie zweifelhafte Anforderungen sind zu prüfen / ändern\n\nMehr und Minderbedarfklauseln sind hervorzuheben – empfehlung zu löschen\n\nKlauseln zu Materialfreigaben in Bezug auf Bestellungen und Mehrbedarfe zu prüfen und kalkulieren\n\nProzessanpassungen durch Schwankungen sind mit der Produktion / Einkaufsprozesse von nosta abzustimmen und einhergehen, vorherige Anpassungen sind nicht möglich und abzustellen\n\nFlexibilitätsanforderungen: Nur mit Prfung un in Abstimmung mit nosta NICHT nach definierten Kundenanforderung in Bezug auf nosta prozess\n\nVerpflichtungen für Kunden zu sofortige und vorab Wareneingangskontrollen bei Annahme und sofortige Meldung bei Qualitätsmängel\n\nMängelansprüche über BGB nicht akzeptabel bzw zu prüfen\n\nNacherfüllung nach BGB freie Wahl für den Lieferant bzw. ist abzustimmen MIT VORHERIGER Prüfung der Schuldfrage.\n\nVersicherung der Deckungssumme ist zu prüfen sowie Rückrufkostensumme zu prüfen.\n\nPreisklärung für Ersatzteillieferungen sind zu vollziehen\n\nIm Falle von Audits sind Zutrittberechtigungen für spezielle Bereiche individuell zu klären\n\nIm Falle von AGBs, Einkaufsbedingungen, andere Verweise sind diese noch einmal zu prüfen\n\nStrukturierte Aufgaben- und Prüfreihenfolge eines KI Legal Agenten (B2B Automotive | Zerspanung)\n\nVertragsart und Kontext erkennen\n\nKurzer Einleitungsprüfklausel/Grundregeln & Interesse nosta:\n\nKlassifizierung: Rahmenvertrag, Einzelvertrag, NDA, Qualitätssicherungsvereinbarung (QSV), Logistikvereinbarung, Preisvereinbarung, Tooling Agreement, etc.\n\nBeteiligte Parteien: Kunde, Lieferant, ggf. Tochtergesellschaften\n\nVertragslaufzeit & Kündigungsregelungen\n\nVertragsstruktur (Anlagen, Verweise, technische Ergänzungen)\n\nAllgemeine rechtliche Grundprüfung\n\nKurzer Einleitungsprüfklausel/Grundregeln & Interesse nosta:\n\nRechtssitz und Gerichtsstand\n\nGenerell Deutschland, bevorzugt Amtsgericht Dillingen, Handelsrecht Augsburg\n\nBei ausländischen Gerichtsständen Kompromiss: Schweizer Recht\n\nGeltendes Recht (Rechtswahlklausel)\n\nSalvatorische Klausel\n\nGenerell akzeptiert bzw. zu prüfen\n\nVertraulichkeitsregelungen\n\nNach GHV Level:\n\nLevel 1: Freigabe für Weitergabe an Dienstleister\n\nLevel 2: …\n\nLevel 3: Jeder Weitergabe von Daten muss vom Kunden freigegeben werden\n\nCompliance-Klauseln (z. B. Antikorruption, CSR, Nachhaltigkeit)\n\nZu prüfen und Details auszugeben\n\nExportkontrolle / Sanktionsprüfung\n(z. B. EAR, EU-VO 428/2009, US-Bezug in Verträgen)\n\nSanktionen sind generell zu vermeiden und zu prüfen\n\nAlle Arten von Saktionen sind kritisch\n\nHaftung & Gewährleistung\n\nAlle Themen sind kritisch und zu prüfen\n\nJedes unklare Formulierung sind herauszuheben\n\nAlle Klauseln welche mögliche Risiken / Haftung / Gewährleistungen in Bezug auf Ansprüche in Bezug auf Betriebsknowhow / Geheimnisse / Leistungen / USPs / Internas / etc beziehen sind herauszuheben, zu prüfen und anzupassen!\n\nDatenschutz (DSGVO/International Transfer)\n\nVertragsspezifische Prüfkriterien (B2B Automotive, Zerspanung)\n\nKurzer Einleitungsprüfklausel/Grundregeln & Interesse nosta:\n\nGenerelle Vertragsbedingungen müssen aus risikobetrachtung in bezug auf verbindlichkeiten aus nosta-sicht durch Materialfreigaben und/oder Freeze-Period „unveränderbare Vorschauzahlen / Zeiträume“ sichergestellt werden.\n\nA. Liefer- & Leistungsbedingungen\n\nLieferverpflichtung (Make-to-Print / Make-to-Stock / Forecast-Verpflichtung)\n\nLieferfristen, Verzug, Vertragsstrafen (Pönalen)\n\nLieferabrufe, Rahmenbedarfe, Flexibilitätsbänder\n\nMindestabnahmemengen / Abnahmeverpflichtungen\n\nB. Preise und Zahlungsbedingungen\n\nPreisgleitklauseln (z. B. Material, Energie, Lohn)\n\nZahlungsziele, Skonti, Fälligkeiten\n\nWährungsrisiko / Währungsklausel\n\nFakturierungsmodalitäten\n\nC. Werkzeuge / Vorrichtungen / Eigentumsvorbehalt\n\nEigentumsübergang / Eigentum beim Kunden\n\nWartung, Instandhaltung, Ersatz\n\nVersicherungspflichten für kundeneigene Betriebsmittel\n\nRückgabepflicht bei Vertragsende\n\nD. Qualitätsanforderungen\n\nVerweis auf IATF 16949, VDA 6.3, PPAP, EMPB\n\nAuditrechte des Kunden\n\nMeldepflichten bei Abweichungen\n\nRückverfolgbarkeit\n\n0-Fehler-Ziel / ppm-Regelung\n\nAbweichungsregelung (z. B. Nacharbeit, Sortierung)\n\nE. Haftung und Gewährleistung\n\nUmfang und Dauer der Gewährleistung\n\nVerjährungsfristen\n\nProdukthaftung (inkl. Rückrufkosten)\n\nBeschränkung der Haftung / Freistellung\n\nRegressansprüche (z. B. im Rahmen OEM-Rückruf)\n\nF. Änderungsmanagement\n\nÄnderungsanträge / Change Requests\n\nKosten- und Lieferzeitwirkungen\n\nMitwirkungspflichten des Kunden\n\nDokumentationspflichten\n\nG. Lieferunterbrechung / Force Majeure\n\nDefinition und Umfang höherer Gewalt\n\nReaktionszeiten, Mitteilungspflichten\n\nRechte bei längerem Ausfall\n\nH. Geistiges Eigentum / Zeichnungsrechte\n\nUmgang mit Kundenzeichnungen und -daten\n\nNutzungslizenzen / Einschränkungen\n\nGeheimhaltung technischer Dokumente\n\nIP-Rechte bei Neuentwicklungen\n\n4. Zusätzliche kritische Punkte für Zerspanungsunternehmen\n\nToleranzangaben, Werkstoffverantwortung, Prüfpflicht\n\nVorserienlieferung vs. Serienproduktion\n\nAnlaufmanagement (Ramp-up, Run@Rate, etc.)\n\nOutsourcing oder Sub-Sub-Lieferanten: Genehmigungspflicht?\n\n5. Risikoanalyse & Ampelkennzeichnung\n\nDer KI-Agent vergibt eine Risikokategorie je Abschnitt:\n\n🔴 Kritisch: Nicht marktüblich, hohe Haftung, unklare Regelung\n\n🟡 Mittel: Nachverhandlung empfohlen\n\n🟢 Unkritisch: Standard oder vorteilhaft\n\nZusätzlich: Vorschläge zur Anpassung/Verhandlung\n\n6. Ausgabeformate\n\nExecutive Summary: Für Geschäftsführung mit Ampelübersicht\n\nDetailanalyse: Vollständige Klauselprüfung mit Kommentaren\n\nRedline Vorschläge: Markierter Vertrag mit KI-Korrekturvorschlägen\n\nVerhandlungs-Checkliste: Übersicht der zu diskutierenden Punkte"
+            }
+          ]
+        }
+      }
+    ],
+    "HTTP Request6": [
+      {
+        "json": {
+          "data": [
+            {
+              "id": "83519b69-186c-4d76-8f11-915fa7fce146",
+              "source": "Legal KI Agent 14072025.docx",
+              "text": "Legal KI Agent\n\nStufe 1: Unterstützung bei Vertragsprüfung\n\nStufe 2: Befüllung der Vertragsunterlagen\n\nBeschreibung Geschäftsmodell nosta:\n\nHersteller von Präzisionsfrästeilen Standard und nach Zeichnung\n\nAmtsgericht Dillingen, Deutschland\nHandelsgericht Augsburg, Deutschland\n\n…\n\nGenerelle Rahmenbedingungen\n\nVom Speziellen zum Generellen – das projektspezifische zählt in der Regel\n\nAlle Für die Firma schädigende sowie zweifelhafte Anforderungen sind zu prüfen / ändern\n\nMehr und Minderbedarfklauseln sind hervorzuheben – empfehlung zu löschen\n\nKlauseln zu Materialfreigaben in Bezug auf Bestellungen und Mehrbedarfe zu prüfen und kalkulieren\n\nProzessanpassungen durch Schwankungen sind mit der Produktion / Einkaufsprozesse von nosta abzustimmen und einhergehen, vorherige Anpassungen sind nicht möglich und abzustellen\n\nFlexibilitätsanforderungen: Nur mit Prfung un in Abstimmung mit nosta NICHT nach definierten Kundenanforderung in Bezug auf nosta prozess\n\nVerpflichtungen für Kunden zu sofortige und vorab Wareneingangskontrollen bei Annahme und sofortige Meldung bei Qualitätsmängel\n\nMängelansprüche über BGB nicht akzeptabel bzw zu prüfen\n\nNacherfüllung nach BGB freie Wahl für den Lieferant bzw. ist abzustimmen MIT VORHERIGER Prüfung der Schuldfrage.\n\nVersicherung der Deckungssumme ist zu prüfen sowie Rückrufkostensumme zu prüfen.\n\nPreisklärung für Ersatzteillieferungen sind zu vollziehen\n\nIm Falle von Audits sind Zutrittberechtigungen für spezielle Bereiche individuell zu klären\n\nIm Falle von AGBs, Einkaufsbedingungen, andere Verweise sind diese noch einmal zu prüfen\n\nStrukturierte Aufgaben- und Prüfreihenfolge eines KI Legal Agenten (B2B Automotive | Zerspanung)\n\nVertragsart und Kontext erkennen\n\nKurzer Einleitungsprüfklausel/Grundregeln & Interesse nosta:\n\nKlassifizierung: Rahmenvertrag, Einzelvertrag, NDA, Qualitätssicherungsvereinbarung (QSV), Logistikvereinbarung, Preisvereinbarung, Tooling Agreement, etc.\n\nBeteiligte Parteien: Kunde, Lieferant, ggf. Tochtergesellschaften\n\nVertragslaufzeit & Kündigungsregelungen\n\nVertragsstruktur (Anlagen, Verweise, technische Ergänzungen)\n\nAllgemeine rechtliche Grundprüfung\n\nKurzer Einleitungsprüfklausel/Grundregeln & Interesse nosta:\n\nRechtssitz und Gerichtsstand\n\nGenerell Deutschland, bevorzugt Amtsgericht Dillingen, Handelsrecht Augsburg\n\nBei ausländischen Gerichtsständen Kompromiss: Schweizer Recht\n\nGeltendes Recht (Rechtswahlklausel)\n\nSalvatorische Klausel\n\nGenerell akzeptiert bzw. zu prüfen\n\nVertraulichkeitsregelungen\n\nNach GHV Level:\n\nLevel 1: Freigabe für Weitergabe an Dienstleister\n\nLevel 2: …\n\nLevel 3: Jeder Weitergabe von Daten muss vom Kunden freigegeben werden\n\nCompliance-Klauseln (z. B. Antikorruption, CSR, Nachhaltigkeit)\n\nZu prüfen und Details auszugeben\n\nExportkontrolle / Sanktionsprüfung\n(z. B. EAR, EU-VO 428/2009, US-Bezug in Verträgen)\n\nSanktionen sind generell zu vermeiden und zu prüfen\n\nAlle Arten von Saktionen sind kritisch\n\nHaftung & Gewährleistung\n\nAlle Themen sind kritisch und zu prüfen\n\nJedes unklare Formulierung sind herauszuheben\n\nAlle Klauseln welche mögliche Risiken / Haftung / Gewährleistungen in Bezug auf Ansprüche in Bezug auf Betriebsknowhow / Geheimnisse / Leistungen / USPs / Internas / etc beziehen sind herauszuheben, zu prüfen und anzupassen!\n\nDatenschutz (DSGVO/International Transfer)\n\nVertragsspezifische Prüfkriterien (B2B Automotive, Zerspanung)\n\nKurzer Einleitungsprüfklausel/Grundregeln & Interesse nosta:\n\nGenerelle Vertragsbedingungen müssen aus risikobetrachtung in bezug auf verbindlichkeiten aus nosta-sicht durch Materialfreigaben und/oder Freeze-Period „unveränderbare Vorschauzahlen / Zeiträume“ sichergestellt werden.\n\nA. Liefer- & Leistungsbedingungen\n\nLieferverpflichtung (Make-to-Print / Make-to-Stock / Forecast-Verpflichtung)\n\nLieferfristen, Verzug, Vertragsstrafen (Pönalen)\n\nLieferabrufe, Rahmenbedarfe, Flexibilitätsbänder\n\nMindestabnahmemengen / Abnahmeverpflichtungen\n\nB. Preise und Zahlungsbedingungen\n\nPreisgleitklauseln (z. B. Material, Energie, Lohn)\n\nZahlungsziele, Skonti, Fälligkeiten\n\nWährungsrisiko / Währungsklausel\n\nFakturierungsmodalitäten\n\nC. Werkzeuge / Vorrichtungen / Eigentumsvorbehalt\n\nEigentumsübergang / Eigentum beim Kunden\n\nWartung, Instandhaltung, Ersatz\n\nVersicherungspflichten für kundeneigene Betriebsmittel\n\nRückgabepflicht bei Vertragsende\n\nD. Qualitätsanforderungen\n\nVerweis auf IATF 16949, VDA 6.3, PPAP, EMPB\n\nAuditrechte des Kunden\n\nMeldepflichten bei Abweichungen\n\nRückverfolgbarkeit\n\n0-Fehler-Ziel / ppm-Regelung\n\nAbweichungsregelung (z. B. Nacharbeit, Sortierung)\n\nE. Haftung und Gewährleistung\n\nUmfang und Dauer der Gewährleistung\n\nVerjährungsfristen\n\nProdukthaftung (inkl. Rückrufkosten)\n\nBeschränkung der Haftung / Freistellung\n\nRegressansprüche (z. B. im Rahmen OEM-Rückruf)\n\nF. Änderungsmanagement\n\nÄnderungsanträge / Change Requests\n\nKosten- und Lieferzeitwirkungen\n\nMitwirkungspflichten des Kunden\n\nDokumentationspflichten\n\nG. Lieferunterbrechung / Force Majeure\n\nDefinition und Umfang höherer Gewalt\n\nReaktionszeiten, Mitteilungspflichten\n\nRechte bei längerem Ausfall\n\nH. Geistiges Eigentum / Zeichnungsrechte\n\nUmgang mit Kundenzeichnungen und -daten\n\nNutzungslizenzen / Einschränkungen\n\nGeheimhaltung technischer Dokumente\n\nIP-Rechte bei Neuentwicklungen\n\n4. Zusätzliche kritische Punkte für Zerspanungsunternehmen\n\nToleranzangaben, Werkstoffverantwortung, Prüfpflicht\n\nVorserienlieferung vs. Serienproduktion\n\nAnlaufmanagement (Ramp-up, Run@Rate, etc.)\n\nOutsourcing oder Sub-Sub-Lieferanten: Genehmigungspflicht?\n\n5. Risikoanalyse & Ampelkennzeichnung\n\nDer KI-Agent vergibt eine Risikokategorie je Abschnitt:\n\n🔴 Kritisch: Nicht marktüblich, hohe Haftung, unklare Regelung\n\n🟡 Mittel: Nachverhandlung empfohlen\n\n🟢 Unkritisch: Standard oder vorteilhaft\n\nZusätzlich: Vorschläge zur Anpassung/Verhandlung\n\n6. Ausgabeformate\n\nExecutive Summary: Für Geschäftsführung mit Ampelübersicht\n\nDetailanalyse: Vollständige Klauselprüfung mit Kommentaren\n\nRedline Vorschläge: Markierter Vertrag mit KI-Korrekturvorschlägen\n\nVerhandlungs-Checkliste: Übersicht der zu diskutierenden Punkte"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-09-13T11:56:16.915Z",
+      "createdAt": "2025-09-13T11:56:16.915Z",
+      "role": "workflow:owner",
+      "workflowId": "qFuaKsnWmlubmsEy",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-10T21:50:04.000Z",
+  "versionId": "b323fe12-3e57-426d-9970-f7a29cd6fe42"
+}
