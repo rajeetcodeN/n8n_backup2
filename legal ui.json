@@ -1,0 +1,1553 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-08T18:50:39.117Z",
+    "createdAt": "2026-01-08T18:50:39.117Z",
+    "versionId": "062deab4-c350-4712-80c1-f32ff1d3501a",
+    "workflowId": "ZwHFoQqgwDI5sP6q",
+    "nodes": [
+      {
+        "parameters": {
+          "model": "mistral-medium-latest",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          1024,
+          224
+        ],
+        "id": "7017e998-ee6f-4161-b660-4b7ac79a3180",
+        "name": "Mistral Cloud Chat Model",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.chatInput }} or review",
+          "options": {
+            "systemMessage": "=You are a Legal AI Agent working for the company \"nosta\", a German manufacturer of precision-milled parts. Your responsibility is to carefully analyze uploaded legal documents (e.g., contracts, NDAs, quality agreements) and verify them against the internal legal and business requirements of nosta. Every respond should be strictly in GERMAN.\n\n## All review criteria must be strictly based on the provided Legal AI Agent document (nosta policy guide). The agent must verify uploaded contracts against these specific instructions 1:1.\n\nAlways follow the steps and instructions below. Use only the tools provided.\n\n---\n\n🔧 Tool Usage Instructions\n#important\n- Document Access:  \n  Important! Always use the `Supabase Get` tool to retrieve uploaded legal documents for analysis.\n\n- Document Deletion:  \n  If the user requests deletion of a document (single or all), use the `Supabase Delete` tool with the appropriate file reference(s).\n\n---\n\n📌 Step 1: Recognize Contract Type & Involved Parties\n\nClassify and summarize basic metadata:\n- Identify contract type: Framework Agreement, NDA, Quality Agreement (QAA), Logistics Agreement, Pricing Agreement, Tooling Agreement, etc.\n- Identify all parties: customer, supplier, subsidiaries.\n- Note contract term, renewal rules, and termination clauses.\n- Mention annexes, technical references, or external documents.\n\n---\n\n📌 Step 2: General Legal Compliance Review\n\nReview these standard legal elements:\n- Jurisdiction:  \n  Prefer “Amtsgericht Dillingen” or “Handelsgericht Augsburg”. If not possible, Swiss law is an acceptable alternative.\n\n- Confidentiality:  \n  Must comply with GHV Level 1–3:\n  - Level 1: Data can be shared with service providers.\n  - Level 2–3: Transfer may require customer approval.\n  Verify level and compliance.\n\n- Export Control / Sanctions:  \n  Must comply with EU Regulation 428/2009, EAR, and U.S. law. Flag any sanction-related language for review.\n\n- Compliance Clauses:  \n  Must include anti-corruption, CSR, and sustainability statements.\n\n- Data Protection:  \n  Must comply with GDPR. Pay attention to international data transfers.\n\n---\n\n📌 Step 3: Nosta-Specific Policy Compliance\n\nEvaluate document content based on nosta’s internal expectations:\n- The contract must allow project-specific flexibility.\n- Do not accept automatic obligations that harm nosta’s interests.\n- Material approval steps and forecast freeze periods must be defined.\n- Excess/shortfall delivery clauses should be deleted or flagged.\n- Process changes must require coordination with nosta’s production/purchasing teams.\n- Flexibility requirements must not bypass internal process limits.\n- Buyer must inspect incoming goods immediately and report issues.\n- Warranty clauses under the German BGB must be reviewed or rejected.\n- Nosta must retain the right to choose how to address defects (repair/replace).\n- Product recall, liability, and insurance obligations must be stated clearly.\n- Spare part pricing policies must be included.\n- Customer audit access must be limited to clearly defined areas.\n\n---\n\n📌 Step 4: Rate Risk Levels (Traffic Light System)\n\nApply a color-coded risk level for each clause:\n\n- 🔴 Critical  \n  Clause is harmful to nosta, unclear, or unacceptable. Requires revision or removal.\n\n- 🟡 Medium  \n  Clause may be acceptable but has risk. Should be clarified or negotiated.\n\n- 🟢 Green  \n  Clause complies with nosta’s internal and legal standards.\n\n✅ For each 🔴 or 🟡 clause, propose a better alternative or revision.\n\n---\n\n📌 Step 5: Answer User Questions Clearly\n\nWhen a user asks a question about the contract (e.g., \"Is the liability clause okay?\"):\n1. Use Supabase Get to retrieve the uploaded document.\n2. Locate the clause that matches the question.\n3. Compare it against nosta’s policies (above).\n4. Respond with:\n   - A quote of the relevant clause.\n   - Risk level (🔴, 🟡, 🟢).\n   - A short legal/business justification.\n   - A suggestion for improvement (if needed).\n\n---\n\n🧭 Final Guidelines\n\n- Respond in a professional, structured, and legally sound tone.\n- Avoid making assumptions not grounded in the document or nosta's policy.\n- Be concise, actionable, and confident in your recommendations.\n- always use `Supabase Get` tool to retrieve uploaded legal documents for analysis."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          1056,
+          0
+        ],
+        "id": "2d0f68ac-29df-436b-9606-dbb74ac0ba98",
+        "name": "AI Agent2"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+                "name": "chatInput",
+                "value": "={{ $json?.chatInput || $json.body.chatInput }}",
+                "type": "string"
+              },
+              {
+                "id": "4b291433-cedb-4631-9128-621c6744e51d",
+                "name": "sessionId",
+                "value": "={{ $json?.sessionId || $json.body.sessionId}}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6f84b004-86d4-4439-972a-b40b47827713",
+        "name": "Edit Fields2",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          896,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "463448a5-b323-4682-8674-24bee0df163b",
+                "leftValue": "={{ $binary}}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -816,
+          16
+        ],
+        "id": "39ec676b-f685-4083-a177-bd14d73d16df",
+        "name": "If3"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "$binary",
+          "options": {
+            "destinationFieldName": "data",
+            "includeBinary": true
+          }
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          -640,
+          -64
+        ],
+        "id": "bbd10d73-b60d-4a7f-a252-0237cfd9f79e",
+        "name": "Split Out2"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "mode",
+                "value": "single"
+              },
+              {
+                "name": "output_type",
+                "value": "jsonl"
+              },
+              {
+                "name": "include_images",
+                "value": "false"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "files",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -448,
+          448
+        ],
+        "id": "3043efe7-0a18-4f9d-8c7c-fbafc753f74e",
+        "name": "HTTP Request1"
+      },
+      {
+        "parameters": {
+          "tableId": "temp_table",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "session_id",
+                "fieldValue": "={{ $('Webhook').item.json.body.sessionId }}"
+              },
+              {
+                "fieldId": "file",
+                "fieldValue": "={{ $json.data[0].parseJson().blocks }}"
+              },
+              {
+                "fieldId": "file_name",
+                "fieldValue": "={{ $json.data[0].parseJson().source }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          -288,
+          448
+        ],
+        "id": "29a98cdb-abf7-46ba-b3ae-d3defbb6213c",
+        "name": "Supabase2",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.1,
+        "position": [
+          752,
+          0
+        ],
+        "id": "ac6d8083-0dc1-49ce-bd65-bdbcba760c03",
+        "name": "Merge3"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "f12a9701-cf5f-4fbc-acfc-8d8cbc64b777",
+                "name": "sessionId",
+                "value": "={{ $json.session_id }}",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          592,
+          -80
+        ],
+        "id": "77d3922e-a1d2-4a9e-999c-5fd25fd8c28a",
+        "name": "Edit Fields3"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "8b72a299-6557-4d8c-a365-09e105d76393",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -1008,
+          0
+        ],
+        "id": "4dc53f63-f1d2-4269-b9af-9ccc45cee3aa",
+        "name": "Webhook",
+        "webhookId": "8b72a299-6557-4d8c-a365-09e105d76393"
+      },
+      {
+        "parameters": {
+          "options": {
+            "allowFileUploads": true
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -1008,
+          160
+        ],
+        "id": "4fea6cd3-977b-43a8-99cf-8f730fa2f815",
+        "name": "When chat message received",
+        "webhookId": "23f8af16-7b2d-4892-b29d-970d3c04cef0"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n  if (!firstKey) return item;\n\n  const fileData = item.binary[firstKey];\n\n  return {\n    json: {\n      ...item.json,\n      fileName: fileData.fileName || null, // extract filename here\n    },\n    binary: {\n      data: fileData,\n    },\n  };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -480,
+          -64
+        ],
+        "id": "b569d6ee-36de-43f7-86e3-3286a607524e",
+        "name": "Code7"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "temp_table",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "session_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.sessionId }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabaseTool",
+        "typeVersion": 1,
+        "position": [
+          1344,
+          224
+        ],
+        "id": "2dc15ce3-3410-4e9f-809f-f24ff01a802c",
+        "name": "Supabase Get",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "tableId": "temp_table",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "session_id",
+                "condition": "eq",
+                "keyValue": "={{ $json.sessionId }}"
+              },
+              {
+                "keyName": "file_name",
+                "condition": "eq",
+                "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions1_Field_Value', `Provide the file name to delete`, 'string') }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabaseTool",
+        "typeVersion": 1,
+        "position": [
+          1472,
+          192
+        ],
+        "id": "1e5b97b0-5438-4a62-8aae-90606dbae8ef",
+        "name": "Supabase Delete",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/files",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "purpose",
+                "value": "ocr"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "file",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "5fcce16d-5e83-4376-ab8f-cb6ba7ef3fbc",
+        "name": "Mistral Upload",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -352,
+          -64
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "expiry",
+                "value": "24"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "b227e464-2f47-4753-95b7-689a122e8e59",
+        "name": "Mistral Signed URL",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -208,
+          -144
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/ocr",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n\n",
+          "options": {}
+        },
+        "id": "98789905-9bab-41a1-9b65-089443cee3a1",
+        "name": "Mistral DOC OCR3",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -32,
+          -144
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "DELETE",
+          "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload').item.json.id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {}
+            ]
+          },
+          "options": {}
+        },
+        "id": "0b406a8d-7176-41b9-93c4-e908945203de",
+        "name": "Mistral file delete5",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          176,
+          -368
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Function node\n// Keeps image array from input, inserts embedding_text inline with images\n\nconst pages = items[0].json.pages;\nlet output = [];\n\nfor (const page of pages) {\n  let text = `Page ${page.index}\\n\\n`;\n  let markdown = page.markdown;\n\n  // Replace each image markdown with annotation text if available\n  markdown = markdown.replace(/!\\[(.*?)\\]\\((.*?)\\)/g, (match, alt, src) => {\n    const img = page.images.find(i => i.id === src || i.fileName === src);\n    if (img && img.image_annotation) {\n      const ann = JSON.parse(img.image_annotation);\n      return (\n        '{' +\n        `Image: [${img.id}]\\n` +\n        `Type: ${ann.image_type}\\n` +\n        `Short: ${ann.short_description}\\n` +\n        `Summary: ${ann.summary}\\n` +\n        '}'\n      );\n    }\n    return \"\"; // if no annotation, strip it\n  });\n\n  text += markdown.trim();\n\n  output.push({\n    json: {\n      page_index: page.index,\n      embedding_text: text,\n      images: page.images   // ✅ keep original images array\n    }\n  });\n}\n\nreturn output;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          128,
+          -144
+        ],
+        "id": "5bc3682b-e668-4dcd-b61b-898a0208cc73",
+        "name": "Code9"
+      },
+      {
+        "parameters": {
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "embedding_text"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          256,
+          -144
+        ],
+        "id": "953fe4c8-cf8c-4cf3-a20b-95fc5be2925f",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "tableId": "temp_table",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "session_id",
+                "fieldValue": "={{ $('Webhook').item.json.body.sessionId }}"
+              },
+              {
+                "fieldId": "file",
+                "fieldValue": "={{ $json.embedding_text }}"
+              },
+              {
+                "fieldId": "file_name",
+                "fieldValue": "={{ $('Code7').item.json.fileName }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          432,
+          -144
+        ],
+        "id": "18960de8-cbbd-4c02-b26f-8bcc3fee1837",
+        "name": "Supabase",
+        "credentials": {
+          "supabaseApi": {
+            "id": "Yeu4uGtLws8bzw5u",
+            "name": "Supabase dbt ayan"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Mistral Cloud Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent2",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields2": {
+        "main": [
+          [
+            {
+              "node": "AI Agent2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If3": {
+        "main": [
+          [
+            {
+              "node": "Split Out2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Merge3",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Split Out2": {
+        "main": [
+          [
+            {
+              "node": "Code7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request1": {
+        "main": [
+          [
+            {
+              "node": "Supabase2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase2": {
+        "main": [
+          []
+        ]
+      },
+      "Merge3": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields3": {
+        "main": [
+          [
+            {
+              "node": "Merge3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "If3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "If3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code7": {
+        "main": [
+          [
+            {
+              "node": "Mistral Upload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Get": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent2",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Delete": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent2",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Upload": {
+        "main": [
+          [
+            {
+              "node": "Mistral Signed URL",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Signed URL": {
+        "main": [
+          [
+            {
+              "node": "Mistral DOC OCR3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral DOC OCR3": {
+        "main": [
+          [
+            {
+              "node": "Mistral file delete5",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Code9",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code9": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "Supabase",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "062deab4-c350-4712-80c1-f32ff1d3501a",
+  "connections": {
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Split Out2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Split Out2": {
+      "main": [
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Supabase2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase2": {
+      "main": [
+        []
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Mistral Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Get": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Delete": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Upload": {
+      "main": [
+        [
+          {
+            "node": "Mistral Signed URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Signed URL": {
+      "main": [
+        [
+          {
+            "node": "Mistral DOC OCR3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral DOC OCR3": {
+      "main": [
+        [
+          {
+            "node": "Mistral file delete5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code9": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-15T06:52:33.234Z",
+  "id": "ZwHFoQqgwDI5sP6q",
+  "isArchived": false,
+  "meta": null,
+  "name": "legal ui",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        224
+      ],
+      "id": "7017e998-ee6f-4161-b660-4b7ac79a3180",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }} or review",
+        "options": {
+          "systemMessage": "=You are a Legal AI Agent working for the company \"nosta\", a German manufacturer of precision-milled parts. Your responsibility is to carefully analyze uploaded legal documents (e.g., contracts, NDAs, quality agreements) and verify them against the internal legal and business requirements of nosta. Every respond should be strictly in GERMAN.\n\n## All review criteria must be strictly based on the provided Legal AI Agent document (nosta policy guide). The agent must verify uploaded contracts against these specific instructions 1:1.\n\nAlways follow the steps and instructions below. Use only the tools provided.\n\n---\n\n🔧 Tool Usage Instructions\n#important\n- Document Access:  \n  Important! Always use the `Supabase Get` tool to retrieve uploaded legal documents for analysis.\n\n- Document Deletion:  \n  If the user requests deletion of a document (single or all), use the `Supabase Delete` tool with the appropriate file reference(s).\n\n---\n\n📌 Step 1: Recognize Contract Type & Involved Parties\n\nClassify and summarize basic metadata:\n- Identify contract type: Framework Agreement, NDA, Quality Agreement (QAA), Logistics Agreement, Pricing Agreement, Tooling Agreement, etc.\n- Identify all parties: customer, supplier, subsidiaries.\n- Note contract term, renewal rules, and termination clauses.\n- Mention annexes, technical references, or external documents.\n\n---\n\n📌 Step 2: General Legal Compliance Review\n\nReview these standard legal elements:\n- Jurisdiction:  \n  Prefer “Amtsgericht Dillingen” or “Handelsgericht Augsburg”. If not possible, Swiss law is an acceptable alternative.\n\n- Confidentiality:  \n  Must comply with GHV Level 1–3:\n  - Level 1: Data can be shared with service providers.\n  - Level 2–3: Transfer may require customer approval.\n  Verify level and compliance.\n\n- Export Control / Sanctions:  \n  Must comply with EU Regulation 428/2009, EAR, and U.S. law. Flag any sanction-related language for review.\n\n- Compliance Clauses:  \n  Must include anti-corruption, CSR, and sustainability statements.\n\n- Data Protection:  \n  Must comply with GDPR. Pay attention to international data transfers.\n\n---\n\n📌 Step 3: Nosta-Specific Policy Compliance\n\nEvaluate document content based on nosta’s internal expectations:\n- The contract must allow project-specific flexibility.\n- Do not accept automatic obligations that harm nosta’s interests.\n- Material approval steps and forecast freeze periods must be defined.\n- Excess/shortfall delivery clauses should be deleted or flagged.\n- Process changes must require coordination with nosta’s production/purchasing teams.\n- Flexibility requirements must not bypass internal process limits.\n- Buyer must inspect incoming goods immediately and report issues.\n- Warranty clauses under the German BGB must be reviewed or rejected.\n- Nosta must retain the right to choose how to address defects (repair/replace).\n- Product recall, liability, and insurance obligations must be stated clearly.\n- Spare part pricing policies must be included.\n- Customer audit access must be limited to clearly defined areas.\n\n---\n\n📌 Step 4: Rate Risk Levels (Traffic Light System)\n\nApply a color-coded risk level for each clause:\n\n- 🔴 Critical  \n  Clause is harmful to nosta, unclear, or unacceptable. Requires revision or removal.\n\n- 🟡 Medium  \n  Clause may be acceptable but has risk. Should be clarified or negotiated.\n\n- 🟢 Green  \n  Clause complies with nosta’s internal and legal standards.\n\n✅ For each 🔴 or 🟡 clause, propose a better alternative or revision.\n\n---\n\n📌 Step 5: Answer User Questions Clearly\n\nWhen a user asks a question about the contract (e.g., \"Is the liability clause okay?\"):\n1. Use Supabase Get to retrieve the uploaded document.\n2. Locate the clause that matches the question.\n3. Compare it against nosta’s policies (above).\n4. Respond with:\n   - A quote of the relevant clause.\n   - Risk level (🔴, 🟡, 🟢).\n   - A short legal/business justification.\n   - A suggestion for improvement (if needed).\n\n---\n\n🧭 Final Guidelines\n\n- Respond in a professional, structured, and legally sound tone.\n- Avoid making assumptions not grounded in the document or nosta's policy.\n- Be concise, actionable, and confident in your recommendations.\n- always use `Supabase Get` tool to retrieve uploaded legal documents for analysis."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1056,
+        0
+      ],
+      "id": "2d0f68ac-29df-436b-9606-dbb74ac0ba98",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+              "name": "chatInput",
+              "value": "={{ $json?.chatInput || $json.body.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "4b291433-cedb-4631-9128-621c6744e51d",
+              "name": "sessionId",
+              "value": "={{ $json?.sessionId || $json.body.sessionId}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6f84b004-86d4-4439-972a-b40b47827713",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "463448a5-b323-4682-8674-24bee0df163b",
+              "leftValue": "={{ $binary}}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -816,
+        16
+      ],
+      "id": "39ec676b-f685-4083-a177-bd14d73d16df",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "$binary",
+        "options": {
+          "destinationFieldName": "data",
+          "includeBinary": true
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -64
+      ],
+      "id": "bbd10d73-b60d-4a7f-a252-0237cfd9f79e",
+      "name": "Split Out2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "jsonl"
+            },
+            {
+              "name": "include_images",
+              "value": "false"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -448,
+        448
+      ],
+      "id": "3043efe7-0a18-4f9d-8c7c-fbafc753f74e",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "tableId": "temp_table",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $('Webhook').item.json.body.sessionId }}"
+            },
+            {
+              "fieldId": "file",
+              "fieldValue": "={{ $json.data[0].parseJson().blocks }}"
+            },
+            {
+              "fieldId": "file_name",
+              "fieldValue": "={{ $json.data[0].parseJson().source }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        448
+      ],
+      "id": "29a98cdb-abf7-46ba-b3ae-d3defbb6213c",
+      "name": "Supabase2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        752,
+        0
+      ],
+      "id": "ac6d8083-0dc1-49ce-bd65-bdbcba760c03",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f12a9701-cf5f-4fbc-acfc-8d8cbc64b777",
+              "name": "sessionId",
+              "value": "={{ $json.session_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        592,
+        -80
+      ],
+      "id": "77d3922e-a1d2-4a9e-999c-5fd25fd8c28a",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "8b72a299-6557-4d8c-a365-09e105d76393",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1008,
+        0
+      ],
+      "id": "4dc53f63-f1d2-4269-b9af-9ccc45cee3aa",
+      "name": "Webhook",
+      "webhookId": "8b72a299-6557-4d8c-a365-09e105d76393"
+    },
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1008,
+        160
+      ],
+      "id": "4fea6cd3-977b-43a8-99cf-8f730fa2f815",
+      "name": "When chat message received",
+      "webhookId": "23f8af16-7b2d-4892-b29d-970d3c04cef0"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n  if (!firstKey) return item;\n\n  const fileData = item.binary[firstKey];\n\n  return {\n    json: {\n      ...item.json,\n      fileName: fileData.fileName || null, // extract filename here\n    },\n    binary: {\n      data: fileData,\n    },\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        -64
+      ],
+      "id": "b569d6ee-36de-43f7-86e3-3286a607524e",
+      "name": "Code7"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "temp_table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.sessionId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        224
+      ],
+      "id": "2dc15ce3-3410-4e9f-809f-f24ff01a802c",
+      "name": "Supabase Get",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "temp_table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.sessionId }}"
+            },
+            {
+              "keyName": "file_name",
+              "condition": "eq",
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions1_Field_Value', `Provide the file name to delete`, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1472,
+        192
+      ],
+      "id": "1e5b97b0-5438-4a62-8aae-90606dbae8ef",
+      "name": "Supabase Delete",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5fcce16d-5e83-4376-ab8f-cb6ba7ef3fbc",
+      "name": "Mistral Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -352,
+        -64
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "24"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b227e464-2f47-4753-95b7-689a122e8e59",
+      "name": "Mistral Signed URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -208,
+        -144
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n\n",
+        "options": {}
+      },
+      "id": "98789905-9bab-41a1-9b65-089443cee3a1",
+      "name": "Mistral DOC OCR3",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -32,
+        -144
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "0b406a8d-7176-41b9-93c4-e908945203de",
+      "name": "Mistral file delete5",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        176,
+        -368
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// Keeps image array from input, inserts embedding_text inline with images\n\nconst pages = items[0].json.pages;\nlet output = [];\n\nfor (const page of pages) {\n  let text = `Page ${page.index}\\n\\n`;\n  let markdown = page.markdown;\n\n  // Replace each image markdown with annotation text if available\n  markdown = markdown.replace(/!\\[(.*?)\\]\\((.*?)\\)/g, (match, alt, src) => {\n    const img = page.images.find(i => i.id === src || i.fileName === src);\n    if (img && img.image_annotation) {\n      const ann = JSON.parse(img.image_annotation);\n      return (\n        '{' +\n        `Image: [${img.id}]\\n` +\n        `Type: ${ann.image_type}\\n` +\n        `Short: ${ann.short_description}\\n` +\n        `Summary: ${ann.summary}\\n` +\n        '}'\n      );\n    }\n    return \"\"; // if no annotation, strip it\n  });\n\n  text += markdown.trim();\n\n  output.push({\n    json: {\n      page_index: page.index,\n      embedding_text: text,\n      images: page.images   // ✅ keep original images array\n    }\n  });\n}\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        -144
+      ],
+      "id": "5bc3682b-e668-4dcd-b61b-898a0208cc73",
+      "name": "Code9"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "embedding_text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        256,
+        -144
+      ],
+      "id": "953fe4c8-cf8c-4cf3-a20b-95fc5be2925f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "tableId": "temp_table",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $('Webhook').item.json.body.sessionId }}"
+            },
+            {
+              "fieldId": "file",
+              "fieldValue": "={{ $json.embedding_text }}"
+            },
+            {
+              "fieldId": "file_name",
+              "fieldValue": "={{ $('Code7').item.json.fileName }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -144
+      ],
+      "id": "18960de8-cbbd-4c02-b26f-8bcc3fee1837",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-10-15T06:52:33.243Z",
+      "createdAt": "2025-10-15T06:52:33.243Z",
+      "role": "workflow:owner",
+      "workflowId": "ZwHFoQqgwDI5sP6q",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2025-11-11T13:56:38.000Z",
+  "versionId": "062deab4-c350-4712-80c1-f32ff1d3501a"
+}
