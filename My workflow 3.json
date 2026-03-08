@@ -1,0 +1,893 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-24T04:30:39.652Z",
+    "createdAt": "2026-02-24T04:30:39.652Z",
+    "versionId": "e0c40ff5-c8d5-4489-84b0-0a942edd5d96",
+    "workflowId": "xj80To8JZCEkzX67",
+    "nodes": [
+      {
+        "parameters": {
+          "tableName": "n8n_chat"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          272,
+          400
+        ],
+        "id": "37a725ba-5074-4770-847d-f54427388aef",
+        "name": "Postgres Chat Memory",
+        "credentials": {
+          "postgres": {
+            "id": "yGwZ0IHTkODL3IL8",
+            "name": "Postgres account dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "retrieve-as-tool",
+          "toolName": "documents",
+          "toolDescription": "Use RAG to look up information in the knowledgebase.",
+          "tableName": {
+            "__rl": true,
+            "value": "ai_kb",
+            "mode": "list",
+            "cachedResultName": "ai_kb"
+          },
+          "topK": 5,
+          "options": {
+            "queryName": "match_ai_kb"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+        "typeVersion": 1,
+        "position": [
+          720,
+          336
+        ],
+        "id": "fbdbf0e6-ed31-47fe-a322-e85d172fec82",
+        "name": "Supabase Vector Store",
+        "credentials": {
+          "supabaseApi": {
+            "id": "QzLpi7dYMzxdzM35",
+            "name": "Supabase account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "toolDescription": "Web Search tool only SAP websites",
+          "method": "POST",
+          "url": "https://api.tavily.com/search",
+          "sendHeaders": true,
+          "parametersHeaders": {
+            "values": [
+              {
+                "name": "Authorization",
+                "valueProvider": "fieldValue",
+                "value": "Bearer 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"
+              },
+              {
+                "name": "Content-Type",
+                "valueProvider": "fieldValue",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"query\": \"{query}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 20,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [\"https://help.sap.com/docs/\",\"https://community.sap.com/\"],\n  \"exclude_domains\": []\n}",
+          "placeholderDefinitions": {
+            "values": [
+              {
+                "name": "query",
+                "description": "Search Querry",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+        "typeVersion": 1.1,
+        "position": [
+          1248,
+          256
+        ],
+        "id": "7a58db91-b906-44bd-97f6-48c3a6d052be",
+        "name": "Web Search 2"
+      },
+      {
+        "parameters": {
+          "toolDescription": "Web Search tool excluding SAP websites",
+          "method": "POST",
+          "url": "https://api.tavily.com/search",
+          "sendHeaders": true,
+          "parametersHeaders": {
+            "values": [
+              {
+                "name": "Authorization",
+                "valueProvider": "fieldValue",
+                "value": "Bearer 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"
+              },
+              {
+                "name": "Content-Type",
+                "valueProvider": "fieldValue",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"query\": \"{query}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 20,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": [\"https://help.sap.com/docs/\",\"https://community.sap.com/\"]\n}",
+          "placeholderDefinitions": {
+            "values": [
+              {
+                "name": "query",
+                "description": "Search Querry",
+                "type": "string"
+              }
+            ]
+          },
+          "optimizeResponse": true
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+        "typeVersion": 1.1,
+        "position": [
+          1040,
+          256
+        ],
+        "id": "a517d180-6e4f-4d94-a7ac-94b43d40c80e",
+        "name": "Web Search 1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+                "name": "chatInput",
+                "value": "={{ $json?.chatInput || $json.body.chatInput }}",
+                "type": "string"
+              },
+              {
+                "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+                "name": "sessionId",
+                "value": "={{ $json?.sessionId || $json.body.sessionId}}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "ad9275ad-cc46-41a9-b742-4cc2e49140ef",
+        "name": "Edit Fields",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          320,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Use this tool to fetch all available documents, including the table schema if the file is a CSV or Excel file.",
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "n8n_metadata",
+            "mode": "list",
+            "cachedResultName": "n8n_metadata"
+          },
+          "returnAll": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.5,
+        "position": [
+          512,
+          432
+        ],
+        "id": "bcb98251-10dd-4613-855b-29adb0f9320e",
+        "name": "List Documents",
+        "credentials": {
+          "postgres": {
+            "id": "yGwZ0IHTkODL3IL8",
+            "name": "Postgres account dbt rn"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": "mistral-medium-latest",
+          "options": {
+            "temperature": 0.4
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          64,
+          320
+        ],
+        "id": "dcd97ff6-27e5-4cbd-9bb7-81c47ccacfde",
+        "name": "Mistral Cloud Chat Model",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          832,
+          560
+        ],
+        "id": "0a8ae82d-6c4e-49d5-b7ff-443ba8553d28",
+        "name": "Embeddings Mistral Cloud",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.chatInput }}",
+          "options": {
+            "systemMessage": "=AI Support Agent Prompt\nPersona\nYou are a helpful, intelligent AI support SD agent and are a proactive chat agent. Lead the conversation by asking open-ended questions and offering suggestions. Don’t wait for the user to guide the chat — keep it moving with helpful, friendly prompts. Anticipate needs, follow up thoughtfully, and make the user feel supported throughout.\n\nuse list dcoument tool to get more details data about given document \n\nKnowledge Access Instructions\nPrimary Source: For every user question, always use the Supabase store (n8n_testmistral table) as the primary source.\n\nInitial Search: Begin each query by searching only in Supabase (n8n_testmistral).\n\nSupabase Found: If relevant information is found in Supabase:\n\nRespond in English.\n\nProvide the textual information first.\n\nInsert relevant image(s) immediately after the specific paragraph or section they relate to.\n\nYou must cite the internal document name and provide the internal document URL.\n\nExample:\n\"For your reference, this information is based on the internal documentatio(Anwenderdoku_Lieferplan mit Abruf EDI). For more detailed guidance, you can access the internal document using the following URL:https://docs.google.com/document/d/110npvMDrPp4DkY5A18NLjBx8QXWomSaa/edit#heading=h.p71y513zojx\"\n\ndisplay workflow url, version ,workflow name and status\n\nSupabase Not Found: If no relevant information is found in Supabase, respond to the user with:\n\n\"The information you requested is not available in our internal documentation. Would you like me to do a Web search?\"\n\nWeb Search Permission:\n\nDo NOT use web search tools automatically.\n\nWait for the user's explicit confirmation (e.g., \"Yes\", \"Okay\", \"Please do\", etc.).\n\nPerforming a Web Search:\n\nOnly after receiving user permission, perform a web search.\n\nUse both web search 1 and web search 2 tools.\n\nQueries must be a single string in English.\n\nClearly state that the information is from an external source.\n\nExample:\n\"This information comes from an external source (e.g., from a relevant website)...\"\n\nImportant Rules & Logic\nSearch Scope: After getting permission for a web search, use it only for the immediate response. Return to using Supabase for all subsequent queries unless the user explicitly asks for external help again.\n\nNo Data Found: If no data is found in Supabase or the web, respond with:\n\n\"At the moment, there is no information available to fully address this request based on current internal and external sources.\"\n\nImage Formatting:\n\nImages must be placed inline, immediately following the text they illustrate.\n\nUse this exact format:\n\n![image](https://qpmrmtlfwlixlplwpllz.supabase.co/storage/v1/object/public/dbtchat/extracted_imagesap/\"+ document_metadata_id + \"_\" + image_name +\")\n\nExample:\n![image](https://qpmrmtlfwlixlplwpllz.supabase.co/storage/v1/object/public/dbtchat/extracted_imagesap/17z662UG0WucH7r_jj_xlCKlr1FEnVmBZ_img-0.jpeg)\n\nFormat & Style Guidelines\nLanguage: All Supabase queries and all user responses must be in English.\n\nTone: Responses must be Professional, Clear, and helpful. They should be as concise as possible while remaining precise and well-structured.\n\nInstructional Format: For guide or instruction-based responses, only use the following format:\n\nalso fetch and display workflow url, version ,workflow name and status\n\nStep-by-Step Guide\n\nThings To Consider\n\nFurther Understanding\n\nUnder \"Further Understanding,\" do not ask for related questions. Instead, provide two bullet points suggesting what topic to explore next based on the user's question.\n\nThings to Consider/Important Details/Common Pitfalls\nYou should actively work to avoid common errors and pay close attention to important details, ensuring none are overlooked while performing the task.\n\n#instruction \nalways show active and latest data only show inactive data only when it is asked\n\nFor every user question, always use the Supabase store (n8n_testmistral table) as the primary source use this for each query\n\nalways include documemt soucrce (with url) and document name/title2",
+            "returnIntermediateSteps": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.7,
+        "position": [
+          544,
+          0
+        ],
+        "id": "788f117e-5d3a-43e7-82e0-7fed42d314d3",
+        "name": "team knowledge agent"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.2,
+        "position": [
+          912,
+          0
+        ],
+        "id": "f468aa61-f25e-4773-aee5-bab69bc38fb6",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "870adb39-9b3b-4b26-afc5-b47c5b74a33c",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "f1fc8466-7c31-4cf8-9309-401285313547",
+        "name": "Webhook",
+        "webhookId": "870adb39-9b3b-4b26-afc5-b47c5b74a33c"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          -80,
+          160
+        ],
+        "id": "7a1d9a66-d2eb-4c77-87a9-cad773eb536b",
+        "name": "When chat message received",
+        "webhookId": "f8588fa8-9ff1-42dd-b0a2-bb14eefc163d"
+      }
+    ],
+    "connections": {
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "team knowledge agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Vector Store": {
+        "ai_tool": [
+          [
+            {
+              "node": "team knowledge agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Web Search 2": {
+        "ai_tool": [
+          [
+            {
+              "node": "team knowledge agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Web Search 1": {
+        "ai_tool": [
+          [
+            {
+              "node": "team knowledge agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "team knowledge agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "List Documents": {
+        "ai_tool": [
+          [
+            {
+              "node": "team knowledge agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Cloud Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "team knowledge agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings Mistral Cloud": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Supabase Vector Store",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "team knowledge agent": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Anusha Priya",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "e0c40ff5-c8d5-4489-84b0-0a942edd5d96",
+  "connections": {
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "team knowledge agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "team knowledge agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Web Search 2": {
+      "ai_tool": [
+        [
+          {
+            "node": "team knowledge agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Web Search 1": {
+      "ai_tool": [
+        [
+          {
+            "node": "team knowledge agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "team knowledge agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Documents": {
+      "ai_tool": [
+        [
+          {
+            "node": "team knowledge agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "team knowledge agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "team knowledge agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-24T04:26:26.075Z",
+  "id": "xj80To8JZCEkzX67",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "tableName": "n8n_chat"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        400
+      ],
+      "id": "37a725ba-5074-4770-847d-f54427388aef",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "documents",
+        "toolDescription": "Use RAG to look up information in the knowledgebase.",
+        "tableName": {
+          "__rl": true,
+          "value": "ai_kb",
+          "mode": "list",
+          "cachedResultName": "ai_kb"
+        },
+        "topK": 5,
+        "options": {
+          "queryName": "match_ai_kb"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        720,
+        336
+      ],
+      "id": "fbdbf0e6-ed31-47fe-a322-e85d172fec82",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "QzLpi7dYMzxdzM35",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Web Search tool only SAP websites",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{query}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 20,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [\"https://help.sap.com/docs/\",\"https://community.sap.com/\"],\n  \"exclude_domains\": []\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "query",
+              "description": "Search Querry",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1248,
+        256
+      ],
+      "id": "7a58db91-b906-44bd-97f6-48c3a6d052be",
+      "name": "Web Search 2"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Web Search tool excluding SAP websites",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{query}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 20,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": [\"https://help.sap.com/docs/\",\"https://community.sap.com/\"]\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "query",
+              "description": "Search Querry",
+              "type": "string"
+            }
+          ]
+        },
+        "optimizeResponse": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        256
+      ],
+      "id": "a517d180-6e4f-4d94-a7ac-94b43d40c80e",
+      "name": "Web Search 1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+              "name": "chatInput",
+              "value": "={{ $json?.chatInput || $json.body.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+              "name": "sessionId",
+              "value": "={{ $json?.sessionId || $json.body.sessionId}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ad9275ad-cc46-41a9-b742-4cc2e49140ef",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to fetch all available documents, including the table schema if the file is a CSV or Excel file.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_metadata",
+          "mode": "list",
+          "cachedResultName": "n8n_metadata"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        512,
+        432
+      ],
+      "id": "bcb98251-10dd-4613-855b-29adb0f9320e",
+      "name": "List Documents",
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        64,
+        320
+      ],
+      "id": "dcd97ff6-27e5-4cbd-9bb7-81c47ccacfde",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        832,
+        560
+      ],
+      "id": "0a8ae82d-6c4e-49d5-b7ff-443ba8553d28",
+      "name": "Embeddings Mistral Cloud",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=AI Support Agent Prompt\nPersona\nYou are a helpful, intelligent AI support SD agent and are a proactive chat agent. Lead the conversation by asking open-ended questions and offering suggestions. Don’t wait for the user to guide the chat — keep it moving with helpful, friendly prompts. Anticipate needs, follow up thoughtfully, and make the user feel supported throughout.\n\nuse list dcoument tool to get more details data about given document \n\nKnowledge Access Instructions\nPrimary Source: For every user question, always use the Supabase store (n8n_testmistral table) as the primary source.\n\nInitial Search: Begin each query by searching only in Supabase (n8n_testmistral).\n\nSupabase Found: If relevant information is found in Supabase:\n\nRespond in English.\n\nProvide the textual information first.\n\nInsert relevant image(s) immediately after the specific paragraph or section they relate to.\n\nYou must cite the internal document name and provide the internal document URL.\n\nExample:\n\"For your reference, this information is based on the internal documentatio(Anwenderdoku_Lieferplan mit Abruf EDI). For more detailed guidance, you can access the internal document using the following URL:https://docs.google.com/document/d/110npvMDrPp4DkY5A18NLjBx8QXWomSaa/edit#heading=h.p71y513zojx\"\n\ndisplay workflow url, version ,workflow name and status\n\nSupabase Not Found: If no relevant information is found in Supabase, respond to the user with:\n\n\"The information you requested is not available in our internal documentation. Would you like me to do a Web search?\"\n\nWeb Search Permission:\n\nDo NOT use web search tools automatically.\n\nWait for the user's explicit confirmation (e.g., \"Yes\", \"Okay\", \"Please do\", etc.).\n\nPerforming a Web Search:\n\nOnly after receiving user permission, perform a web search.\n\nUse both web search 1 and web search 2 tools.\n\nQueries must be a single string in English.\n\nClearly state that the information is from an external source.\n\nExample:\n\"This information comes from an external source (e.g., from a relevant website)...\"\n\nImportant Rules & Logic\nSearch Scope: After getting permission for a web search, use it only for the immediate response. Return to using Supabase for all subsequent queries unless the user explicitly asks for external help again.\n\nNo Data Found: If no data is found in Supabase or the web, respond with:\n\n\"At the moment, there is no information available to fully address this request based on current internal and external sources.\"\n\nImage Formatting:\n\nImages must be placed inline, immediately following the text they illustrate.\n\nUse this exact format:\n\n![image](https://qpmrmtlfwlixlplwpllz.supabase.co/storage/v1/object/public/dbtchat/extracted_imagesap/\"+ document_metadata_id + \"_\" + image_name +\")\n\nExample:\n![image](https://qpmrmtlfwlixlplwpllz.supabase.co/storage/v1/object/public/dbtchat/extracted_imagesap/17z662UG0WucH7r_jj_xlCKlr1FEnVmBZ_img-0.jpeg)\n\nFormat & Style Guidelines\nLanguage: All Supabase queries and all user responses must be in English.\n\nTone: Responses must be Professional, Clear, and helpful. They should be as concise as possible while remaining precise and well-structured.\n\nInstructional Format: For guide or instruction-based responses, only use the following format:\n\nalso fetch and display workflow url, version ,workflow name and status\n\nStep-by-Step Guide\n\nThings To Consider\n\nFurther Understanding\n\nUnder \"Further Understanding,\" do not ask for related questions. Instead, provide two bullet points suggesting what topic to explore next based on the user's question.\n\nThings to Consider/Important Details/Common Pitfalls\nYou should actively work to avoid common errors and pay close attention to important details, ensuring none are overlooked while performing the task.\n\n#instruction \nalways show active and latest data only show inactive data only when it is asked\n\nFor every user question, always use the Supabase store (n8n_testmistral table) as the primary source use this for each query\n\nalways include documemt soucrce (with url) and document name/title2",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        544,
+        0
+      ],
+      "id": "788f117e-5d3a-43e7-82e0-7fed42d314d3",
+      "name": "team knowledge agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        912,
+        0
+      ],
+      "id": "f468aa61-f25e-4773-aee5-bab69bc38fb6",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "870adb39-9b3b-4b26-afc5-b47c5b74a33c",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f1fc8466-7c31-4cf8-9309-401285313547",
+      "name": "Webhook",
+      "webhookId": "870adb39-9b3b-4b26-afc5-b47c5b74a33c"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -80,
+        160
+      ],
+      "id": "7a1d9a66-d2eb-4c77-87a9-cad773eb536b",
+      "name": "When chat message received",
+      "webhookId": "f8588fa8-9ff1-42dd-b0a2-bb14eefc163d"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-24T04:26:26.081Z",
+      "createdAt": "2026-02-24T04:26:26.081Z",
+      "role": "workflow:owner",
+      "workflowId": "xj80To8JZCEkzX67",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2026-02-24T04:30:39.651Z",
+  "versionId": "e0c40ff5-c8d5-4489-84b0-0a942edd5d96"
+}
