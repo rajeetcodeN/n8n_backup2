@@ -1,0 +1,652 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Create chat message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "SD agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "SD agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "SD agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Web Search 2": {
+      "ai_tool": [
+        [
+          {
+            "node": "SD agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Web Search 1": {
+      "ai_tool": [
+        [
+          {
+            "node": "SD agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Documents": {
+      "ai_tool": [
+        [
+          {
+            "node": "SD agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Memory Delete": {
+      "ai_tool": [
+        [
+          {
+            "node": "SD agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "SD agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SD agent": {
+      "main": [
+        [
+          {
+            "node": "Create chat message1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create chat message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-19T18:06:29.634Z",
+  "id": "shXEIM3H8qHlcNXK",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Microsoft Teams",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        16
+      ],
+      "id": "555f9d1d-e8ca-48f9-b7ad-0a9520eee554",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "chatMessage",
+        "chatId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftTeams",
+      "typeVersion": 2,
+      "position": [
+        -576,
+        16
+      ],
+      "id": "772dd05a-0dbe-458b-8339-9149e3dbe4c6",
+      "name": "Create chat message",
+      "webhookId": "6213fe70-0bf4-46ec-973f-9ea501fa65a3",
+      "credentials": {
+        "microsoftTeamsOAuth2Api": {
+          "id": "hA4R7QN2OQUurkT8",
+          "name": "Microsoft Teams account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "event": "newChat"
+      },
+      "type": "n8n-nodes-base.microsoftTeamsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        -176
+      ],
+      "id": "b964f6ab-adb7-4bef-817a-98e369e91397",
+      "name": "Microsoft Teams Trigger",
+      "webhookId": "5eae9c4e-7515-434a-a8e4-5579108e5445",
+      "credentials": {
+        "microsoftTeamsOAuth2Api": {
+          "id": "hA4R7QN2OQUurkT8",
+          "name": "Microsoft Teams account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chatbot",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -240,
+        -160
+      ],
+      "id": "3ff12587-9782-426d-b7d6-3f94bea49b1e",
+      "name": "Webhook",
+      "webhookId": "71208273-feb4-4d26-a34c-d44290699639"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a9a245e-f1a1-4282-bb02-a81ffe629f0f",
+              "name": "chatInput",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            },
+            {
+              "id": "b80831d8-c653-4203-8706-adedfdb98f77",
+              "name": "sessionId",
+              "value": "={{ $json.body.chatId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1765b322-a27e-4c29-9268-523aba4b9cc0",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "tableName": "n8n_chat"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        80
+      ],
+      "id": "cde086d1-894b-40c2-b04c-7bb0ff5ae433",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "Xsflb0NvPLfQMJET",
+          "name": "Postgres ayan"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=You are a helpful, intelligent AI support SD agent and are a proactive chat agent. Lead the conversation by asking open-ended questions and offering suggestions. Don’t wait for the user to guide the chat — keep it moving with helpful, friendly prompts. Anticipate needs, follow up thoughtfully, and make the user feel supported throughout.\n\n*Knowledge Access Instructions*\n   1. # Important: First, for every question, always use the \"Supabase Vector Store\" tool. This will return \"n8n_test\" table data which is the primary source for every questions. #\nTo get related data and images you should use this tool repeatedly.\n\n   2. Begin each query by searching only in Supabase (n8n_test). This content is primarily in German, so make sure all queries sent to Supabase are in German.\n\n   3. If relevant information is found in Supabase, respond in German by first providing the textual information, and then inserting the relevant image(s) immediately after the specific paragraph or section they relate to. Do not group images at the end of the response, and compulsory cite the internal document name and also provide the internal document url from where the information is provide.\nExample:\n\"For your reference, this information is based on the internal documentation (Andwenderdoku_Lieferplan mit Abruf manuell). For more detailed guidance, you can access the internal document using the following  URL:https://nosta.sharepoint.com/:w:/r/sites/OPEX/_layouts/15/Doc.aspx?sourcedoc=%7B6F93C686-C114-4601-8485-204480629B72%7D&file=Andwenderdoku_Lieferplan%20mit%20Abruf%20manuell.docx&action=default&mobileredirect=true\"\n\n   4. If no relevant information is found in Supabase:\nRespond to the user with:\n\"The information you requested is not available in our internal documentation. Would you like me to do a Web search?\"\n\n   5. Do NOT use web search tools automatically to perform web search.\n\n      -> Wait for the user's explicit confirmation (e.g., \"Yes\", \"Okay\", \"Please do\", etc.).\n\n   6. Only after receiving user permission, you should web search. To search the web always use both (web search 1 and web search 2 tools node) and they accept single string of English querry.\n\n  Clearly state that this is an external source.\nExample:\n\"This information comes from an external source (e.g.,from relevant website)...\"\n\n*Important Rules & Logic*\n   1. After getting permission for web search use that only for the immediate response, return to Supabase for all future queries unless the user explicitly asks for external help again.\n   2. If no data is found in Supabase or web:\n\"At the moment, there is no information available to fully address this request based on current internal and external sources.\"\n 3. Images should be placed inline, following the specific sentence or section they illustrate — not in a separate section. Use this format,\n\"![image](\"https://nsebtjqnfydjgjtigsiq.supabase.co/storage/v1/object/public/images/extracted_images/\"+ document_metadata_id + \"_\" + image_name +\")\"\n\n# important: make sure the image url starts with \"https://nsebtjqnfydjgjtigsiq.supabase.co/storage/v1/object/public/images/extracted_images/\"\n\n  example,\n![image](https://nsebtjqnfydjgjtigsiq.supabase.co/storage/v1/object/public/images/extracted_images/01b2abcd-d610-4405-aa68-8793fc2f8bd8_img-10.jpeg)\n  4. Strictly and compulsory display the internal document name and also provide the internal document url from where the information is provided everytime.\n\n*Format & Style Guidelines*\n   1. All Supabase queries must be in German and all responses to the user must be in German.\n   2. Responses must be Professional, Clear and helpful, small as possible but presise and well structured.\n  3. Only for guide/ instruction based response, follow this format:\n   • Step-by-Step Guide\n   • Things To Consider\n   • Further Understanding\nUnder \"Further Understanding,\"do not ask for related questions.Instead, write two lines in points asking users what topic to explore next based on user question and give some suggestions.\n\n**Things to Consider/Important Details/Common Pitfalls\n   •You should actively work to avoid common errors and pay close attention to important details, ensuring none are overlooked while performing the task.",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        240,
+        -160
+      ],
+      "id": "b8fc5603-084d-4d0f-8561-cfd308358cbc",
+      "name": "SD agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "documents",
+        "toolDescription": "Most Important. Always Use this tool. It Uses RAG to look up information in the knowledgebase.",
+        "tableName": {
+          "__rl": true,
+          "value": "n8n_test",
+          "mode": "list",
+          "cachedResultName": "n8n_test"
+        },
+        "topK": 15,
+        "options": {
+          "queryName": "match_new_function"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        352,
+        64
+      ],
+      "id": "e5d9fc50-bb72-4a6b-b4a9-9104b658f272",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Web Search tool only SAP websites",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{query}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 20,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [\"https://help.sap.com/docs/\",\"https://community.sap.com/\"],\n  \"exclude_domains\": []\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "query",
+              "description": "Search Querry",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        832,
+        64
+      ],
+      "id": "5104a245-bd51-415c-8880-40c03ecca3b9",
+      "name": "Web Search 2"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Web Search tool excluding SAP websites",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{query}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 20,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": [\"https://help.sap.com/docs/\",\"https://community.sap.com/\"]\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "query",
+              "description": "Search Querry",
+              "type": "string"
+            }
+          ]
+        },
+        "optimizeResponse": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        704,
+        64
+      ],
+      "id": "2aa46c45-729a-46be-9286-8f1115b40fd4",
+      "name": "Web Search 1"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to fetch all available documents, including the table schema if the file is a CSV or Excel file.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_metadata",
+          "mode": "list",
+          "cachedResultName": "n8n_metadata"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        112,
+        96
+      ],
+      "id": "a65c16f2-7485-4831-8e72-e0d460e27cab",
+      "name": "List Documents",
+      "credentials": {
+        "postgres": {
+          "id": "Xsflb0NvPLfQMJET",
+          "name": "Postgres ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "If user send \"clear\" or \"restart\" use this tool",
+        "operation": "delete",
+        "tableId": "n8n_chat",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        976,
+        32
+      ],
+      "id": "2c35dbc0-f0f4-4042-bc85-b055944de54a",
+      "name": "Supabase Memory Delete",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Yeu4uGtLws8bzw5u",
+          "name": "Supabase dbt ayan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        304,
+        272
+      ],
+      "id": "9b03a1bf-7d53-4183-9f09-cd48111f52b9",
+      "name": "Embeddings Mistral Cloud",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        96
+      ],
+      "id": "5f2aec8c-b637-45c1-9154-37a01a923842",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -592,
+        -368
+      ],
+      "id": "fc1e125e-7abd-459b-807c-8b4b8a79fb08",
+      "name": "Respond to Webhook",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "chatMessage",
+        "chatId": {
+          "__rl": true,
+          "value": "19:meeting_NzU1NGRhNmUtMDE1Ni00ZDUwLWI3MmYtYzEyZTUxM2NjMTBm@thread.v2",
+          "mode": "id"
+        },
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftTeams",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -224
+      ],
+      "id": "7b0b3f76-92c2-4341-afd2-bc40c0cd9168",
+      "name": "Create chat message1",
+      "webhookId": "5332636c-9b57-4c9d-b9f3-637911ce372c",
+      "credentials": {
+        "microsoftTeamsOAuth2Api": {
+          "id": "hA4R7QN2OQUurkT8",
+          "name": "Microsoft Teams account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "https://nosta.sharepoint.com/sites/OPEX/_api/web/GetFolderByServerRelativeUrl('/sites/OPEX/Freigegebene Dokumente/OPEX/03_Externer_Zugriff/SAP Docs')?$expand=Files,Folders,Folders/Files,Folders/Folders,Folders/Folders/Files,Folders/Folders/Folders/Files,Folders/Folders/Folders/Folders/Files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        -464
+      ],
+      "id": "055c0fcc-02fc-4929-8ccc-ea1f6ce3ed08",
+      "name": "Microsoft SharePoint HTTP Request",
+      "extendsCredential": "microsoftSharePointOAuth2Api",
+      "credentials": {
+        "microsoftSharePointOAuth2Api": {
+          "id": "JCt97ehcXeOsCjIi",
+          "name": "Microsoft SharePoint account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chatMessage",
+        "chatId": {
+          "__rl": true,
+          "value": "19:d86e5bae-1d2c-4481-b75d-d28fe079c73a_d79e4678-3408-42fa-9074-b7883ee5a20c@unq.gbl.spaces",
+          "mode": "id"
+        },
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftTeams",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -384
+      ],
+      "id": "48cb184d-08fd-4294-bc12-90aa8bdcd139",
+      "name": "Create chat message2",
+      "webhookId": "5332636c-9b57-4c9d-b9f3-637911ce372c",
+      "credentials": {
+        "microsoftTeamsOAuth2Api": {
+          "id": "hA4R7QN2OQUurkT8",
+          "name": "Microsoft Teams account"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-09-19T18:06:29.637Z",
+      "createdAt": "2025-09-19T18:06:29.637Z",
+      "role": "workflow:owner",
+      "workflowId": "shXEIM3H8qHlcNXK",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": {
+    "node:Microsoft Teams Trigger": {}
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-21T12:36:23.000Z",
+  "versionId": "730132d4-83a1-4425-94d6-7c6c6466d78c"
+}
