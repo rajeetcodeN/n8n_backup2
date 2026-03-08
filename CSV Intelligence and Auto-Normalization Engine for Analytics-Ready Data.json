@@ -1,0 +1,630 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "CSV Upload Webhook": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Check File Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check File Type": {
+      "main": [
+        [
+          {
+            "node": "Extract CSV Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error - Unsupported File Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract CSV Data": {
+      "main": [
+        [
+          {
+            "node": "Schema Inference & Header Normalization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Schema Inference & Header Normalization",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Schema Inference & Header Normalization",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schema Inference & Header Normalization": {
+      "main": [
+        [
+          {
+            "node": "Apply Normalization & Type Coercion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply Normalization & Type Coercion": {
+      "main": [
+        [
+          {
+            "node": "Validate Data Quality",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Data Quality": {
+      "main": [
+        [
+          {
+            "node": "Prepare Clean CSV Output",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Error Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Clean CSV Output": {
+      "main": [
+        [
+          {
+            "node": "Insert into Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert into Postgres": {
+      "main": [
+        [
+          {
+            "node": "Send Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Error Report": {
+      "main": [
+        [
+          {
+            "node": "Log to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-31T11:25:12.174Z",
+  "id": "dyU7QGo0wYQBy4pQ",
+  "isArchived": false,
+  "meta": null,
+  "name": "CSV Intelligence and Auto-Normalization Engine for Analytics-Ready Data",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "csv-upload",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "1b7bf9d1-9b22-435b-98b5-05c660a6d4cf",
+      "name": "CSV Upload Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1728,
+        336
+      ],
+      "webhookId": "f67a5511-08ba-4f10-a7f1-539197194e00"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "postgresTable",
+              "value": "<__PLACEHOLDER_VALUE__Postgres table name__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "errorThreshold",
+              "value": 0.05,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "slackChannel",
+              "value": "<__PLACEHOLDER_VALUE__Slack channel ID__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "5e3c5993-6f87-4584-bbf9-6e487407a9a6",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1504,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $binary.data.mimeType }}",
+              "rightValue": "csv",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $binary.data.fileName }}",
+              "rightValue": ".csv",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "525e0c56-6ed6-493d-a767-06e9f56b1e2e",
+      "name": "Check File Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1280,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "includeEmptyCells": true
+        }
+      },
+      "id": "33d0bd51-0577-4ee6-a6f0-b649d5c8c354",
+      "name": "Extract CSV Data",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1056,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "error",
+              "value": "Unsupported file type. Only CSV files are accepted.",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "fileName",
+              "value": "={{ $binary.data.fileName }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "mimeType",
+              "value": "={{ $binary.data.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "status",
+              "value": "failed",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "38ec5279-ac73-4af4-9b75-76e52694a42a",
+      "name": "Error - Unsupported File Type",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1056,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=CSV data to analyze: {{ JSON.stringify($json) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a data engineering assistant specializing in CSV schema inference and normalization.\n\nYour task is to:\n1. Analyze the CSV data structure and infer the correct data types for each column (string, number, boolean, date, currency)\n2. Detect the original column headers and map them to canonical/standardized names (e.g., \"amt\" → \"amount\", \"cust_id\" → \"customer_id\")\n3. Identify any unit or currency inconsistencies within columns\n4. Detect null patterns and data quality issues\n5. Return a structured schema with: original_header, canonical_header, data_type, detected_issues, sample_values\n\nBe precise and deterministic in your analysis."
+        }
+      },
+      "id": "f0bd575f-6154-49eb-9a1a-53c08f4e6af3",
+      "name": "Schema Inference & Header Normalization",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -832,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "969245dd-ca1a-4e07-afe8-7887e0d763b1",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -832,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"columns\": {\n\t\t\t\"type\": \"array\",\n\t\t\t\"items\": {\n\t\t\t\t\"type\": \"object\",\n\t\t\t\t\"properties\": {\n\t\t\t\t\t\"original_header\": {\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t},\n\t\t\t\t\t\"canonical_header\": {\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t},\n\t\t\t\t\t\"data_type\": {\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t},\n\t\t\t\t\t\"detected_issues\": {\n\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t\"sample_values\": {\n\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"row_count\": {\n\t\t\t\"type\": \"number\"\n\t\t},\n\t\t\"quality_score\": {\n\t\t\t\"type\": \"number\"\n\t\t}\n\t}\n}"
+      },
+      "id": "9217fdc9-2bc9-4727-9a02-33327a59625e",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -704,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Apply Normalization & Type Coercion\n// This code applies the schema normalization from the AI agent\n\n// Get the schema from the AI agent output\nconst schemaOutput = $('Schema Inference & Header Normalization').first().json;\nconst schema = schemaOutput.schema || schemaOutput;\n\n// Get the raw CSV data\nconst csvData = $('Extract CSV Data').all();\n\n// Helper function to coerce values based on detected type\nfunction coerceValue(value, targetType, format = null) {\n  if (value === null || value === undefined || value === '') {\n    return null;\n  }\n  \n  switch (targetType.toLowerCase()) {\n    case 'number':\n    case 'integer':\n    case 'float':\n    case 'decimal':\n      // Remove currency symbols, commas, and other formatting\n      const numStr = String(value).replace(/[$,€£¥]/g, '').trim();\n      const num = parseFloat(numStr);\n      return isNaN(num) ? null : num;\n      \n    case 'date':\n    case 'datetime':\n    case 'timestamp':\n      // Try to parse date\n      const date = new Date(value);\n      return isNaN(date.getTime()) ? null : date.toISOString();\n      \n    case 'boolean':\n      const lowerVal = String(value).toLowerCase().trim();\n      if (['true', 'yes', '1', 'y', 't'].includes(lowerVal)) return true;\n      if (['false', 'no', '0', 'n', 'f'].includes(lowerVal)) return false;\n      return null;\n      \n    case 'string':\n    case 'text':\n    default:\n      return String(value).trim();\n  }\n}\n\n// Helper function to standardize units\nfunction standardizeUnit(value, unit, targetUnit) {\n  if (!value || !unit || !targetUnit) return value;\n  \n  const conversions = {\n    // Length\n    'ft_to_m': 0.3048,\n    'in_to_cm': 2.54,\n    'mi_to_km': 1.60934,\n    // Weight\n    'lb_to_kg': 0.453592,\n    'oz_to_g': 28.3495,\n    // Temperature\n    'f_to_c': (f) => (f - 32) * 5/9,\n    'c_to_f': (c) => (c * 9/5) + 32\n  };\n  \n  const conversionKey = `${unit.toLowerCase()}_to_${targetUnit.toLowerCase()}`;\n  const conversion = conversions[conversionKey];\n  \n  if (typeof conversion === 'function') {\n    return conversion(value);\n  } else if (typeof conversion === 'number') {\n    return value * conversion;\n  }\n  \n  return value;\n}\n\n// Apply normalization to each row\nconst normalizedData = csvData.map(item => {\n  const originalData = item.json;\n  const normalizedRow = {};\n  \n  // If schema has field mappings, apply them\n  if (schema.fields && Array.isArray(schema.fields)) {\n    schema.fields.forEach(field => {\n      const originalName = field.originalName || field.name;\n      const canonicalName = field.canonicalName || field.name;\n      const dataType = field.type || 'string';\n      const format = field.format;\n      const unit = field.unit;\n      const targetUnit = field.targetUnit;\n      \n      // Get the original value\n      let value = originalData[originalName];\n      \n      // Coerce to target type\n      value = coerceValue(value, dataType, format);\n      \n      // Standardize units if needed\n      if (unit && targetUnit && value !== null) {\n        value = standardizeUnit(value, unit, targetUnit);\n      }\n      \n      // Set the normalized value with canonical name\n      normalizedRow[canonicalName] = value;\n    });\n  } else {\n    // If no schema mapping, just copy the data\n    Object.assign(normalizedRow, originalData);\n  }\n  \n  return { json: normalizedRow };\n});\n\n// Add metadata about the normalization\nconst output = normalizedData.map((item, index) => ({\n  json: {\n    ...item.json,\n    _metadata: {\n      rowNumber: index + 1,\n      normalizedAt: new Date().toISOString(),\n      schemaApplied: true\n    }\n  }\n}));\n\nreturn output;"
+      },
+      "id": "56a3f4c9-1ac1-4db4-90a3-7dd3f7f268d9",
+      "name": "Apply Normalization & Type Coercion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validate Data Quality: Check type consistency, detect outliers, validate ranges\n// Input: Normalized data from previous node\n// Output: Clean data + error report\n\nconst items = $input.all();\nconst cleanData = [];\nconst errorReport = [];\nlet totalRows = 0;\nlet errorCount = 0;\n\n// Get schema from previous node (if available)\nconst schema = items[0]?.json?.schema || {};\nconst normalizedData = items[0]?.json?.normalizedData || items.map(item => item.json);\n\n// Helper function to detect data type\nfunction detectType(value) {\n  if (value === null || value === undefined || value === '') return 'null';\n  if (!isNaN(value) && !isNaN(parseFloat(value))) return 'number';\n  if (value === 'true' || value === 'false' || typeof value === 'boolean') return 'boolean';\n  if (typeof value === 'string' && /^\\d{4}-\\d{2}-\\d{2}/.test(value)) return 'date';\n  return 'string';\n}\n\n// Helper function to detect outliers using IQR method\nfunction detectOutliers(values) {\n  const sorted = values.filter(v => !isNaN(v)).sort((a, b) => a - b);\n  if (sorted.length < 4) return new Set();\n  \n  const q1Index = Math.floor(sorted.length * 0.25);\n  const q3Index = Math.floor(sorted.length * 0.75);\n  const q1 = sorted[q1Index];\n  const q3 = sorted[q3Index];\n  const iqr = q3 - q1;\n  const lowerBound = q1 - 1.5 * iqr;\n  const upperBound = q3 + 1.5 * iqr;\n  \n  return new Set(values.map((v, i) => (v < lowerBound || v > upperBound) ? i : null).filter(i => i !== null));\n}\n\n// Analyze each column for type consistency and outliers\nconst columnStats = {};\nconst columns = Object.keys(normalizedData[0] || {});\n\ncolumns.forEach(col => {\n  const values = normalizedData.map(row => row[col]);\n  const types = values.map(v => detectType(v));\n  const typeCounts = types.reduce((acc, type) => {\n    acc[type] = (acc[type] || 0) + 1;\n    return acc;\n  }, {});\n  \n  const dominantType = Object.keys(typeCounts).reduce((a, b) => \n    typeCounts[a] > typeCounts[b] ? a : b\n  );\n  \n  columnStats[col] = {\n    dominantType,\n    typeCounts,\n    outlierIndices: dominantType === 'number' ? \n      detectOutliers(values.map(v => parseFloat(v))) : new Set()\n  };\n});\n\n// Validate each row\nnormalizedData.forEach((row, rowIndex) => {\n  totalRows++;\n  const rowErrors = [];\n  \n  columns.forEach(col => {\n    const value = row[col];\n    const stats = columnStats[col];\n    const actualType = detectType(value);\n    \n    // Check type consistency\n    if (actualType !== stats.dominantType && actualType !== 'null') {\n      rowErrors.push({\n        column: col,\n        issue: 'type_mismatch',\n        expected: stats.dominantType,\n        actual: actualType,\n        value: value\n      });\n    }\n    \n    // Check for outliers\n    if (stats.outlierIndices.has(rowIndex)) {\n      rowErrors.push({\n        column: col,\n        issue: 'outlier',\n        value: value,\n        message: 'Value is statistical outlier'\n      });\n    }\n    \n    // Check for empty required fields (assuming non-null is required)\n    if ((value === null || value === undefined || value === '') && stats.typeCounts.null < totalRows * 0.5) {\n      rowErrors.push({\n        column: col,\n        issue: 'missing_value',\n        message: 'Required field is empty'\n      });\n    }\n  });\n  \n  // Add to appropriate output\n  if (rowErrors.length > 0) {\n    errorCount++;\n    errorReport.push({\n      rowIndex: rowIndex + 1,\n      data: row,\n      errors: rowErrors,\n      errorCount: rowErrors.length\n    });\n  } else {\n    cleanData.push(row);\n  }\n});\n\n// Calculate error rate\nconst errorRate = totalRows > 0 ? (errorCount / totalRows * 100).toFixed(2) : 0;\n\n// Return results\nreturn [\n  {\n    json: {\n      summary: {\n        totalRows,\n        cleanRows: cleanData.length,\n        errorRows: errorCount,\n        errorRate: `${errorRate}%`,\n        timestamp: new Date().toISOString()\n      },\n      columnStats,\n      cleanData,\n      errorReport,\n      schema\n    }\n  }\n];"
+      },
+      "id": "10cad1b8-d8b2-4a28-a522-b406bb05d682",
+      "name": "Validate Data Quality",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -256,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "cleanData",
+              "value": "={{ $json.cleanData }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "rowsProcessed",
+              "value": "={{ $json.rowsProcessed }}",
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "errorRate",
+              "value": "={{ $json.errorRate }}",
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4c6a2d92-290a-4b91-b23a-ffdf3c830a6c",
+      "name": "Prepare Clean CSV Output",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.postgresTable }}"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null
+        },
+        "options": {}
+      },
+      "id": "268f4a08-6c12-4185-a3f5-cffb7696a8f4",
+      "name": "Insert into Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        192,
+        144
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "errorReport",
+              "value": "={{ $json.errorReport }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "totalErrors",
+              "value": "={{ $json.totalErrors }}",
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "errorRate",
+              "value": "={{ $json.errorRate }}",
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "fileName",
+              "value": "={{ $('CSV Upload Webhook').first().binary.data.fileName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0ea1e631-1eae-4ec2-b752-d72ab858ef5a",
+      "name": "Generate Error Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.slackChannel }}"
+        },
+        "text": "=CSV processing completed successfully!\n\nRows processed: {{ $json.rowsProcessed }}\nError rate: {{ $json.errorRate }}%\nStatus: {{ $json.status }}",
+        "otherOptions": {}
+      },
+      "id": "a8d30bbb-592d-474f-8dbf-e8889e12e967",
+      "name": "Send Notification",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        416,
+        144
+      ],
+      "webhookId": "112e86ff-b4cf-4115-9f17-01f497360776"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Google Sheets document ID__>"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Error Log"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fileName": "={{ $json.fileName }}",
+            "timestamp": "={{ $json.timestamp }}",
+            "totalErrors": "={{ $json.totalErrors }}",
+            "errorRate": "={{ $json.errorRate }}",
+            "errorReport": "={{ $json.errorReport }}"
+          },
+          "matchingColumns": [
+            "fileName"
+          ],
+          "schema": [
+            {
+              "id": "fileName",
+              "displayName": "fileName",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "totalErrors",
+              "displayName": "totalErrors",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "errorRate",
+              "displayName": "errorRate",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "errorReport",
+              "displayName": "errorReport",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7f959ab9-8c85-452d-88a2-300264f65ead",
+      "name": "Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        336
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T11:25:12.179Z",
+      "createdAt": "2026-01-31T11:25:12.179Z",
+      "role": "workflow:owner",
+      "workflowId": "dyU7QGo0wYQBy4pQ",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:32:09.601Z",
+  "versionId": "42fc18f0-de11-45b3-bd4d-d5826c03048d"
+}
