@@ -1,0 +1,892 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook - Receive Financial Data": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Check Data Source Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Data Source Type": {
+      "main": [
+        [
+          {
+            "node": "Normalize Bank Statement Schema",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normalize Invoice Schema",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Normalize ERP Schema",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract CSV Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract CSV Data": {
+      "main": [
+        [
+          {
+            "node": "Normalize CSV Schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Bank Statement Schema": {
+      "main": [
+        [
+          {
+            "node": "Merge All Normalized Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Invoice Schema": {
+      "main": [
+        [
+          {
+            "node": "Merge All Normalized Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge All Normalized Data": {
+      "main": [
+        [
+          {
+            "node": "Deterministic Matching Logic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deterministic Matching Logic": {
+      "main": [
+        [
+          {
+            "node": "Check Match Quality",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Match Quality": {
+      "main": [
+        [
+          {
+            "node": "Merge Matched Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Fuzzy Matching Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Fuzzy Matching Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Fuzzy Matching Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Fuzzy Matching Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge Matched Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Matched Results": {
+      "main": [
+        [
+          {
+            "node": "Calculate Confidence Scores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Confidence Scores": {
+      "main": [
+        [
+          {
+            "node": "Route by Confidence Threshold",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Confidence Threshold": {
+      "main": [
+        [
+          {
+            "node": "Mark as Auto-Reconciled",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Flag for Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flag for Human Review": {
+      "main": [
+        [
+          {
+            "node": "Merge All Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark as Auto-Reconciled": {
+      "main": [
+        [
+          {
+            "node": "Merge All Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge All Results": {
+      "main": [
+        [
+          {
+            "node": "Log to Reconciliation Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log to Reconciliation Report": {
+      "main": [
+        [
+          {
+            "node": "Notify Finance Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-31T11:26:37.160Z",
+  "id": "utHb1JAnmnzXc9Xz",
+  "isArchived": false,
+  "meta": null,
+  "name": "Data Reconciliation and Mismatch Detection",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "financial-data-reconciliation",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "cbebbd27-22e3-496e-b517-3b96069a1c23",
+      "name": "Webhook - Receive Financial Data",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -688,
+        -416
+      ],
+      "webhookId": "f212e492-45d2-44e3-801a-ed0d7c9c0351"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "confidenceThreshold",
+              "value": 0.85,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "matchingKeys",
+              "value": "[\"transactionId\", \"invoiceNumber\", \"amount\", \"date\"]",
+              "type": "array"
+            },
+            {
+              "id": "id-3",
+              "name": "fuzzyMatchThreshold",
+              "value": 0.7,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "23d82cdb-e0e1-4605-ad2f-f70e5712ae72",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -464,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.sourceType }}",
+              "rightValue": "bank_statement",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1104b28a-592c-49ab-a5bc-32de5ea5aa3f",
+      "name": "Check Data Source Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -240,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4dbcd982-9bc6-416a-87cd-a6f1e5704114",
+      "name": "Extract CSV Data",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        -704
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "recordId",
+              "value": "={{ $json.transaction_id }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "amount",
+              "value": "={{ $json.transaction_amount }}",
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "date",
+              "value": "={{ $json.transaction_date }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "description",
+              "value": "={{ $json.transaction_description }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "sourceType",
+              "value": "bank_statement",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "normalizedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "41e99b72-4da6-4898-9146-8b9afbf22f81",
+      "name": "Normalize Bank Statement Schema",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "recordId",
+              "value": "={{ $json.invoice_number }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "amount",
+              "value": "={{ $json.invoice_total }}",
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "date",
+              "value": "={{ $json.invoice_date }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "description",
+              "value": "={{ $json.invoice_description }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "sourceType",
+              "value": "invoice",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "normalizedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "904354e2-b239-42f5-a999-a3840cf8ecfb",
+      "name": "Normalize Invoice Schema",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "recordId",
+              "value": "={{ $json.erp_transaction_id }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "amount",
+              "value": "={{ $json.erp_amount }}",
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "date",
+              "value": "={{ $json.erp_date }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "description",
+              "value": "={{ $json.erp_description }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "sourceType",
+              "value": "erp",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "normalizedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "e4dc38a1-4388-4c22-8768-c2eeed4ea18c",
+      "name": "Normalize ERP Schema",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "recordId",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "amount",
+              "value": "={{ $json.amount }}",
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "description",
+              "value": "={{ $json.description }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "sourceType",
+              "value": "csv_upload",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "normalizedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "f7d83ee7-47b6-49aa-9340-24494ca1f0b7",
+      "name": "Normalize CSV Schema",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        -704
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "3a959beb-13a1-4c0d-9d98-bbae574037e0",
+      "name": "Merge All Normalized Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Deterministic Matching Logic\n// Groups records by exact matches on recordId, amount, and date fields\n// Calculates match confidence based on number of matching fields\n\nconst items = $input.all();\nconst matchedGroups = {};\nconst results = [];\n\n// Helper function to normalize values for comparison\nfunction normalizeValue(value) {\n  if (value === null || value === undefined) return '';\n  return String(value).trim().toLowerCase();\n}\n\n// Helper function to normalize date for comparison\nfunction normalizeDate(date) {\n  if (!date) return '';\n  try {\n    const d = new Date(date);\n    return d.toISOString().split('T')[0]; // YYYY-MM-DD format\n  } catch (e) {\n    return String(date).trim();\n  }\n}\n\n// Helper function to normalize amount for comparison\nfunction normalizeAmount(amount) {\n  if (amount === null || amount === undefined) return '';\n  const num = parseFloat(String(amount).replace(/[^0-9.-]/g, ''));\n  return isNaN(num) ? '' : num.toFixed(2);\n}\n\n// Process each item and create matching keys\nfor (const item of items) {\n  const json = item.json;\n  \n  const recordId = normalizeValue(json.recordId || json.id || json.transactionId);\n  const amount = normalizeAmount(json.amount || json.total || json.value);\n  const date = normalizeDate(json.date || json.transactionDate || json.timestamp);\n  \n  // Create multiple matching keys with different combinations\n  const matchingKeys = [];\n  \n  // Exact match on all three fields (highest confidence)\n  if (recordId && amount && date) {\n    matchingKeys.push({ key: `${recordId}|${amount}|${date}`, matchedFields: ['recordId', 'amount', 'date'], confidence: 1.0 });\n  }\n  \n  // Match on recordId and amount (high confidence)\n  if (recordId && amount) {\n    matchingKeys.push({ key: `${recordId}|${amount}`, matchedFields: ['recordId', 'amount'], confidence: 0.85 });\n  }\n  \n  // Match on recordId and date (high confidence)\n  if (recordId && date) {\n    matchingKeys.push({ key: `${recordId}|${date}`, matchedFields: ['recordId', 'date'], confidence: 0.85 });\n  }\n  \n  // Match on amount and date (medium confidence)\n  if (amount && date) {\n    matchingKeys.push({ key: `${amount}|${date}`, matchedFields: ['amount', 'date'], confidence: 0.7 });\n  }\n  \n  // Match on recordId only (lower confidence)\n  if (recordId) {\n    matchingKeys.push({ key: `${recordId}`, matchedFields: ['recordId'], confidence: 0.6 });\n  }\n  \n  // Store item with its matching keys\n  for (const matchKey of matchingKeys) {\n    if (!matchedGroups[matchKey.key]) {\n      matchedGroups[matchKey.key] = {\n        items: [],\n        matchedFields: matchKey.matchedFields,\n        baseConfidence: matchKey.confidence\n      };\n    }\n    matchedGroups[matchKey.key].items.push(json);\n  }\n}\n\n// Process matched groups and create output\nfor (const [key, group] of Object.entries(matchedGroups)) {\n  if (group.items.length > 1) {\n    // Multiple items matched - potential reconciliation\n    const matchCount = group.items.length;\n    const confidence = group.baseConfidence * Math.min(1.0, matchCount / 2); // Adjust confidence based on match count\n    \n    results.push({\n      matchKey: key,\n      matchedFields: group.matchedFields,\n      matchCount: matchCount,\n      confidence: parseFloat(confidence.toFixed(2)),\n      matchType: 'deterministic',\n      records: group.items,\n      status: confidence >= 0.8 ? 'high_confidence' : 'medium_confidence'\n    });\n  } else if (group.items.length === 1) {\n    // Single item - no match found\n    results.push({\n      matchKey: key,\n      matchedFields: group.matchedFields,\n      matchCount: 1,\n      confidence: 0,\n      matchType: 'no_match',\n      records: group.items,\n      status: 'unmatched'\n    });\n  }\n}\n\n// Return results\nreturn results.map(result => ({ json: result }));"
+      },
+      "id": "0421f0a6-b7a2-4a96-9f26-73acfaa57200",
+      "name": "Deterministic Matching Logic",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Deterministic Matching Logic').item.json.matchConfidence }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.fuzzyMatchThreshold }}",
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "80d1cc75-94ed-4c28-b6d3-5a68786a71d6",
+      "name": "Check Match Quality",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        656,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Records to match: {{ $json.unmatchedRecords }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a financial data reconciliation specialist. Your task is to analyze unmatched financial records and identify potential matches using fuzzy matching techniques.\n\nFor each unmatched record, you should:\n1. Compare transaction descriptions using semantic similarity\n2. Check for near-matches in amounts (within 1% tolerance)\n3. Look for date matches within a 3-day window\n4. Consider vendor name variations and abbreviations\n5. Return matched pairs with confidence scores\n\nReturn your analysis in the structured format defined by the output parser."
+        }
+      },
+      "id": "4802cf79-1fab-4fd8-a06f-496b062e1cbe",
+      "name": "AI Fuzzy Matching Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        880,
+        -540
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "b26481ac-573a-4a8a-846b-c612ddb9cec2",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        888,
+        -316
+      ]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"matchedPairs\": [\n\t\t{\n\t\t\t\"sourceRecord\": {},\n\t\t\t\"targetRecord\": {},\n\t\t\t\"confidenceScore\": 0.95,\n\t\t\t\"matchReason\": \"Exact match on transaction ID and amount\"\n\t\t}\n\t],\n\t\"unmatchedRecords\": []\n}"
+      },
+      "id": "9bb01304-1746-41f3-bf94-fcb4e2ebb6e4",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1016,
+        -316
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combineAll"
+      },
+      "id": "d66b1eae-9314-42ef-a2e4-a128bf9ec468",
+      "name": "Merge Matched Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1232,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Calculate final confidence scores by combining deterministic and AI fuzzy match scores\n// Normalize to 0-1 range and add audit trail metadata\n\nconst item = $input.item.json;\n\n// Extract scores from different matching stages\nconst deterministicScore = item.deterministicMatchScore || 0;\nconst aiScore = item.aiMatchScore || 0;\nconst hasAiMatch = item.aiMatchScore !== undefined;\n\n// Weight configuration\nconst DETERMINISTIC_WEIGHT = 0.6;\nconst AI_WEIGHT = 0.4;\n\n// Calculate combined confidence score\nlet finalConfidence;\nif (hasAiMatch) {\n  // Combine both scores with weights\n  finalConfidence = (deterministicScore * DETERMINISTIC_WEIGHT) + (aiScore * AI_WEIGHT);\n} else {\n  // Only deterministic match available\n  finalConfidence = deterministicScore;\n}\n\n// Normalize to 0-1 range\nfinalConfidence = Math.max(0, Math.min(1, finalConfidence));\n\n// Determine confidence level\nlet confidenceLevel;\nif (finalConfidence >= 0.9) {\n  confidenceLevel = 'HIGH';\n} else if (finalConfidence >= 0.7) {\n  confidenceLevel = 'MEDIUM';\n} else if (finalConfidence >= 0.5) {\n  confidenceLevel = 'LOW';\n} else {\n  confidenceLevel = 'VERY_LOW';\n}\n\n// Build audit trail\nconst auditTrail = {\n  timestamp: new Date().toISOString(),\n  deterministicScore: deterministicScore,\n  aiScore: hasAiMatch ? aiScore : null,\n  finalConfidence: finalConfidence,\n  confidenceLevel: confidenceLevel,\n  matchingMethod: hasAiMatch ? 'HYBRID' : 'DETERMINISTIC',\n  weights: {\n    deterministic: DETERMINISTIC_WEIGHT,\n    ai: AI_WEIGHT\n  }\n};\n\n// Return enriched item with confidence scores and audit trail\nreturn {\n  json: {\n    ...item,\n    finalConfidence: finalConfidence,\n    confidenceLevel: confidenceLevel,\n    confidencePercentage: Math.round(finalConfidence * 100),\n    auditTrail: auditTrail\n  }\n};"
+      },
+      "id": "051c754c-efff-4b36-b5b4-575c1617ff87",
+      "name": "Calculate Confidence Scores",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1456,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.finalConfidence }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.confidenceThreshold }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "eaa34228-8f19-40d5-9048-2ae5b1b1517e",
+      "name": "Route by Confidence Threshold",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1680,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "reviewStatus",
+              "value": "pending_human_review",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "reviewReason",
+              "value": "Low confidence match - requires manual verification",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "flaggedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "36065636-1cba-4a92-9e18-0e5c2dacd6a2",
+      "name": "Flag for Human Review",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1904,
+        -512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "reviewStatus",
+              "value": "auto_reconciled",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "reconciledAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "208299fe-dd11-49a9-a450-5bfb9513aaa1",
+      "name": "Mark as Auto-Reconciled",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1904,
+        -320
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "816cdeb2-c4f6-4a68-87ac-88b2ee4938b6",
+      "name": "Merge All Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2128,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Google Sheets Document ID__>"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Reconciliation Report"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null
+        },
+        "options": {}
+      },
+      "id": "6934dd4f-72d3-4571-8452-08cbb0dbae22",
+      "name": "Log to Reconciliation Report",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2352,
+        -416
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Slack Channel ID or Name__>"
+        },
+        "text": "=Reconciliation Complete!\n\nTotal Records Processed: {{ $json.totalRecords }}\nAuto-Reconciled: {{ $json.autoReconciledCount }}\nPending Review: {{ $json.pendingReviewCount }}\n\nView full report: {{ $json.reportUrl }}",
+        "otherOptions": {}
+      },
+      "id": "ba11aff1-8724-44d3-8a0d-d2739e3debe5",
+      "name": "Notify Finance Team",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        2624,
+        -400
+      ],
+      "webhookId": "cdd2cef7-c169-49a6-9da8-a331c1134920"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T11:26:37.164Z",
+      "createdAt": "2026-01-31T11:26:37.164Z",
+      "role": "workflow:owner",
+      "workflowId": "utHb1JAnmnzXc9Xz",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:31:28.841Z",
+  "versionId": "e0d7093d-a860-4f30-b435-7bef8edeaa8d"
+}
