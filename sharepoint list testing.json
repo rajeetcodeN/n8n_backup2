@@ -1,0 +1,962 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Microsoft SharePoint HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Split Out3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SharePoint HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SharePoint HTTP Request10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out3": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SharePoint HTTP Request8",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SharePoint HTTP Request9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Microsoft SharePoint HTTP Request2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Microsoft SharePoint HTTP Request15",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Split Out4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Microsoft SharePoint HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SharePoint HTTP Request9": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SharePoint HTTP Request10": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Split Out5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "Split Out6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out6": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out7": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SharePoint HTTP Request16",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SharePoint HTTP Request15": {
+      "main": [
+        [
+          {
+            "node": "Split Out7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-13T12:00:10.466Z",
+  "id": "5IXy7rZDXLCZ3Bu8",
+  "isArchived": false,
+  "meta": null,
+  "name": "sharepoint list testing",
+  "nodes": [
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "=https://nosta.sharepoint.com/sites/OPEX/_api/web/lists",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -288,
+        864
+      ],
+      "id": "0c2da94a-4bbf-446f-9302-804bcbd29733",
+      "name": "Microsoft SharePoint HTTP Request2",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const rawDate = item.json.Last_modified_date;\n\n  if (rawDate) {\n    const date = new Date(rawDate);\n    item.json.Last_modified_date = date.toISOString(); // convert to UTC format\n  }\n\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1488,
+        432
+      ],
+      "id": "e5ba80ce-ab18-402b-87ec-2ccc4b23ae59",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const rawDate = item.json.TimeLastModified;\n\n  if (rawDate) {\n    const date = new Date(rawDate);\n    item.json.TimeLastModified = date.toISOString(); // Normalizes to '...000Z'\n  }\n\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1232,
+        464
+      ],
+      "id": "ad051dfb-f04c-4e4c-a429-1f9c91d9d5b5",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "=https://nosta.sharepoint.com/sites/OPEX/_api/web/lists/GetByTitle('{{ $json.Title }}')/items",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        816
+      ],
+      "id": "f1f388d3-6594-4e84-99f8-53c030963d14",
+      "name": "Microsoft SharePoint HTTP Request3",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Create a table to store your documents\ncreate table knowledge_test (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);\n\n-- Create a function to search for documents\ncreate function match7_documents (\n  query_embedding vector(1536),\n  match_count int default null,\n  filter jsonb DEFAULT '{}'\n) returns table (\n  id bigint,\n  content text,\n  metadata jsonb,\n  similarity float\n)\nlanguage plpgsql\nas $$\n#variable_conflict use_column\nbegin\n  return query\n  select\n    id,\n    content,\n    metadata,\n    1 - (knowledge_test.embedding <=> query_embedding) as similarity\n  from knowledge_test\n  where metadata @> filter\n  order by knowledge_test.embedding <=> query_embedding\n  limit match_count;\nend;\n$$;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -560,
+        384
+      ],
+      "id": "9dc407fb-37a3-4ebc-b257-6f6498a43be7",
+      "name": "Create Documents Table and Match Function"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "https://nosta.sharepoint.com/_api/v2.1/sites?$select=displayName,webUrl,id",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -864,
+        672
+      ],
+      "id": "77418e38-90e8-4546-b71e-14cfb8a2a663",
+      "name": "Microsoft SharePoint HTTP Request4",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "https://nosta.sharepoint.com/sites/OPEX/_api/web/lists(guid'd1d8beb8-9b53-4c8f-9361-8651be56b326')/items?$select=ID,FileLeafRef,File/ServerRelativeUrl&$expand=File       ",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -592,
+        672
+      ],
+      "id": "4478d239-943a-4bea-b361-3c8b607a44af",
+      "name": "Microsoft SharePoint HTTP Request7",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "value",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        880
+      ],
+      "id": "2cdc8a73-74a3-4792-8f87-594f5a642b59",
+      "name": "Split Out3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        912
+      ],
+      "id": "32456f1e-de0a-43eb-8223-407701220086",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "=https://nosta.sharepoint.com/sites/OPEX/_api/web/lists/GetByTitle('{{ $json.Title }}')/getitems",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        496,
+        1040
+      ],
+      "id": "254ad6ee-c7a7-430a-bf0d-b82bdbb56632",
+      "name": "Microsoft SharePoint HTTP Request8",
+      "extendsCredential": "microsoftSharePointOAuth2Api",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        320,
+        752
+      ],
+      "id": "3e7eed52-9de0-46a8-8045-4e7bbf87cbd3",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "63857546-133e-4a3c-bfa8-05654e7ce35f",
+              "name": "title",
+              "value": "={{ $json.Title }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        656
+      ],
+      "id": "6bced291-7bc5-4cf3-aa1c-a647ec8eee21",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "value",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        544,
+        656
+      ],
+      "id": "19134296-fd90-499d-909e-4bbc2be6a621",
+      "name": "Split Out4"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "title"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        1216
+      ],
+      "id": "eb230892-77f1-4c48-9140-9143f50b5d12",
+      "name": "Sort"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "https://nosta.sharepoint.com/sites/OPEX/_api/web",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        1104
+      ],
+      "id": "69b225a2-afed-4ed3-bde2-56056efe26e1",
+      "name": "Microsoft SharePoint HTTP Request9",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "=https://nosta.sharepoint.com/sites/OPEX/_api/web/lists('{{ $('Loop Over Items1').item.json.Id }}')",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        736,
+        832
+      ],
+      "id": "5a57ee77-ef34-40f7-8dd4-d8857a201988",
+      "name": "Microsoft SharePoint HTTP Request10",
+      "extendsCredential": "microsoftSharePointOAuth2Api",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "https://nosta.sharepoint.com/sites/OPEX/_api/web/lists?$select=Title,Id,RootFolder",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1888,
+        816
+      ],
+      "id": "b5a604e5-f66a-43c3-b499-9686506841c5",
+      "name": "Microsoft SharePoint HTTP Request11",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    },
+    {
+      "parameters": {
+        "url": "=https://digitalbiztechinfo.sharepoint.com/_api/web/lists/GetByTitle('try try')/items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -128,
+        432
+      ],
+      "id": "0b0dfd17-f271-4d93-b442-b55041ff0273",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "query": "try"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        672
+      ],
+      "id": "e7e0b6cb-4bed-449e-b1f9-91ed4a9e0f2a",
+      "name": "Microsoft OneDrive"
+    },
+    {
+      "parameters": {
+        "url": "=https://digitalbiztechinfo.sharepoint.com/_api/web/lists/GetByTitle('try 2')/items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        592
+      ],
+      "id": "c2f4a29d-82da-4f14-8fc7-b40c89d84d14",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "url": "=https://digitalbiztechinfo.sharepoint.com/_api/web/lists/GetByTitle('try try')/items(1)/Comments",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        368
+      ],
+      "id": "4722715b-1ffa-4f9b-82a3-a7107325f801",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "https://nosta.sharepoint.com/sites/OPEX/_api/web/lists(guid'd1d8beb8-9b53-4c8f-9361-8651be56b326')/items?$select=ID,FileLeafRef,File/ServerRelativeUrl&$expand=File       ",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -272,
+        1344
+      ],
+      "id": "67a97ec4-a5ad-48a1-98cd-362e2b8c3931",
+      "name": "Microsoft SharePoint HTTP Request14",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    },
+    {
+      "parameters": {
+        "url": "https://nosta.sharepoint.com/sites/OPEX/_api/web/lists(guid'd1d8beb8-9b53-4c8f-9361-8651be56b326')/items?$select=ID,FileLeafRef,File/ServerRelativeUrl&$expand=File",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "08edce9c-4258-4df4-befa-0f2e10828ec2",
+      "name": "Get Document Library Files",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1344,
+        1344
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://nosta.sharepoint.com/sites/OPEX/_api/web/lists(guid'd1d8beb8-9b53-4c8f-9361-8651be56b326')/items?$select=ID,FileLeafRef,File/ServerRelativeUrl&$expand=File",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {
+          "pagination": {}
+        }
+      },
+      "id": "a0c3d699-6bc4-4d40-839b-178a36a47e82",
+      "name": "Get All SharePoint Items (with Paging)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1472,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "value",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        64,
+        432
+      ],
+      "id": "811bb585-469b-435f-9a51-6d804c80f98f",
+      "name": "Split Out5"
+    },
+    {
+      "parameters": {
+        "url": "=https://digitalbiztechinfo.sharepoint.com/_api/web/lists/GetByTitle('try try')/items({{ $json.Id }})/Comments",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        432
+      ],
+      "id": "7a887db3-164d-4913-a217-b92e4791f77c",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "url": "=https://digitalbiztechinfo.sharepoint.com/sites/dbtsubsite1/_api/web/lists/GetByTitle('Salesforce Projects')/items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -144,
+        240
+      ],
+      "id": "a2b7ecb6-d2c7-4a84-94bc-ae569f44cf38",
+      "name": "HTTP Request6"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "value",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        64,
+        240
+      ],
+      "id": "48066dc7-ac88-493c-a0d5-feca2ca7e24c",
+      "name": "Split Out6"
+    },
+    {
+      "parameters": {
+        "url": "=https://digitalbiztechinfo.sharepoint.com/sites/dbtsubsite1/_api/web/lists/GetByTitle('Salesforce Projects')/items({{ $json.Id }})/Comments",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        240
+      ],
+      "id": "624d78ee-8c0f-406e-af8e-eb784dcde527",
+      "name": "HTTP Request7"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "value",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        48,
+        32
+      ],
+      "id": "630cd64c-d94e-4cf1-8e37-d1f3a8953b67",
+      "name": "Split Out7"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "=https://nosta.sharepoint.com/sites/OPEX/_api/web/lists",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -144,
+        32
+      ],
+      "id": "13ee6576-24be-484e-9eaa-2cc5c5a67f96",
+      "name": "Microsoft SharePoint HTTP Request15",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutHttpRequest": "",
+        "httpVariantWarning": "",
+        "curlImport": "",
+        "method": "GET",
+        "": "",
+        "url": "=https://nosta.sharepoint.com/sites/OPEX/_api/web/lists/GetByTitle('Projekte')/items({{ $json.Id }})/Comments",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftSharePointOAuth2Api",
+        "provideSslCertificates": false,
+        "sendQuery": false,
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false,
+              "neverError": false,
+              "responseFormat": "autodetect"
+            }
+          }
+        },
+        "infoMessage": ""
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        32
+      ],
+      "id": "f4b58768-514c-4fd2-83cc-68505f0862ab",
+      "name": "Microsoft SharePoint HTTP Request16",
+      "extendsCredential": "microsoftSharePointOAuth2Api"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-09-13T12:00:10.470Z",
+      "createdAt": "2025-09-13T12:00:10.470Z",
+      "role": "workflow:owner",
+      "workflowId": "5IXy7rZDXLCZ3Bu8",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-09-13T12:28:49.637Z",
+      "createdAt": "2025-09-13T12:28:49.637Z",
+      "id": "Ot7A8CaX995qlWmc",
+      "name": "testing"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-15T10:23:39.000Z",
+  "versionId": "6fff7c69-6ad9-4fb5-8274-0c9a0537d510"
+}
