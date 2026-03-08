@@ -1,0 +1,592 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Document Upload Form": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Store Form Responses",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pinecone Insert Documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Document Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Insert Documents",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Insert Documents",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Pinecone Retrieve Documents",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Trigger",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "RAG Chatbot Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "RAG Chatbot Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RAG Chatbot Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RAG Chatbot Agent": {
+      "main": [
+        [
+          {
+            "node": "Prepare Chat Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Chat Log": {
+      "main": [
+        [
+          {
+            "node": "Log Chat Interactions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily Summary Schedule": {
+      "main": [
+        [
+          {
+            "node": "Get Chat Logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Chat Logs": {
+      "main": [
+        [
+          {
+            "node": "Analyze Chat Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Chat Data": {
+      "main": [
+        [
+          {
+            "node": "Send Daily Summary Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-31T11:00:52.589Z",
+  "id": "DFS9IlsBKS3rr0Xy",
+  "isArchived": false,
+  "meta": null,
+  "name": "Document Upload RAG Chatbot with Pinecone and Daily Analytics",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Document Upload for RAG",
+        "formDescription": "Upload PDF, CSV, or JSON files to add them to the knowledge base",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Upload Documents",
+              "fieldType": "file",
+              "acceptFileTypes": "application/pdf,.csv,application/json"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Upload Documents"
+        }
+      },
+      "id": "79016760-4b5c-480d-b2b7-d9490342359a",
+      "name": "Document Upload Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -664,
+        200
+      ],
+      "webhookId": "f30763a6-6850-433e-8098-42c622f83fd0"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "pineconeIndex",
+              "value": "<__PLACEHOLDER_VALUE__Pinecone index name__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "pineconeNamespace",
+              "value": "documents",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "chunkSize",
+              "value": 1000,
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "chunkOverlap",
+              "value": 200,
+              "type": "number"
+            },
+            {
+              "id": "id-5",
+              "name": "topK",
+              "value": 5,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "49810546-dda3-4f0f-9cb2-d222c928bd56",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "form_responses"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null
+        },
+        "options": {}
+      },
+      "id": "ec35c7b2-e21f-4d32-bb43-20841cc7f452",
+      "name": "Store Form Responses",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -8,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": "={{ $('Workflow Configuration').first().json.chunkSize }}",
+        "chunkOverlap": "={{ $('Workflow Configuration').first().json.chunkOverlap }}",
+        "options": {}
+      },
+      "id": "eed31c4a-943e-447b-b4fa-ac20d3ad3a46",
+      "name": "Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "binaryMode": "specificField",
+        "loader": "pdfLoader",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "id": "ce1b9ddf-e5d4-4a92-a1a5-a750a2444c12",
+      "name": "Document Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -144,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "89b5c74d-0567-4fab-b69a-1f29d6a0c93b",
+      "name": "OpenAI Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        144,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.pineconeIndex }}"
+        },
+        "options": {
+          "pineconeNamespace": "={{ $('Workflow Configuration').first().json.pineconeNamespace }}"
+        }
+      },
+      "id": "bf182eb7-2711-47eb-b8bb-713555b76f99",
+      "name": "Pinecone Insert Documents",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi! I can answer questions about the documents you've uploaded. What would you like to know?",
+        "options": {
+          "loadPreviousSession": "memory"
+        }
+      },
+      "id": "acc646ae-f4a1-4322-aeae-e561b2f2b45a",
+      "name": "Chat Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -736,
+        936
+      ],
+      "webhookId": "9a722baa-e0d7-4791-af3f-d9732e6f335f"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "id": "4c2b4cda-bc4e-48b8-9ab2-8918d2e3f98f",
+      "name": "Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -376,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.pineconeIndex }}"
+        },
+        "options": {
+          "pineconeNamespace": "={{ $('Workflow Configuration').first().json.pineconeNamespace }}"
+        }
+      },
+      "id": "56dadf4b-5506-4147-9a13-ee4d5d415da4",
+      "name": "Pinecone Retrieve Documents",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        -736,
+        392
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "3cba03fc-5462-4379-9907-d4354f06aa05",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -248,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant that answers questions based ONLY on the information retrieved from uploaded documents.\n\nYour task:\n1. Review the context provided from the vector store\n2. Answer the user's question using ONLY information from the retrieved documents\n3. If the retrieved documents do not contain enough information to answer confidently, respond with: \"I couldn't find that in the uploaded documents.\"\n4. Always cite which document(s) you're referencing when possible\n5. Be concise and accurate\n\nNever make up information or use knowledge outside of the provided context."
+        }
+      },
+      "id": "fd7805f7-e696-4b39-b35c-e47328afa879",
+      "name": "RAG Chatbot Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -384,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "userQuery",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "botResponse",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "matchedFiles",
+              "value": "={{ $json.metadata?.fileName || 'N/A' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e9b0d889-719a-4884-bf70-5909520291a9",
+      "name": "Prepare Chat Log",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        936
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "chat_logs"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null
+        },
+        "options": {}
+      },
+      "id": "39da80bd-c94d-4a3b-932b-618fb6918ff2",
+      "name": "Log Chat Interactions",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        192,
+        936
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "23bbaa63-54ca-4443-9e25-2ae526379b53",
+      "name": "Daily Summary Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -736,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "chat_logs"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "timestamp",
+              "condition": "gt",
+              "keyValue": "={{ $now.minus({ days: 1 }).toISO() }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "id": "e139aaae-9436-46ab-94ec-54ab1c56b30f",
+      "name": "Get Chat Logs",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyze chat logs and generate summary statistics\nconst items = $input.all();\n\n// Initialize counters\nlet totalQuestions = 0;\nlet filesReferenced = {};\nlet failedLookups = 0;\n\n// Process each chat log entry\nfor (const item of items) {\n  const data = item.json;\n  \n  // Count total questions\n  totalQuestions++;\n  \n  // Track files referenced (if available in the data)\n  if (data.filesReferenced) {\n    const files = Array.isArray(data.filesReferenced) ? data.filesReferenced : [data.filesReferenced];\n    files.forEach(file => {\n      filesReferenced[file] = (filesReferenced[file] || 0) + 1;\n    });\n  }\n  \n  // Count failed lookups (if no relevant documents found)\n  if (data.documentsFound === 0 || data.status === 'failed' || data.noResults === true) {\n    failedLookups++;\n  }\n}\n\n// Sort files by reference count\nconst topFiles = Object.entries(filesReferenced)\n  .sort((a, b) => b[1] - a[1])\n  .slice(0, 10)\n  .map(([file, count]) => ({ file, count }));\n\n// Calculate success rate\nconst successRate = totalQuestions > 0 ? ((totalQuestions - failedLookups) / totalQuestions * 100).toFixed(2) : 0;\n\n// Generate HTML email body\nconst topFilesHtml = topFiles.length > 0 \n  ? topFiles.map(({ file, count }) => `<li><strong>${file}</strong>: ${count} references</li>`).join('')\n  : '<li>No files referenced</li>';\n\nconst emailBody = `\n<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n    .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n    .header { background-color: #4CAF50; color: white; padding: 20px; text-align: center; border-radius: 5px; }\n    .stats { background-color: #f4f4f4; padding: 15px; margin: 20px 0; border-radius: 5px; }\n    .stat-item { margin: 10px 0; }\n    .stat-label { font-weight: bold; color: #555; }\n    .stat-value { color: #4CAF50; font-size: 1.2em; }\n    .success-rate { font-size: 2em; color: #4CAF50; font-weight: bold; }\n    ul { padding-left: 20px; }\n    .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #777; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>📊 Daily RAG Chatbot Summary</h1>\n      <p>${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>\n    </div>\n    \n    <div class=\"stats\">\n      <div class=\"stat-item\">\n        <span class=\"stat-label\">Total Questions Asked:</span>\n        <span class=\"stat-value\">${totalQuestions}</span>\n      </div>\n      \n      <div class=\"stat-item\">\n        <span class=\"stat-label\">Success Rate:</span>\n        <div class=\"success-rate\">${successRate}%</div>\n      </div>\n      \n      <div class=\"stat-item\">\n        <span class=\"stat-label\">Failed Lookups:</span>\n        <span class=\"stat-value\">${failedLookups}</span>\n      </div>\n      \n      <div class=\"stat-item\">\n        <span class=\"stat-label\">Total Files Referenced:</span>\n        <span class=\"stat-value\">${Object.keys(filesReferenced).length}</span>\n      </div>\n    </div>\n    \n    <h2>📁 Top Referenced Files</h2>\n    <ul>\n      ${topFilesHtml}\n    </ul>\n    \n    <div class=\"footer\">\n      <p>This is an automated summary generated by your RAG Chatbot system.</p>\n    </div>\n  </div>\n</body>\n</html>\n`;\n\n// Return summary statistics with email body\nreturn [{\n  json: {\n    totalQuestions,\n    topFilesReferenced: topFiles,\n    failedLookups,\n    successRate: `${successRate}%`,\n    totalFilesReferenced: Object.keys(filesReferenced).length,\n    summaryDate: new Date().toISOString().split('T')[0],\n    emailBody\n  }\n}];"
+      },
+      "id": "b000c7d5-9614-4985-942b-519fa0d71da3",
+      "name": "Analyze Chat Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "<__PLACEHOLDER_VALUE__Your email address__>",
+        "subject": "=Daily RAG Chatbot Summary - {{ $now.toFormat('yyyy-MM-dd') }}",
+        "message": "={{ $json.emailBody }}",
+        "options": {}
+      },
+      "id": "bd6162b7-bf61-4d11-9ec2-05bf962237f5",
+      "name": "Send Daily Summary Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        1264
+      ],
+      "webhookId": "351f1eae-cf6d-4a0a-9a4d-123889402591"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-31T11:00:52.593Z",
+      "createdAt": "2026-01-31T11:00:52.593Z",
+      "role": "workflow:owner",
+      "workflowId": "DFS9IlsBKS3rr0Xy",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-31T11:08:12.302Z",
+  "versionId": "68793ae7-a248-43a7-8b81-edda510e023e"
+}
