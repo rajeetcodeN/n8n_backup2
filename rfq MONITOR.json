@@ -1,0 +1,36 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-02-24T04:10:07.253Z",
+  "id": "PujpbOKO8nlC4Sxc",
+  "isArchived": false,
+  "meta": {
+    "templateId": "ready-to-run-ai-workflow",
+    "templateCredsSetupCompleted": true
+  },
+  "name": "rfq MONITOR",
+  "nodes": [],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {},
+  "shared": [
+    {
+      "updatedAt": "2026-02-24T04:10:07.255Z",
+      "createdAt": "2026-02-24T04:10:07.255Z",
+      "role": "workflow:owner",
+      "workflowId": "PujpbOKO8nlC4Sxc",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-27T17:51:22.268Z",
+  "versionId": "51f5e428-1e55-4ed8-8d36-0e73ace449de"
+}
