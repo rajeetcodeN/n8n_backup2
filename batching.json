@@ -1,0 +1,970 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "Set File ID": {
+      "main": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "Google Drive4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive4": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        []
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert into Supabase Vectorstore": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Create a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        []
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-20T06:01:15.315Z",
+  "id": "j9P10iB8mNtRgr3b",
+  "isArchived": false,
+  "meta": null,
+  "name": "batching",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2080,
+        464
+      ],
+      "id": "14774423-c1d6-48c9-8181-fd9aa83a889a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -992,
+        336
+      ],
+      "id": "f4b2c6a6-a83b-46e6-8116-0ac669a609af",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f4536df5-d0b1-4392-bf17-b8137fb31a44",
+              "name": "file_type",
+              "value": "={{ $json.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "77d782de-169d-4a46-8a8e-a3831c04d90f",
+              "name": "file_title",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "9bde4d7f-e4f3-4ebd-9338-dce1350f9eab",
+              "name": "file_url",
+              "value": "={{ $json.webViewLink }}",
+              "type": "string"
+            },
+            {
+              "id": "fae402c8-c486-4b57-8d28-bf669db6b442",
+              "name": "last_modified_date",
+              "value": "={{ $json.modifiedTime }}",
+              "type": "string"
+            },
+            {
+              "id": "866ce582-16e2-4869-ac77-13f248c187eb",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bb147cd0-982d-4796-a265-100843bb6e7b",
+      "name": "Set File ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1152,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - SharePoint URL with Version Parameter\n// Use this in a \"Code\" node in n8n\n\nconst items = $input.all();\n\nconst outputItems = items.map(item => {\n  const data = item.json;\n  \n  // Use existing LinkingUrl if available\n  if (data.LinkingUrl) {\n    return {\n      json: {\n        ...data,\n        fileUrl: data.LinkingUrl\n      }\n    };\n  }\n  \n  // Construct versioned URL\n  let fileUrl = '';\n  \n  if (data.ServerRelativeUrl && data.ContentTag) {\n    // Base URL with server relative path\n    fileUrl = 'https://nosta.sharepoint.com' + data.ServerRelativeUrl;\n    \n    // Extract GUID from ContentTag and create version parameter\n    const guidMatch = data.ContentTag.match(/\\{([^}]+)\\}/);\n    if (guidMatch) {\n      const versionId = guidMatch[1].toLowerCase().replace(/-/g, '');\n      fileUrl += `?d=w${versionId}`;\n    }\n  }\n  \n  return {\n    json: {\n      ...data,\n      fileUrl: fileUrl\n    }\n  };\n});\n\nreturn outputItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1344,
+        288
+      ],
+      "id": "ed7b7768-1a09-49e0-95c8-af05fb8bcd59",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "limit": 150,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "12zIzJtds6gZAvDiDr60XBvMM_yr6zZNy",
+            "mode": "list",
+            "cachedResultName": "batching",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/12zIzJtds6gZAvDiDr60XBvMM_yr6zZNy"
+          }
+        },
+        "options": {
+          "fields": [
+            "id",
+            "name",
+            "webViewLink",
+            "mimeType",
+            "*"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1808,
+        480
+      ],
+      "id": "a20e9c19-9ede-4b70-bd5f-d33e4285c6b6",
+      "name": "Google Drive1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "=https://drive.google.com/file/d/1uay0-mKkAkKIkZJ0hVtwjbZlhzMGdAn1/view?usp=drive_link",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1552,
+        480
+      ],
+      "id": "887833b3-a62f-440c-86bb-9ed9daf99a21",
+      "name": "Google Drive4",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "8TJAGPnMBWLtBC4X",
+          "name": "Google Drive dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c5ba8c06-eb00-4765-a721-f2cf6e447e8e",
+              "name": "Material",
+              "value": "={{ $json.Material }}",
+              "type": "string"
+            },
+            {
+              "id": "639b4deb-04df-4b10-a146-65e83d98537a",
+              "name": "Materialkurztext",
+              "value": "={{ $json.Materialkurztext }}",
+              "type": "string"
+            },
+            {
+              "id": "b7684013-5701-4b0d-ae24-06f1d3f7670e",
+              "name": "Profitcenter",
+              "value": "={{ $json.Profitcenter }}",
+              "type": "string"
+            },
+            {
+              "id": "7140ba3e-d2f3-4feb-a3c1-89a345d6f53e",
+              "name": "Bestandsmenge",
+              "value": "={{ $json.Bestandsmenge }}",
+              "type": "string"
+            },
+            {
+              "id": "5b578677-f80d-482e-9399-db76356697ac",
+              "name": "Mengeneinheit",
+              "value": "={{ $json.Mengeneinheit }}",
+              "type": "string"
+            },
+            {
+              "id": "205f3a55-ea31-4c16-95ef-0606a36c22a6",
+              "name": "screw_thread",
+              "value": "={{ $json.parsed_screw_thread }}",
+              "type": "string"
+            },
+            {
+              "id": "35511bbf-0e1e-49c7-8a4f-336351cb134e",
+              "name": "dimensions",
+              "value": "={{ $json.parsed_dimensions }}",
+              "type": "string"
+            },
+            {
+              "id": "2c3ad597-922d-4232-b9e2-0c1910c1db0e",
+              "name": "item_type",
+              "value": "={{ $json.parsed_item_type}}",
+              "type": "string"
+            },
+            {
+              "id": "0d1644bb-3d9d-4f12-81cb-42b63803fd35",
+              "name": "original_text",
+              "value": "={{ $json.parsed_original_text }}",
+              "type": "string"
+            },
+            {
+              "id": "49c49e71-fea8-4d84-a1ce-5e1c1b3058db",
+              "name": "diameter_mm",
+              "value": "={{ $json.parsed_diameter_mm }}",
+              "type": "string"
+            },
+            {
+              "id": "1f5fa0b4-45a3-4b30-b4ff-0c60d77ce502",
+              "name": "thickness_mm",
+              "value": "={{ $json.parsed_thickness_mm }}",
+              "type": "string"
+            },
+            {
+              "id": "c7132032-fb6f-4511-ba72-993805f05c34",
+              "name": "hex_sw",
+              "value": "={{ $json.parsed_hex_sw }}",
+              "type": "string"
+            },
+            {
+              "id": "049d5fce-4e7e-4638-a030-bc0c4bd0e72a",
+              "name": "material_codes",
+              "value": "={{ $json.parsed_material_codes }}",
+              "type": "string"
+            },
+            {
+              "id": "8297f421-b01c-45ab-bad2-63483dbdd918",
+              "name": " standards",
+              "value": "={{ $json.parsed_standards }}",
+              "type": "string"
+            },
+            {
+              "id": "9251c9f7-e24d-4dda-a7a6-6f31c47d9526",
+              "name": "treatments_coatings",
+              "value": "={{ $json.parsed_treatments_coatings }}",
+              "type": "string"
+            },
+            {
+              "id": "5c44d6c9-cedb-49b2-9d00-0e72643f55da",
+              "name": "tolerances",
+              "value": "={{ $json.parsed_thickness_mm }}",
+              "type": "string"
+            },
+            {
+              "id": "7fecfd79-6d3b-48ab-aef0-07bc55bdbfc6",
+              "name": "config",
+              "value": "=tolerances:{{ $json.parsed_thickness_mm }}  \ntreatments_coatings:{{ $json.parsed_treatments_coatings }}\nstandards:{{ $json.parsed_standards }}\nmaterial_codes:{{ $json.parsed_material_codes }}\nhex_sw:{{ $json.parsed_hex_sw }}\nthickness_mm:{{ $json.parsed_thickness_mm }}\noriginal_text:{{ $json.parsed_original_text }}\nitem_type:{{ $json.parsed_item_type}}\ndimensions:{{ $json.parsed_dimensions }}\nscrew_thread:{{ $json.parsed_screw_thread }}\n\n\nMaterialkurztext:{{ $json.Materialkurztext }}\nMaterial:{{ $json.Material }}\ndescription:{{ $json.parsed_description }}",
+              "type": "string"
+            },
+            {
+              "id": "cc58da4e-a093-4656-9f7f-ff41bd7be8f9",
+              "name": "description",
+              "value": "={{ $json.parsed_description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        288
+      ],
+      "id": "a14c8381-f8e3-4527-90ea-84bc198f5337",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        400
+      ],
+      "id": "1c2ab62f-dba2-4a4a-aaad-2af117e030b9",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.config }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "description",
+                "value": "={{ $json.description }}"
+              },
+              {
+                "name": "Bestandsmenge",
+                "value": "={{ $json.Bestandsmenge }}"
+              },
+              {
+                "name": "Profitcenter",
+                "value": "={{ $json.Profitcenter }}"
+              },
+              {
+                "name": "Mengeneinheit",
+                "value": "={{ $json.Mengeneinheit }}"
+              },
+              {
+                "name": "description",
+                "value": "={{ $json.original_text }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "f0511db6-7d79-47b2-b627-25d3134d771b",
+      "name": "Default Data Loader1",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        592,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 100000
+      },
+      "id": "5554d413-ef91-4aa5-b320-aec6f56cda56",
+      "name": "Character Text Splitter1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        640,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        416,
+        560
+      ],
+      "id": "c9bcb649-b6cc-429c-8609-fd4e7183f97b",
+      "name": "Embeddings Mistral Cloud2",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "material_vector",
+          "mode": "list",
+          "cachedResultName": "material_vector"
+        },
+        "options": {
+          "queryName": "match_material"
+        }
+      },
+      "id": "db2a25e7-a252-4112-9948-830791f63776",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        512,
+        272
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        848,
+        272
+      ],
+      "id": "abb7ef28-af8e-4967-8c40-5c715d6b700e",
+      "name": "Wait4",
+      "webhookId": "2e21183b-4e03-4dc1-aef7-b9805cf93a22"
+    },
+    {
+      "parameters": {
+        "batchSize": "=1",
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -432,
+        288
+      ],
+      "id": "9529844e-5581-484a-a9c4-73fe534298aa",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        272
+      ],
+      "id": "23911475-171e-4204-89c4-f251f639a690",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "tableId": "production_orders",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "job_id",
+              "fieldValue": "={{ $json[\"PLAN Production Orders\"] }}"
+            },
+            {
+              "fieldId": "material_id",
+              "fieldValue": "={{ $json[\"Material (Part)\"] }}"
+            },
+            {
+              "fieldId": "planning_plant",
+              "fieldValue": "={{ $json.Planungswerk }}"
+            },
+            {
+              "fieldId": "production_plant",
+              "fieldValue": "={{ $json.Produktionswerk }}"
+            },
+            {
+              "fieldId": "qty",
+              "fieldValue": "={{ $json[\"Order QTY\"] }}"
+            },
+            {
+              "fieldId": "partial_lot_qty",
+              "fieldValue": "={{ $json.Teillosmenge }}"
+            },
+            {
+              "fieldId": "scrap_qty",
+              "fieldValue": "={{ $json.Ausschussmenge }}"
+            },
+            {
+              "fieldId": "storage_location",
+              "fieldValue": "={{ $json.Lagerort }}"
+            },
+            {
+              "fieldId": "mrp_area",
+              "fieldValue": "={{ $json.Dispobereich }}"
+            },
+            {
+              "fieldId": "req_qty_legacy",
+              "fieldValue": "={{ $json.Bedarfsmenge }}"
+            },
+            {
+              "fieldId": "qty_entry_unit",
+              "fieldValue": "={{ $json[\"Menge in ErfassME\"] }}"
+            },
+            {
+              "fieldId": "req_qty_current",
+              "fieldValue": "={{ $json.Bedarf }}"
+            },
+            {
+              "fieldId": "received_qty",
+              "fieldValue": "={{ $json[\"Eingegangene Menge\"] }}"
+            },
+            {
+              "fieldId": "issued_qty",
+              "fieldValue": "={{ $json[\"Ausgegebene Menge\"] }}"
+            },
+            {
+              "fieldId": "confirmed_qty",
+              "fieldValue": "={{ $json[\"Bestätigte Menge\"] }}"
+            },
+            {
+              "fieldId": "reported_qty",
+              "fieldValue": "={{ $json[\"Rückgemeldete Menge\"] }}"
+            },
+            {
+              "fieldId": "release_date",
+              "fieldValue": "={{ $json[\"START DATE\"] }}"
+            },
+            {
+              "fieldId": "due_date",
+              "fieldValue": "={{ $json.Auftragsendtermin }}"
+            },
+            {
+              "fieldId": "opening_date",
+              "fieldValue": "={{ $json[\"AuftragseröffnTermin\"] }}"
+            },
+            {
+              "fieldId": "resolution_date",
+              "fieldValue": "={{ $json[\"Auflösungstermin\"] }}"
+            },
+            {
+              "fieldId": "change_timestamp",
+              "fieldValue": "={{ $json[\"Änderungszeitstempel\"] }}"
+            },
+            {
+              "fieldId": "total_confirm_date",
+              "fieldValue": "={{ $json[\"Gesamtbestätigungstermin Planauftrag\"] }}"
+            },
+            {
+              "fieldId": "action_time",
+              "fieldValue": "={{ $json.Aktionszeit }}"
+            },
+            {
+              "fieldId": "planned_order_start_time",
+              "fieldValue": "={{ $json[\"Startzeitpunkt des Planauftrags\"] }}"
+            },
+            {
+              "fieldId": "planned_order_end_time",
+              "fieldValue": "={{ $json[\"Endezeitpunkt des Planauftrags\"] }}"
+            },
+            {
+              "fieldId": "proposal_type",
+              "fieldValue": "={{ $json[\"Art Beschaffungsvorschlag\"] }}"
+            },
+            {
+              "fieldId": "procurement_type",
+              "fieldValue": "={{ $json.Beschaffungsart }}"
+            },
+            {
+              "fieldId": "special_procurement",
+              "fieldValue": "={{ $json.Sonderbeschaffung }}"
+            },
+            {
+              "fieldId": "dispatcher",
+              "fieldValue": "={{ $json.Disponent }}"
+            },
+            {
+              "fieldId": "conversion_flag",
+              "fieldValue": "={{ $json[\"Umsetzungskennzeich.\"] }}"
+            },
+            {
+              "fieldId": "reservation_id",
+              "fieldValue": "={{ $json.Reservierung }}"
+            },
+            {
+              "fieldId": "version_number",
+              "fieldValue": "={{ $json.Versionsnummer }}"
+            },
+            {
+              "fieldId": "bom_alternative",
+              "fieldValue": "={{ $json[\"StücklAlternative\"] }}"
+            },
+            {
+              "fieldId": "bom_usage",
+              "fieldValue": "={{ $json[\"StücklVerwendung\"] }}"
+            },
+            {
+              "fieldId": "bom_status",
+              "fieldValue": "={{ $json[\"Stücklistenstatus\"] }}"
+            },
+            {
+              "fieldId": "settlement_res",
+              "fieldValue": "={{ $json[\"Pos.Abr.Reservierung\"] }}"
+            },
+            {
+              "fieldId": "production_version",
+              "fieldValue": "={{ $json.Fertigungsversion }}"
+            },
+            {
+              "fieldId": "capacity_req_id",
+              "fieldValue": "={{ $json[\"Kapazitätsbedarfs-ID\"] }}"
+            },
+            {
+              "fieldId": "plan_no_operations",
+              "fieldValue": "={{ $json[\"Plannummer Vorgänge\"] }}"
+            },
+            {
+              "fieldId": "base_unit",
+              "fieldValue": "={{ $json.Basismengeneinheit }}"
+            },
+            {
+              "fieldId": "avail_check_type",
+              "fieldValue": "={{ $json[\"Art VerfügPrüfung\"] }}"
+            },
+            {
+              "fieldId": "goods_receipt_time",
+              "fieldValue": "={{ $json[\"WE-Bearbeitungszeit\"] }}"
+            },
+            {
+              "fieldId": "planned_delivery_time",
+              "fieldValue": "={{ $json.Planlieferzeit }}"
+            },
+            {
+              "fieldId": "prod_supervisor",
+              "fieldValue": "={{ $json.Fertigungssteuerer }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        672
+      ],
+      "id": "53229cdf-78e3-40be-8715-eba499e47675",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1440,
+        640
+      ],
+      "id": "d94cfea4-c593-4836-9c28-b8b537472854",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"job_id\": \"={{ $json[\\\"PLAN Production Orders\\\"] }}\",\n  \"material_id\": \"={{ $json[\\\"Material (Part)\\\"] }}\",\n  \"planning_plant\": \"={{ $json.Planungswerk }}\",\n  \"production_plant\": \"={{ $json.Produktionswerk }}\",\n  \"storage_location\": \"={{ $json.Lagerort }}\",\n  \"mrp_area\": \"={{ $json.Dispobereich }}\",\n\n  \"qty\": \"={{ Number($json[\\\"Order QTY\\\"] || 0) }}\",\n  \"partial_lot_qty\": \"={{ Number($json.Teillosmenge || 0) }}\",\n  \"scrap_qty\": \"={{ Number($json.Ausschussmenge || 0) }}\",\n  \"req_qty_legacy\": \"={{ Number($json.Bedarfsmenge || 0) }}\",\n  \"qty_entry_unit\": \"={{ Number($json[\\\"Menge in ErfassME\\\"] || 0) }}\",\n  \"req_qty_current\": \"={{ Number($json.Bedarf || 0) }}\",\n  \"received_qty\": \"={{ Number($json[\\\"Eingegangene Menge\\\"] || 0) }}\",\n  \"issued_qty\": \"={{ Number($json[\\\"Ausgegebene Menge\\\"] || 0) }}\",\n  \"confirmed_qty\": \"={{ Number($json[\\\"Bestätigte Menge\\\"] || 0) }}\",\n  \"reported_qty\": \"={{ Number($json[\\\"Rückgemeldete Menge\\\"] || 0) }}\",\n\n  \"release_date\": \"={{ $moment($json[\\\"START DATE\\\"], \\\"M/D/YYYY\\\").format(\\\"YYYY-MM-DD\\\") }}\",\n  \"due_date\": \"={{ $moment($json.Auftragsendtermin, \\\"M/D/YYYY\\\").format(\\\"YYYY-MM-DD\\\") }}\",\n  \"opening_date\": \"={{ $moment($json[\\\"AuftragseröffnTermin\\\"], \\\"M/D/YYYY\\\").format(\\\"YYYY-MM-DD\\\") }}\",\n  \"resolution_date\": \"={{ $moment($json[\\\"Auflösungstermin\\\"], \\\"M/D/YYYY\\\").format(\\\"YYYY-MM-DD\\\") }}\",\n  \"change_timestamp\": \"={{ $moment($json[\\\"Änderungszeitstempel\\\"], \\\"M/D/YY H:mm\\\").toISOString() }}\",\n  \"total_confirm_date\": \"={{ $moment($json[\\\"Gesamtbestätigungstermin Planauftrag\\\"], \\\"M/D/YYYY\\\").format(\\\"YYYY-MM-DD\\\") }}\",\n\n  \"action_time\": \"={{ $moment($json.Aktionszeit, [\\\"h:mm:ss A\\\",\\\"HH:mm:ss\\\"]).format(\\\"HH:mm:ss\\\") }}\",\n  \"planned_order_start_time\": \"={{ $moment($json[\\\"Startzeitpunkt des Planauftrags\\\"], [\\\"h:mm:ss A\\\",\\\"HH:mm:ss\\\"]).format(\\\"HH:mm:ss\\\") }}\",\n  \"planned_order_end_time\": \"={{ $moment($json[\\\"Endezeitpunkt des Planauftrags\\\"], [\\\"h:mm:ss A\\\",\\\"HH:mm:ss\\\"]).format(\\\"HH:mm:ss\\\") }}\",\n\n  \"proposal_type\": \"={{ $json[\\\"Art Beschaffungsvorschlag\\\"] }}\",\n  \"procurement_type\": \"={{ $json.Beschaffungsart }}\",\n  \"special_procurement\": \"={{ $json.Sonderbeschaffung }}\",\n  \"dispatcher\": \"={{ $json.Disponent }}\",\n  \"conversion_flag\": \"={{ $json[\\\"Umsetzungskennzeich.\\\"] }}\",\n  \"reservation_id\": \"={{ $json.Reservierung }}\",\n  \"version_number\": \"={{ $json.Versionsnummer }}\",\n  \"bom_alternative\": \"={{ $json[\\\"StücklAlternative\\\"] }}\",\n  \"bom_usage\": \"={{ $json[\\\"StücklVerwendung\\\"] }}\",\n  \"bom_status\": \"={{ $json[\\\"Stücklistenstatus\\\"] }}\",\n  \"settlement_res\": \"={{ $json[\\\"Pos.Abr.Reservierung\\\"] }}\",\n  \"production_version\": \"={{ $json.Fertigungsversion }}\",\n  \"capacity_req_id\": \"={{ $json[\\\"Kapazitätsbedarfs-ID\\\"] }}\",\n  \"plan_no_operations\": \"={{ $json[\\\"Plannummer Vorgänge\\\"] }}\",\n  \"base_unit\": \"={{ $json.Basismengeneinheit }}\",\n  \"avail_check_type\": \"={{ $json[\\\"Art VerfügPrüfung\\\"] }}\",\n  \"goods_receipt_time\": \"={{ Number($json[\\\"WE-Bearbeitungszeit\\\"] || 0) }}\",\n  \"planned_delivery_time\": \"={{ Number($json.Planlieferzeit || 0) }}\",\n  \"prod_supervisor\": \"={{ $json.Fertigungssteuerer }}\",\n\n  \"status\": \"open\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -192,
+        832
+      ],
+      "id": "00c2bab2-8fe4-45e5-89e3-6efc30b4cf76",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "tableId": "production_orders",
+        "dataToSend": "autoMapInputData"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        528
+      ],
+      "id": "5d6ce654-aadf-4eee-9317-a7469fcfa048",
+      "name": "Create a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SRxOZEWNZgLbKLus",
+          "name": "Supabase account dbt test RN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1248,
+        640
+      ],
+      "id": "3579c0d0-6b25-4fea-9d3e-8dca12b9b63a",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        544
+      ],
+      "id": "a4e908a2-c228-4424-b2ed-8f88fef8dbe1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Keys that must NEVER be changed\nconst protectedKeys = [\n  \"Material (Part)\",\n  \"Material\",\n  \"Material_ID\",\n  \"material_id\",\n  \"PLAN Production Orders\"\n];\n\n// Checks if a string looks like a number (5,500, 0, 12.50 etc.)\nfunction isNumberLike(v) {\n  if (v === null || v === undefined) return false;\n  const s = String(v).trim();\n  if (s === \"\") return false;\n  return /^[0-9,\\.\\s\\-]+$/.test(s);\n}\n\n// Remove commas/spaces and convert to Number\nfunction cleanNumber(v) {\n  if (v === null || v === undefined) return v;\n  const s = String(v).trim();\n  if (s === \"\") return v;\n  return Number(s.replace(/,/g, \"\").replace(/\\s+/g, \"\"));\n}\n\nconst input = $json;\nconst out = {};\n\nfor (const key in input) {\n  const value = input[key];\n\n  // Do NOT touch protected keys (like Material ID)\n  if (protectedKeys.includes(key)) {\n    out[key] = value;\n    continue;\n  }\n\n  // Clean number-like values\n  if (isNumberLike(value)) {\n    out[key] = cleanNumber(value);\n  } else {\n    out[key] = value;\n  }\n}\n\nreturn [{ json: out }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1072,
+        656
+      ],
+      "id": "2b345a72-cbc8-4770-a202-82a194aa94e6",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-20T06:01:15.329Z",
+      "createdAt": "2025-11-20T06:01:15.329Z",
+      "role": "workflow:owner",
+      "workflowId": "j9P10iB8mNtRgr3b",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-20T11:02:25.000Z",
+  "versionId": "250d4c92-cb7e-4ea7-8db8-dd91439a3183"
+}
