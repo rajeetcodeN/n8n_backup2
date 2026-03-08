@@ -1,0 +1,468 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Get": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Delete": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "When chat message received",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-31T16:54:31.974Z",
+  "id": "afvkvLmETAWnAYqg",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Travel Expense Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "463448a5-b323-4682-8674-24bee0df163b",
+              "leftValue": "={{ $json.files }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1616,
+        96
+      ],
+      "id": "27491373-790b-4919-a126-609ca088c0b4",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "$binary",
+        "options": {
+          "destinationFieldName": "data",
+          "includeBinary": true
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1392,
+        32
+      ],
+      "id": "152e7d82-4881-495f-9059-c150b65acbb1",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "jsonl"
+            },
+            {
+              "name": "include_images",
+              "value": "false"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -944,
+        32
+      ],
+      "id": "f3ce9827-b714-4e56-b0a6-cd93c31db596",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=You are a Travel Expense Extraction & Calculation AI.\n\nYour purpose:\n- Extract detailed expense data from uploaded travel receipts, invoices, hotel bills, PDFs, and images.\n- Accurately compute total travel cost.\n- Handle business travel expense reports end-to-end.\n\nYour duties:\n - Parse every uploaded bill.\n - Extract structured fields.\n - Infer missing data where possible — do not stop if OCR is imperfect.\n - Retrieve stored expenses from Supabase when needed.\n - Answer user questions about totals, dates, hotel stay, taxes, etc.\n\n## CRITICAL RULE: NEVER respond with “unclear”, “could not extract”, or ask for a clearer image.  \nYou must ALWAYS extract or logically infer values wherever possible.\n\n## REQUIRED FIELDS TO EXTRACT\nAlways extract the following:\n\n- vendor_name\n- category (Hotel, Stay, Taxi, Travel, Food, Misc)\n- invoice_date\n- checkin_date (if hotel)\n- checkout_date (if hotel)\n- time (if present)\n- currency (assume INR if ₹ appears)\n- total_amount (should be FINAL payable / net total)\n- notes (table items, adjustments, advances/refunds, etc.)\n- estimated (true/false)\n\n## Rules:\n- If multiple totals exist → use FINAL / NET PAYABLE\n- Hotel bills: consider tariff + meals + charges − advance + tax = final total\n- OTA bills (e.g. MakeMyTrip, GoIbibo): use GRAND TOTAL paid by traveler\n- If only GST % & base visible → compute tax\n- If unreadable text but numeric patterns exist → estimate and set `\"estimated\": true`\n\nIf an uploaded file contains multiple charges, sum into `\"total_amount\"` with the calculator tool.\n\n## WHEN USER ASKS QUESTIONS\n- Fetch data from Supabase first\n- Sum all total_amount fields with the calculator tool unless user specifies otherwise\n- Provide category-wise and vendor-wise breakdown\n- Format clean tables and totals\n\nFinal response format for trip summary:\n\n## Expense Summary\n\n| Category | Vendor | Invoice Date | Amount |\n|---------|--------|--------------|--------|\n| ...     | ...    | ...          | ₹...   |\n\n**Grand Total: ₹XX,XXX.XX**\n\nIf any fields inferred:\n- Some values estimated due to document quality — best effort applied.\n\n## Tone: Business professional, concise, accurate.\n\nNEVER:\n- Say “image unclear”\n- Ask the user to re-upload unless they explicitly ask for audit-grade accuracy\n\nYour job is to ALWAYS produce the best possible expense data and total calculation.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -208,
+        -16
+      ],
+      "id": "6df7e431-ca5a-46a9-84d3-a6d5195bd7da",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "tableId": "temp_table",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $('When chat message received').item.json.sessionId }}"
+            },
+            {
+              "fieldId": "file",
+              "fieldValue": "={{ $json.data[0].parseJson().blocks }}"
+            },
+            {
+              "fieldId": "file_name",
+              "fieldValue": "={{ $json.data[0].parseJson().source }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        32
+      ],
+      "id": "db6174f8-aa01-45c2-b153-5885c83ec06b",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "tAExwSAOuVi2CHCf",
+          "name": "Anusha Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -512,
+        96
+      ],
+      "id": "3a515574-7698-4f7f-85fa-1dc581a26361",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "temp_table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        64,
+        208
+      ],
+      "id": "38982a39-1ffa-4a9c-8af4-34431779d5f8",
+      "name": "Supabase Get",
+      "credentials": {
+        "supabaseApi": {
+          "id": "tAExwSAOuVi2CHCf",
+          "name": "Anusha Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "temp_table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{ $('When chat message received').item.json.sessionId }}"
+            },
+            {
+              "keyName": "file_name",
+              "condition": "eq",
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions1_Field_Value', `Provide the file name to delete`, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        176,
+        704
+      ],
+      "id": "9367953e-bb48-4320-9a6c-5a1aa2bf6be3",
+      "name": "Supabase Delete",
+      "credentials": {
+        "supabaseApi": {
+          "id": "tAExwSAOuVi2CHCf",
+          "name": "Anusha Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const binaryKeys = Object.keys(item.binary || {});\n  const firstKey = binaryKeys[0];\n\n  if (!firstKey) {\n    return item;\n  }\n\n  return {\n    json: item.json,\n    binary: {\n      data: item.binary[firstKey]\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1168,
+        32
+      ],
+      "id": "3aa1ad7a-6b67-41a9-9a51-cdb9b3cf9c36",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "👋 Hi there! \n📝 Need help with a document? Upload it here!\n🔐 We follow a zero-retention policy — your files are never stored permanently.",
+        "options": {
+          "allowFileUploads": true,
+          "loadPreviousSession": "memory",
+          "title": "Welcome to Digital Biz Tech!",
+          "customCss": ":root {\n  /* Brand Colors (Nosta) */\n  --chat--color-primary: #009EE3; /* Nosta Azure‑blue */\n  --chat--color-primary-shade-50: #007bb8;\n  --chat--color-primary-shade-100: #005d8f;\n  --chat--color-secondary: #582DC6; /* Nosta Violet accent */\n  --chat--color-secondary-shade-50: #461fa1;\n  --chat--color-secondary-shade-100: #36197a;\n  --chat--color-white: #FFFFFF;\n  --chat--color-light: #E4E4E4; /* light grey surfaces & borders */\n  --chat--color-light-shade-50: #d1d1d1;\n  --chat--color-light-shade-100: #bdbdbd;\n  --chat--color-medium: #B5BCC9;\n  --chat--color-dark: #000000; /* solid black text */\n  --chat--color-disabled: #9FA6B2;\n  --chat--color-typing: #555555;\n  --chat--header-height: 4rem;\n\n  /* Layout & Fonts */\n  --chat--spacing: 1rem;\n  --chat--border-radius: 0.5rem;\n  --chat--font-family: 'Roboto', system-ui, sans-serif;\n  --chat--heading-font-family: 'Poppins', system-ui, sans-serif;\n\n  /* Window */\n  --chat--window--width: 420px;\n  --chat--window--height: 600px;\n  --chat--window--z-index: 9999;\n  --chat--window--border: 1px solid var(--chat--color-light-shade-100);\n  --chat--window--border-radius: var(--chat--border-radius);\n\n  /* Header */\n  --chat--header--padding: 0.75rem;                    /* 50% less height */\n  --chat--header--background: var(--chat--color-primary-shade-100); /* deeper blue */\n  --chat--header--color: var(--chat--color-white);\n  --chat--heading--font-size: 1.8em;\n  --chat--subtitle--font-size: 1rem;\n  --chat--subtitle--line-height: 1.5;\n\n  /* Messages */\n  --chat--message--font-size: 1rem;\n  --chat--message--padding: 0.8rem 1rem;\n  --chat--message--border-radius: var(--chat--border-radius);\n  --chat--message--margin-bottom: 0.35rem; /* less spacing */\n  --chat--message-line-height: 1.6;\n  --chat--message--bot--background: #97979738;\n  --chat--message--bot--color: var(--chat--color-dark);\n  --chat--message--user--background: var(--chat--color-primary);\n  --chat--message--user--color: var(--chat--color-white);\n  --chat--message--pre--background: #e8ecf1;\n\n  /* Input */\n  --chat--textarea--height: 52px;\n  --chat--input--background: var(--chat--color-white);\n  --chat--input--text-color: var(--chat--color-dark);\n  --chat--input--padding: 0.75rem 1rem;\n  --chat--input--border: 1px solid var(--chat--color-light-shade-50);\n  --chat--input--border-radius: var(--chat--border-radius);\n\n  /* Buttons */\n  --chat--button--background: var(--chat--color-secondary);\n  --chat--button--color: var(--chat--color-white);\n  --chat--button--hover--background: var(--chat--color-secondary-shade-50);\n  --chat--button--hover--color: var(--chat--color-white);\n  --chat--button--padding: 0.5rem 1.2rem;\n  --chat--button--border-radius: var(--chat--border-radius);\n\n  /* Footer */\n  --chat--body--background: var(--chat--color-light);\n  --chat--footer--background: var(--chat--color-white);\n  --chat--footer--color: var(--chat--color-dark);\n}\n\n/* Structure */\nbody {\n  margin: 0;\n  font-family: var(--chat--font-family);\n  background: var(--chat--body--background);\n}\n\n.chat-window {\n  width: var(--chat--window--width);\n  height: var(--chat--window--height);\n  margin: 2rem auto;\n  border: var(--chat--window--border);\n  border-radius: var(--chat--window--border-radius);\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);\n}\n\n.chat-layout .chat-header {\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: right center;\n    background-image: url(https://erolkwmpicivzekfzhta.supabase.co/storage/v1/object/public/images/ai%20automatiom/digitalbiz_Logo.jpg);\n    display: flex;\n    flex-direction: row;\n    justify-content: space-evenly;\n    align-items: center;\n    gap: 1em;\n    height: var(--chat--header-height);\n    padding: var(--chat--header--padding);\n    background-color: var(--chat--header--background);\n    color: var(--chat--header--color);\n    border-top: var(--chat--header--border-top);\n    border-bottom: var(--chat--header--border-bottom);\n    border-left: var(--chat--header--border-left);\n    border-right: var(--chat--header--border-right);\n}\n\n.chat-logo {\n  height: 40px;\n  width: auto;\n}\n\n.chat-header-text h1 {\n  margin: 0;\n  font-family: var(--chat--heading-font-family);\n  font-weight: 600;\n  font-size: var(--chat--heading--font-size);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n}\n\n.chat-header-text p {\n  margin: 0.25rem 0 0;\n  font-size: var(--chat--subtitle--font-size);\n  line-height: var(--chat--subtitle--line-height);\n}\n\n/* Chat body */\n.chat-body {\n  flex: 1;\n  padding: var(--chat--spacing);\n  background: var(--chat--body--background);\n  overflow-y: auto;\n}\n\n.chat-message {\n  padding: var(--chat--message--padding);\n  margin-bottom: var(--chat--message--margin-bottom);\n  border-radius: var(--chat--message--border-radius);\n  font-size: var(--chat--message--font-size);\n  line-height: var(--chat--message-line-height);\n  max-width: 80%;\n  box-shadow: 0px 5px 9px 3px rgb(0 0 0 / 12%);\n  width: fit-content;\n}\n\n.chat-message.bot {\n  background: var(--chat--message--bot--background);\n  color: var(--chat--message--bot--color);\n  border-left: 3px solid var(--chat--color-primary);\n}\n\n.chat-message.user {\n  background: var(--chat--message--user--background);\n  color: var(--chat--message--user--color);\n  border-left: 3px solid var(--chat--color-secondary);\n  margin-left: auto;\n}\n\n/* Footer */\n.chat-footer {\n  background: var(--chat--footer--background);\n  padding: 0.5rem 1rem;\n  border-top: 1px solid var(--chat--color-light-shade-100);\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n}\n\n.chat-footer textarea {\n  flex-grow: 1;\n  resize: none;\n  padding: var(--chat--input--padding);\n  height: var(--chat--textarea--height);\n  border: var(--chat--input--border);\n  border-radius: var(--chat--input--border-radius);\n  font-family: var(--chat--font-family);\n  font-size: 1rem;\n  color: var(--chat--input--text-color);\n  background: var(--chat--input--background);\n}\n\n.chat-send-button {\n  background: var(--chat--button--background);\n  color: var(--chat--button--color);\n  border: none;\n  padding: var(--chat--button--padding);\n  border-radius: var(--chat--button--border-radius);\n  font-size: 1.25rem;\n  cursor: pointer;\n  transition: background 0.2s;\n}\n\n.chat-send-button:hover {\n  background: var(--chat--button--hover--background);\n}\n\nimg {\n    width: -webkit-fill-available;\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1936,
+        96
+      ],
+      "id": "6dd43a7e-5467-4f76-a470-78ad9fb854f9",
+      "name": "When chat message received",
+      "webhookId": "4b4c196d-7f72-4cad-bdf1-b8d73732a3b6"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1824,
+        352
+      ],
+      "id": "14d8666f-5dff-4857-9ef7-0bce824b76c4",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        208
+      ],
+      "id": "ed57d3d1-380c-4f6a-b7e0-5a293d12923d",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        208
+      ],
+      "id": "04146528-a02a-4c7f-bc13-0ac669150f23",
+      "name": "Calculator1"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-10-31T16:54:31.977Z",
+      "createdAt": "2025-10-31T16:54:31.977Z",
+      "role": "workflow:owner",
+      "workflowId": "afvkvLmETAWnAYqg",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-01T21:21:07.000Z",
+  "versionId": "f9026bba-fa88-46ef-8ccd-52f3f9882b72"
+}
