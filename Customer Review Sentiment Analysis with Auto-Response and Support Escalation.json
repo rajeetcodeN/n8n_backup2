@@ -1,0 +1,477 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Receive Customer Review": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Analyze Review Sentiment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analyze Review Sentiment",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Analyze Review Sentiment",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Review Sentiment": {
+      "main": [
+        [
+          {
+            "node": "Route by Sentiment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Sentiment": {
+      "main": [
+        [
+          {
+            "node": "Send Thank You Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Informative Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create CRM Support Ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create CRM Support Ticket": {
+      "main": [
+        [
+          {
+            "node": "Send Slack Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Slack Alert": {
+      "main": [
+        [
+          {
+            "node": "Send Apology Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Apology Email": {
+      "main": [
+        [
+          {
+            "node": "Send Escalation Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T15:13:24.246Z",
+  "id": "moxTzsl2xAajjMIs",
+  "isArchived": false,
+  "meta": null,
+  "name": "Customer Review Sentiment Analysis with Auto-Response and Support Escalation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "customer-review",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "ef9ac465-13d8-4996-a88c-9ee5b64b6cb5",
+      "name": "Receive Customer Review",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        192
+      ],
+      "webhookId": "eea629c1-6238-496a-9399-bd7b54018dec"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "crmApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__CRM API endpoint URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "crmApiKey",
+              "value": "<__PLACEHOLDER_VALUE__CRM API key__>",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "slackChannel",
+              "value": "<__PLACEHOLDER_VALUE__Slack channel ID__>",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "supportEmail",
+              "value": "<__PLACEHOLDER_VALUE__Support team email address__>",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "vipCustomerIds",
+              "value": "[]",
+              "type": "array"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "5e676bc0-050d-4b24-8cfc-077fe853dc94",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Customer Review Data:\n\nCustomer Name: {{ $json.customerName }}\nCustomer Email: {{ $json.customerEmail }}\nCustomer ID: {{ $json.customerId }}\nProduct/Service: {{ $json.product }}\nReview Text: {{ $json.reviewText }}\nRating: {{ $json.rating }}/5",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a customer service AI assistant specialized in analyzing customer reviews and feedback.\n\nYour task is to:\n1. Analyze the sentiment of the review (positive, neutral, or negative)\n2. Classify the intent (complaint, praise, query, suggestion, or other)\n3. Generate an appropriate reply based on the sentiment\n4. Identify if this is a VIP customer based on the customer ID\n5. Assess the urgency level (low, medium, high, critical)\n\nSentiment Guidelines:\n- Positive: Customer is satisfied, happy, or praising\n- Neutral: Factual feedback, mixed feelings, or informational\n- Negative: Complaints, dissatisfaction, problems, or frustration\n\nReply Guidelines:\n- Positive: Thank the customer warmly, encourage continued engagement\n- Neutral: Provide helpful information, offer assistance\n- Negative: Apologize sincerely, acknowledge the issue, assure resolution\n\nReturn your analysis in the structured JSON format defined by the output parser."
+        }
+      },
+      "id": "5bbf15bb-ce6c-4eaf-8a79-dab7bc7ef908",
+      "name": "Analyze Review Sentiment",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        448,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "4209a6b5-b86d-47e1-8dac-2baa8d88d107",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        456,
+        416
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sentiment\": {\n      \"type\": \"string\",\n      \"enum\": [\"positive\", \"neutral\", \"negative\"],\n      \"description\": \"Overall sentiment of the review\"\n    },\n    \"intent\": {\n      \"type\": \"string\",\n      \"enum\": [\"complaint\", \"praise\", \"query\", \"suggestion\", \"other\"],\n      \"description\": \"Primary intent of the customer\"\n    },\n    \"suggestedReply\": {\n      \"type\": \"string\",\n      \"description\": \"Appropriate reply message for the customer\"\n    },\n    \"isVip\": {\n      \"type\": \"boolean\",\n      \"description\": \"Whether this is a VIP customer\"\n    },\n    \"urgency\": {\n      \"type\": \"string\",\n      \"enum\": [\"low\", \"medium\", \"high\", \"critical\"],\n      \"description\": \"Urgency level of the issue\"\n    },\n    \"keyIssues\": {\n      \"type\": \"array\",\n      \"items\": {\"type\": \"string\"},\n      \"description\": \"List of key issues or topics mentioned\"\n    }\n  },\n  \"required\": [\"sentiment\", \"intent\", \"suggestedReply\", \"isVip\", \"urgency\"]\n}"
+      },
+      "id": "17b9908b-26b4-4286-8517-e16e55691e6c",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        584,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.sentiment }}",
+                    "rightValue": "positive",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Positive"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.sentiment }}",
+                    "rightValue": "neutral",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Neutral"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.sentiment }}",
+                    "rightValue": "negative",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Negative"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "37c48e45-5f91-4b62-a60b-cc698c809155",
+      "name": "Route by Sentiment",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.suggestedReply }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "5b3e0881-dc73-43e5-a851-0b74ef3befb8",
+      "name": "Send Thank You Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1024,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.suggestedReply }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "758b2625-6304-47b2-96c1-ffb077c2acb8",
+      "name": "Send Informative Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1024,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Configuration').first().json.crmApiUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Workflow Configuration').first().json.crmApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"type\": \"customer_complaint\",\n  \"priority\": {{ $json.urgency }},\n  \"customer\": {\n    \"id\": {{ $('Workflow Configuration').first().json.customerId }},\n    \"name\": {{ $('Workflow Configuration').first().json.customerName }},\n    \"email\": {{ $('Workflow Configuration').first().json.customerEmail }},\n    \"isVip\": {{ $json.isVip }}\n  },\n  \"subject\": \"Negative Review - {{ $('Workflow Configuration').first().json.product }}\",\n  \"description\": {{ $('Workflow Configuration').first().json.reviewText }},\n  \"sentiment\": {{ $json.sentiment }},\n  \"intent\": {{ $json.intent }},\n  \"keyIssues\": {{ $json.keyIssues }},\n  \"rating\": {{ $('Workflow Configuration').first().json.rating }},\n  \"source\": \"automated_review_system\"\n}",
+        "options": {}
+      },
+      "id": "f4a2a568-c43f-40e6-b119-d066501e6df8",
+      "name": "Create CRM Support Ticket",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1024,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.slackChannel }}"
+        },
+        "text": "=🚨 *Negative Review Alert - {{ $('Workflow Configuration').first().json.isVip ? \"VIP CUSTOMER\" : \"Customer\" }}*\n\n*Customer:* {{ $('Workflow Configuration').first().json.customerName }} ({{ $('Workflow Configuration').first().json.customerEmail }})\n*Product:* {{ $('Workflow Configuration').first().json.product }}\n*Rating:* {{ $('Workflow Configuration').first().json.rating }}/5 ⭐\n*Urgency:* {{ $json.urgency.toUpperCase() }}\n*Intent:* {{ $json.intent }}\n\n*Review:*\n{{ $('Workflow Configuration').first().json.reviewText }}\n\n*Key Issues:*\n{{ $json.keyIssues ? $json.keyIssues.map(issue => `• ${issue}`).join(\"\\n\") : \"None identified\" }}\n\n*Support Ticket:* #{{ $json.id || \"Created\" }}\n*Status:* Escalated to support team",
+        "otherOptions": {}
+      },
+      "id": "37887f27-0e66-47c4-bcff-e2090e58932c",
+      "name": "Send Slack Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1248,
+        192
+      ],
+      "webhookId": "e4f86221-4ad1-40ed-9d68-daccd18371b6"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Workflow Configuration').first().json.customerEmail }}",
+        "subject": "=We apologize for your experience with {{ $('Workflow Configuration').first().json.product }}",
+        "message": "=Dear {{ $('Workflow Configuration').first().json.customerName }},\n\nThank you for taking the time to share your feedback with us. We sincerely apologize for the experience you had with {{ $('Workflow Configuration').first().json.product }}.\n\nYour satisfaction is our top priority, and we take your concerns very seriously. Our support team has been notified and will be reaching out to you shortly to resolve this matter.\n\n{{ $json.isVip ? \"As a valued VIP customer, we want to ensure this is addressed with the highest priority. \" : \"\" }}We have created a support ticket ({{ $json.id || \"reference number will be provided\" }}) to track your case and ensure a swift resolution.\n\nIn the meantime, if you have any urgent concerns, please don't hesitate to contact our support team at {{ $('Workflow Configuration').first().json.supportEmail }}.\n\nOnce again, we apologize for any inconvenience and appreciate your patience as we work to make this right.\n\nBest regards,\nCustomer Support Team",
+        "options": {
+          "ccList": "={{ $('Workflow Configuration').first().json.supportEmail }}"
+        }
+      },
+      "id": "1e0c4e8b-01df-4ac2-9f40-a56fd7dfe4a8",
+      "name": "Send Apology Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        192
+      ],
+      "webhookId": "65595f96-5b6b-4fa3-b7bd-776f4bb44797"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"escalated\",\n  \"message\": \"Your feedback has been received and escalated to our support team. We will contact you shortly.\",\n  \"ticketId\": \"={{ $('Create CRM Support Ticket').first().json.id }}\",\n  \"priority\": \"={{ $('Analyze Review Sentiment').first().json.urgency }}\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "314fb522-e15e-4984-aff7-60a8edcef936",
+      "name": "Send Escalation Confirmation",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1696,
+        192
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T15:13:24.250Z",
+      "createdAt": "2026-03-29T15:13:24.250Z",
+      "role": "workflow:owner",
+      "workflowId": "moxTzsl2xAajjMIs",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T15:15:26.515Z",
+  "versionId": "29dac098-3d4b-49b9-b8f9-b28acdfa5029"
+}
