@@ -154,8 +154,8 @@
       ]
     }
   },
-  "createdAt": "2026-01-31T11:37:18.447Z",
-  "id": "dBUdt1QpQoK4zU5C",
+  "createdAt": "2026-01-31T11:33:40.815Z",
+  "id": "djFwKz0GTAyrsywl",
   "isArchived": false,
   "meta": null,
   "name": "AI Multi-Table Schema Builder with Automated Normalization and Relationship Detection",
@@ -174,8 +174,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        48,
-        160
+        -672,
+        96
       ],
       "webhookId": "7a47278f-909e-4534-a1dc-3e4ef56aff84"
     },
@@ -211,8 +211,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        160
+        -448,
+        96
       ]
     },
     {
@@ -252,8 +252,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        496,
-        160
+        -224,
+        96
       ]
     },
     {
@@ -267,8 +267,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1.1,
       "position": [
-        720,
-        64
+        0,
+        0
       ]
     },
     {
@@ -281,8 +281,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1.1,
       "position": [
-        720,
-        256
+        0,
+        192
       ]
     },
     {
@@ -294,8 +294,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        944,
-        160
+        224,
+        96
       ]
     },
     {
@@ -309,26 +309,22 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1168,
-        160
+        448,
+        96
       ]
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "={{ JSON.stringify($json.datasets) }}",
         "hasOutputParser": true,
-        "options": {
-          "systemMessage": "You are a database schema architect specializing in data normalization and relational database design.\n\nYour task is to analyze the provided column profiling data from multiple datasets and design a normalized relational database schema.\n\n**Input Data:**\nYou will receive profiled datasets with column statistics including:\n- null %, unique %, min/max values\n- data type distribution\n- regex patterns and entropy scores\n- candidate IDs, composite keys, reference-like columns\n- repeated entity attributes\n- dataset metadata (source, row count, etc.)\n\n**Your Responsibilities:**\n\n1. **Entity Detection:** Identify logical entities by analyzing:\n   - Column name similarity across datasets\n   - Value reuse patterns\n   - Cardinality relationships\n   - Functional dependencies\n   - Repeated attribute groups\n\n2. **Table Design:** For each entity:\n   - Define table name (clear, singular)\n   - Assign columns to appropriate tables\n   - Identify primary key (must have ≥95% uniqueness)\n   - Avoid over-normalization and under-normalization\n\n3. **Relationship Inference:** Create foreign keys ONLY when:\n   - Value overlap ≥70% (use fkOverlapThreshold from config)\n   - Compatible data types\n   - Semantic header match\n   - No cycles in relationships\n\n4. **Constraints & Indexes:**\n   - Define NOT NULL constraints\n   - Add UNIQUE constraints where appropriate\n   - Suggest indexes for foreign keys and frequently queried columns\n\n5. **Validation Rules:**\n   - Ensure no duplicate PKs\n   - Verify FK overlap meets threshold\n   - Check type compatibility\n   - Prevent orphan tables\n\n**Output Requirements:**\nReturn a JSON schema with this exact structure:\n{\n  \"tables\": [\n    {\n      \"name\": \"table_name\",\n      \"columns\": [\n        {\n          \"name\": \"column_name\",\n          \"dataType\": \"SQL_TYPE\",\n          \"isPrimaryKey\": false,\n          \"nullable\": true,\n          \"isUnique\": false,\n          \"sourceColumns\": [\"original_column_name\"]\n        }\n      ]\n    }\n  ],\n  \"relationships\": [\n    {\n      \"sourceTable\": \"table_name\",\n      \"sourceColumn\": \"column_name\",\n      \"targetTable\": \"referenced_table\",\n      \"targetColumn\": \"referenced_column\",\n      \"overlapPercent\": 0.85\n    }\n  ],\n  \"indexes\": [\n    {\n      \"name\": \"idx_name\",\n      \"tableName\": \"table_name\",\n      \"columns\": [\"column_name\"],\n      \"isUnique\": false\n    }\n  ]\n}\n\n**Critical Rules:**\n- NO hallucinated columns\n- NO guessed relationships\n- ALL decisions must be data-backed\n- Use configuration thresholds from input"
-        }
+        "options": {}
       },
       "id": "8f594e8b-8621-414c-ae60-6ada7d4b2b9a",
       "name": "Schema Reasoning Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        1392,
-        160
+        672,
+        96
       ]
     },
     {
@@ -346,8 +342,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        1400,
-        384
+        680,
+        320
       ]
     },
     {
@@ -360,8 +356,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        1528,
-        384
+        808,
+        320
       ]
     },
     {
@@ -373,8 +369,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1744,
-        160
+        1024,
+        96
       ]
     },
     {
@@ -386,8 +382,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1968,
-        160
+        1248,
+        96
       ]
     },
     {
@@ -399,8 +395,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2192,
-        160
+        1472,
+        96
       ]
     },
     {
@@ -416,8 +412,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        2416,
-        160
+        1696,
+        96
       ]
     }
   ],
@@ -432,16 +428,16 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-01-31T11:37:18.450Z",
-      "createdAt": "2026-01-31T11:37:18.450Z",
+      "updatedAt": "2026-01-31T11:33:40.820Z",
+      "createdAt": "2026-01-31T11:33:40.820Z",
       "role": "workflow:owner",
-      "workflowId": "dBUdt1QpQoK4zU5C",
+      "workflowId": "djFwKz0GTAyrsywl",
       "projectId": "7DfoImgKnNZiM78g"
     }
   ],
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-01-31T11:37:18.000Z",
-  "versionId": "97446db1-9fb2-4c13-9887-2b8c820dd098"
+  "updatedAt": "2026-01-31T11:36:10.792Z",
+  "versionId": "20c9faf2-ba99-4711-b299-d6fe0c9a1254"
 }
