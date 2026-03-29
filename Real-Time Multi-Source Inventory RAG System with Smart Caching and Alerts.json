@@ -1,0 +1,1045 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Hourly Schedule - Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Fetch Google Sheets Inventory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Google Sheets Inventory": {
+      "main": [
+        [
+          {
+            "node": "Normalize Google Sheets Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shopify Webhook - Inventory Updates": {
+      "main": [
+        [
+          {
+            "node": "Normalize Shopify Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Google Sheets Data": {
+      "main": [
+        [
+          {
+            "node": "Merge Inventory Sources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Shopify Data": {
+      "main": [
+        [
+          {
+            "node": "Merge Inventory Sources",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Inventory Sources": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate and Compute Deltas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate and Compute Deltas": {
+      "main": [
+        [
+          {
+            "node": "Check If Changed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Changed": {
+      "main": [
+        [
+          {
+            "node": "Update Inventory Table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Inventory Table": {
+      "main": [
+        [
+          {
+            "node": "Check Low Stock",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Embedding Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Low Stock": {
+      "main": [
+        [
+          {
+            "node": "Format Low Stock Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Low Stock Alert": {
+      "main": [
+        [
+          {
+            "node": "Send Alert Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Embedding Content": {
+      "main": [
+        [
+          {
+            "node": "Store Embeddings in Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Store Embeddings in Postgres",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query API Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check Query Cache",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Query Cache": {
+      "main": [
+        [
+          {
+            "node": "Cache Hit Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cache Hit Check": {
+      "main": [
+        [
+          {
+            "node": "Return Cached Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RAG Query Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RAG Query Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "RAG Query Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RAG Query Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Query in Cache",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Query in Cache": {
+      "main": [
+        [
+          {
+            "node": "Return Query Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG Query Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T15:08:27.431Z",
+  "id": "Y3MHm67rgkglSvoO",
+  "isArchived": false,
+  "meta": null,
+  "name": "Real-Time Multi-Source Inventory RAG System with Smart Caching and Alerts",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "f3cb369f-fd24-40dd-a798-2b7a91f7a470",
+      "name": "Hourly Schedule - Google Sheets",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -2160,
+        132
+      ]
+    },
+    {
+      "parameters": {
+        "topic": "products/update"
+      },
+      "id": "48995fc9-b742-4422-85bf-ca3e5c63efb9",
+      "name": "Shopify Webhook - Inventory Updates",
+      "type": "n8n-nodes-base.shopifyTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        324
+      ],
+      "webhookId": "e32cd5ed-4750-43ba-9d58-866143c181f5"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "inventory-query",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "c115406c-5482-4237-887b-7331adc44351",
+      "name": "Query API Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2160,
+        1112
+      ],
+      "webhookId": "454b31c0-6171-49b4-b277-11a365844d4f"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "lowStockThreshold",
+              "value": 10,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "postgresTable",
+              "value": "inventory",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "vectorTable",
+              "value": "inventory_embeddings",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "cacheTable",
+              "value": "query_cache",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "e04404e8-4b3f-4612-bf21-771a7c66e240",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1936,
+        132
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Google Sheets Document ID__>"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Sheet name containing inventory data__>"
+        },
+        "options": {}
+      },
+      "id": "fd4e4315-24c1-4630-976b-fe7f58928e0c",
+      "name": "Fetch Google Sheets Inventory",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1712,
+        132
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "sku",
+              "value": "={{ $json.SKU || $json.sku }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "product_name",
+              "value": "={{ $json['Product Name'] || $json.product_name }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "quantity",
+              "value": "={{ parseInt($json.Quantity || $json.quantity || 0) }}",
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "source",
+              "value": "google_sheets",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "last_updated",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "dadca41d-d247-4aad-bf98-314a41cc003c",
+      "name": "Normalize Google Sheets Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1488,
+        132
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "sku",
+              "value": "={{ $json.variants[0].sku }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "product_name",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "quantity",
+              "value": "={{ $json.variants[0].inventory_quantity }}",
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "source",
+              "value": "shopify",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "last_updated",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "e0537a91-ad1d-4413-9304-1da183c7f2e3",
+      "name": "Normalize Shopify Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1488,
+        324
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "sku",
+        "options": {}
+      },
+      "id": "28911ab6-2432-4156-9043-9d6825f2a2d8",
+      "name": "Merge Inventory Sources",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1264,
+        228
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Deduplicate by SKU, keeping the most recent record based on last_updated timestamp\n// and compute deltas by comparing with previous inventory state\n\nconst items = $input.all();\n\n// Group items by SKU and keep the most recent one\nconst skuMap = new Map();\n\nfor (const item of items) {\n  const sku = item.json.sku;\n  const lastUpdated = new Date(item.json.last_updated || 0);\n  \n  if (!skuMap.has(sku)) {\n    skuMap.set(sku, item);\n  } else {\n    const existing = skuMap.get(sku);\n    const existingUpdated = new Date(existing.json.last_updated || 0);\n    \n    // Keep the most recent record\n    if (lastUpdated > existingUpdated) {\n      skuMap.set(sku, item);\n    }\n  }\n}\n\n// Get previous inventory state from workflow static data\nconst previousInventory = $workflow.staticData.inventory || {};\n\n// Compute deltas and prepare output\nconst outputItems = [];\n\nfor (const [sku, item] of skuMap) {\n  const currentQuantity = item.json.quantity || 0;\n  const previousQuantity = previousInventory[sku]?.quantity || 0;\n  const delta = currentQuantity - previousQuantity;\n  \n  outputItems.push({\n    json: {\n      ...item.json,\n      previous_quantity: previousQuantity,\n      quantity_delta: delta,\n      has_changed: delta !== 0,\n      processed_at: new Date().toISOString()\n    }\n  });\n  \n  // Update the inventory state in static data\n  previousInventory[sku] = {\n    quantity: currentQuantity,\n    last_updated: item.json.last_updated || new Date().toISOString()\n  };\n}\n\n// Save updated inventory state back to workflow static data\n$workflow.staticData.inventory = previousInventory;\n\nreturn outputItems;"
+      },
+      "id": "3144c9e2-0e0d-4e5c-aa89-4f5a8469413c",
+      "name": "Deduplicate and Compute Deltas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1040,
+        228
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Deduplicate and Compute Deltas').item.json.hasChanged }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dc21210f-9d47-4381-b03b-2435fe071038",
+      "name": "Check If Changed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -816,
+        228
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.postgresTable }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sku": "={{ $json.sku }}",
+            "product_name": "={{ $json.product_name }}",
+            "quantity": "={{ $json.quantity }}",
+            "source": "={{ $json.source }}",
+            "last_updated": "={{ $json.last_updated }}"
+          },
+          "matchingColumns": [
+            "sku"
+          ],
+          "schema": [
+            {
+              "id": "sku",
+              "displayName": "sku",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "product_name",
+              "displayName": "product_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "quantity",
+              "displayName": "quantity",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "last_updated",
+              "displayName": "last_updated",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "126cd3ec-6f09-4af3-b466-27209b915d3f",
+      "name": "Update Inventory Table",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -592,
+        228
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Update Inventory Table').item.json.quantity }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.lowStockThreshold }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e36fe337-c0db-4c40-899e-efaa42e302dd",
+      "name": "Check Low Stock",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -368,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "alertType",
+              "value": "low_stock",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "message",
+              "value": "={{ `Low stock alert: ${$json.product_name} (SKU: ${$json.sku}) has only ${$json.quantity} units remaining` }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "sku",
+              "value": "={{ $json.sku }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "product_name",
+              "value": "={{ $json.product_name }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "quantity",
+              "value": "={{ $json.quantity }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0a336e1f-02b7-44b8-8442-3663ed56425c",
+      "name": "Format Low Stock Alert",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "<__PLACEHOLDER_VALUE__Alert notification webhook URL (Slack, Teams, email service, etc.)__>",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "b84a9aee-5861-45e4-ae58-6946a9a8437c",
+      "name": "Send Alert Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        208,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "content",
+              "value": "={{ `SKU: ${$json.sku}, Product: ${$json.product_name}, Stock: ${$json.quantity}, Source: ${$json.source}` }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "sku",
+              "value": "={{ $json.sku }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ab79bec6-5b10-4f01-ae83-7a45823f9437",
+      "name": "Create Embedding Content",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        376
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "41d7c1a9-0ec8-4f6b-a151-4697f6e9cb40",
+      "name": "OpenAI Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -72,
+        600
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "={{ $('Workflow Configuration').first().json.vectorTable }}",
+        "options": {}
+      },
+      "id": "b5ee1ef1-382a-4428-8a3c-99e306833a43",
+      "name": "Store Embeddings in Postgres",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        -144,
+        376
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT response FROM {{ $('Workflow Configuration').first().json.cacheTable }} WHERE query = $1 AND created_at > NOW() - INTERVAL '1 hour' LIMIT 1",
+        "options": {
+          "queryReplacement": "={{ $json.body.query }}"
+        }
+      },
+      "id": "60f5aca6-24bc-4482-8660-6a39f1431018",
+      "name": "Check Query Cache",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1936,
+        1112
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.response }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1daf08d4-c144-48ad-a082-3bc06dd02cd2",
+      "name": "Cache Hit Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1712,
+        1112
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "7ce5525a-f86e-4b2a-88e6-1233bbadf41f",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1488,
+        928
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"answer\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"description\": \"The answer to the query\"\n\t\t},\n\t\t\"products\": {\n\t\t\t\"type\": \"array\",\n\t\t\t\"items\": {\n\t\t\t\t\"type\": \"object\",\n\t\t\t\t\"properties\": {\n\t\t\t\t\t\"sku\": {\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t},\n\t\t\t\t\t\"product_name\": {\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t},\n\t\t\t\t\t\"quantity\": {\n\t\t\t\t\t\t\"type\": \"number\"\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"confidence\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"description\": \"Confidence level of the answer\"\n\t\t}\n\t}\n}"
+      },
+      "id": "affd9450-43ea-41d7-8b02-1106534baf06",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -1072,
+        928
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.query }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an inventory assistant that helps answer questions about product stock levels, SKU information, and inventory status.\n\nYour task is to:\n1. Use the inventory_search tool to find relevant inventory information\n2. Provide accurate, concise answers based on the retrieved data\n3. Include specific details like SKU, product name, and quantity when available\n4. If information is not found, clearly state that\n\nAlways format your response in a clear, structured way."
+        }
+      },
+      "id": "e3333975-ed32-4419-aa4b-6f8c471ad3c5",
+      "name": "RAG Query Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1352,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.cacheTable }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ $('Query API Webhook').first().json.body.query }}",
+            "response": "={{ $('RAG Query Agent').first().json.output }}",
+            "created_at": "={{ $now.toISO() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "ae3e6493-e6e8-4896-b4aa-d844ce5afbc8",
+      "name": "Store Query in Cache",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -864,
+        912
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.output }}",
+        "options": {}
+      },
+      "id": "143cc9b2-7cef-41b9-b637-671288ca3d44",
+      "name": "Return Query Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -640,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.response }}",
+        "options": {}
+      },
+      "id": "23f1de4c-629b-43d3-aeb5-812a9761f214",
+      "name": "Return Cached Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -1288,
+        1312
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Search inventory database for product information, stock levels, and SKU details. Use this tool to answer questions about current inventory status.",
+        "tableName": "={{ $('Workflow Configuration').first().json.vectorTable }}",
+        "topK": 5,
+        "options": {}
+      },
+      "id": "6f0ac90e-3e75-4fab-b118-8b95c68ef49d",
+      "name": "Vector Store Tool",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        -1360,
+        928
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "febee057-8456-47b5-92db-72f93d1649de",
+      "name": "Tool Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1280,
+        1136
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T15:08:27.435Z",
+      "createdAt": "2026-03-29T15:08:27.435Z",
+      "role": "workflow:owner",
+      "workflowId": "Y3MHm67rgkglSvoO",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T15:11:49.779Z",
+  "versionId": "9819c72e-cdc0-4771-aa61-0ecf6a962106"
+}
