@@ -1,0 +1,715 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Route by Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Action": {
+      "main": [
+        [
+          {
+            "node": "Extract Text from Document",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check Query Cache",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text from Document": {
+      "main": [
+        [
+          {
+            "node": "Store Embeddings in PGVector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Document Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Store Embeddings in PGVector",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Store Embeddings in PGVector",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Retrieve Relevant Chunks",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Embeddings in PGVector": {
+      "main": [
+        [
+          {
+            "node": "Log Upload to Cache",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Upload to Cache": {
+      "main": [
+        [
+          {
+            "node": "Respond Upload Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Query Cache": {
+      "main": [
+        [
+          {
+            "node": "Cache Hit or Miss",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cache Hit or Miss": {
+      "main": [
+        [
+          {
+            "node": "Format Cached Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Answer Query with Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Cached Response": {
+      "main": [
+        [
+          {
+            "node": "Respond with Cached Answer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer Query with Context",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer Query with Context": {
+      "main": [
+        [
+          {
+            "node": "Save to Query Cache",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Query Cache": {
+      "main": [
+        [
+          {
+            "node": "Respond with Answer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T14:28:15.958Z",
+  "id": "xowiAwJL7LiElAzW",
+  "isArchived": false,
+  "meta": null,
+  "name": "Multi-Tenant RAG Document Q&A System with Vector Embeddings",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rag-system",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "0198fa68-5c98-4a75-9dda-dd6bf2f35a61",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1528,
+        348
+      ],
+      "webhookId": "3e81bb1b-3b9b-4cf1-ba3a-d0c4b93543e3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "chunkSize",
+              "value": 1000,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "chunkOverlap",
+              "value": 200,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "topK",
+              "value": 5,
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "tableName",
+              "value": "documents",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "cacheTableName",
+              "value": "query_cache",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "187dd556-ad24-46e3-8d37-dd6fe24f976c",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1232,
+        348
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "upload",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Upload"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "query",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Query"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "32606261-2d44-4be9-afeb-448a0357a761",
+      "name": "Route by Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1008,
+        332
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "2fdac3d8-9d9e-447a-ae53-a4f002024d16",
+      "name": "Extract Text from Document",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -784,
+        644
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": "={{ $('Workflow Configuration').first().json.chunkSize }}",
+        "chunkOverlap": "={{ $('Workflow Configuration').first().json.chunkOverlap }}",
+        "options": {}
+      },
+      "id": "64da5076-57b5-47bf-a242-b6e80251655b",
+      "name": "Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        1076
+      ]
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.text }}",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "id": "f120150a-1ab0-401f-a1ee-dacce7f827be",
+      "name": "Document Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        868
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3dc57632-20fd-46c8-aac8-6503f6f4c48c",
+      "name": "OpenAI Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -272,
+        868
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "={{ $('Workflow Configuration').first().json.tableName }}",
+        "options": {}
+      },
+      "id": "49cc7a76-cfa9-4ef8-bd7b-dd89045a6a6a",
+      "name": "Store Embeddings in PGVector",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        -448,
+        644
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO upload_log (user_id, document_name, uploaded_at) VALUES ($1, $2, $3)",
+        "options": {
+          "queryReplacement": "={{ $('Webhook Trigger').first().json.body.user_id }},={{ $('Webhook Trigger').first().json.body.document_name }},={{ $now.toISO() }}"
+        }
+      },
+      "id": "d7996807-a4a5-45a7-8774-20376cbc8d99",
+      "name": "Log Upload to Cache",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        644
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"message\": \"Document uploaded and processed\",\n  \"user_id\": \"={{ $('Webhook Trigger').first().json.body.user_id }}\",\n  \"document_name\": \"={{ $('Webhook Trigger').first().json.body.document_name }}\"\n}",
+        "options": {}
+      },
+      "id": "cf521a13-c891-446c-a004-95a04677b81e",
+      "name": "Respond Upload Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        288,
+        644
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT answer, created_at FROM query_cache WHERE user_id = $1 AND query_hash = MD5($2) AND created_at > NOW() - INTERVAL '1 hour'",
+        "options": {
+          "queryReplacement": "={{ $('Webhook Trigger').first().json.body.user_id }},={{ $('Webhook Trigger').first().json.body.query }}"
+        }
+      },
+      "id": "a84a2390-57f9-40d9-88dc-467a4bf9158f",
+      "name": "Check Query Cache",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -784,
+        148
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.length }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cache Hit"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.length }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cache Miss"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c0c39746-722f-4669-97ca-422c65900693",
+      "name": "Cache Hit or Miss",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -424,
+        148
+      ]
+    },
+    {
+      "parameters": {
+        "tableName": "={{ $('Workflow Configuration').first().json.tableName }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "user_id",
+                "value": "={{ $('Webhook Trigger').first().json.body.user_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "05ff3799-1d81-4846-bdb3-1bd8260601df",
+      "name": "Retrieve Relevant Chunks",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        -1600,
+        540
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "1fd0be26-93ba-4a14-9b0a-37522e536a07",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        8,
+        416
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook Trigger').first().json.body.query }}",
+        "options": {
+          "systemMessage": "You are a helpful AI assistant that answers questions based on the provided document context.\n\nYour task is to:\n1. Analyze the user's question carefully\n2. Review the relevant document chunks provided from the vector database\n3. Provide a clear, accurate answer based ONLY on the information in the documents\n4. If the answer is not in the provided context, say \"I don't have enough information to answer that question based on the available documents.\"\n5. Always cite which document or section your answer comes from when possible\n\nBe concise but thorough. Maintain a professional and helpful tone."
+        }
+      },
+      "id": "22431456-8e9e-4910-94df-02cd6b80ed22",
+      "name": "Answer Query with Context",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -64,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO query_cache (user_id, query_hash, query, answer, created_at) VALUES ($1, MD5($2), $3, $4, NOW()) ON CONFLICT (user_id, query_hash) DO UPDATE SET answer = EXCLUDED.answer, created_at = NOW()",
+        "options": {
+          "queryReplacement": "={{ $('Webhook Trigger').first().json.body.user_id }},={{ $('Webhook Trigger').first().json.body.query }},={{ $('Webhook Trigger').first().json.body.query }},={{ $json.output }}"
+        }
+      },
+      "id": "63190424-b183-4f5d-a2e3-dae5a8cbe565",
+      "name": "Save to Query Cache",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        288,
+        296
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"answer\": \"={{ $('Answer Query with Context').first().json.output }}\",\n  \"cached\": false,\n  \"user_id\": \"={{ $('Webhook Trigger').first().json.body.user_id }}\"\n}",
+        "options": {}
+      },
+      "id": "62fc4b35-d0a2-4111-b1a9-d9f75e15c13a",
+      "name": "Respond with Answer",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        512,
+        296
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "answer",
+              "value": "={{ $json.answer }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "cached",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "id-3",
+              "name": "user_id",
+              "value": "={{ $('Webhook Trigger').first().json.body.user_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "638419cc-c9b0-473a-b79b-78ce8d6e23bd",
+      "name": "Format Cached Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"answer\": \"={{ $json.answer }}\",\n  \"cached\": true,\n  \"user_id\": \"={{ $json.user_id }}\"\n}",
+        "options": {}
+      },
+      "id": "a09a4458-312f-4ce9-a2ef-b2b996c10590",
+      "name": "Respond with Cached Answer",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        288,
+        0
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T14:28:15.961Z",
+      "createdAt": "2026-03-29T14:28:15.961Z",
+      "role": "workflow:owner",
+      "workflowId": "xowiAwJL7LiElAzW",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T14:30:50.286Z",
+  "versionId": "57e3d89c-18b0-4deb-9788-a982a849b14d"
+}
