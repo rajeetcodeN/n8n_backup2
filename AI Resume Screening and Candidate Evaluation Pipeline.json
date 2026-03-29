@@ -1,0 +1,750 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Resume Upload Webhook": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Extract Resume Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Resume Text": {
+      "main": [
+        [
+          {
+            "node": "Prepare Resume Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Resume Data": {
+      "main": [
+        [
+          {
+            "node": "AI Resume Scorer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Resume Scorer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Resume Scorer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Resume Scorer": {
+      "main": [
+        [
+          {
+            "node": "Check Score - Accept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Score - Accept": {
+      "main": [
+        [
+          {
+            "node": "Send Acceptance Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check Score - Borderline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Score - Borderline": {
+      "main": [
+        [
+          {
+            "node": "Notify HR - Borderline",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Rejection Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Acceptance Email": {
+      "main": [
+        [
+          {
+            "node": "Log to Google Sheets - Accept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Rejection Email": {
+      "main": [
+        [
+          {
+            "node": "Log to Google Sheets - Reject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify HR - Borderline": {
+      "main": [
+        [
+          {
+            "node": "Log to Google Sheets - Borderline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T15:12:19.811Z",
+  "id": "CDqktalLAokqysBK",
+  "isArchived": false,
+  "meta": null,
+  "name": "AI Resume Screening and Candidate Evaluation Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "resume-upload",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "08ae71c7-4d18-4cf1-8519-d91c5bce303a",
+      "name": "Resume Upload Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1696,
+        192
+      ],
+      "webhookId": "e302f927-10c3-414a-b020-9f844737a1d9"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "jobRole",
+              "value": "<__PLACEHOLDER_VALUE__Job role to match against (e.g., Software Engineer, Data Analyst)__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "acceptanceThreshold",
+              "value": 75,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "borderlineThreshold",
+              "value": 50,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "461e692f-e464-4b58-bf0f-4a53d60c1617",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1472,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "bcc7cd77-8374-45ee-962b-fa4872f1df8e",
+      "name": "Extract Resume Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1248,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "resumeText",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "candidateName",
+              "value": "={{ $json.body.candidateName || \"Unknown\" }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "candidateEmail",
+              "value": "={{ $json.body.candidateEmail || \"\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "e28e567e-c48a-49bc-bb17-5de710a8572a",
+      "name": "Prepare Resume Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1024,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Job Role: {{ $('Workflow Configuration').first().json.jobRole }}\n\nCandidate Name: {{ $json.candidateName }}\n\nResume Text:\n{{ $json.resumeText }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an expert HR resume screening assistant. Your task is to evaluate resumes against job requirements and provide objective, unbiased scoring.\n\nYour evaluation process:\n1. Analyze the resume text for relevant skills, experience, and qualifications\n2. Match the candidate's background against the specified job role requirements\n3. Evaluate technical skills, years of experience, education, and role relevance\n4. Generate a score from 0-100 based on:\n   - Skills match (40%)\n   - Experience level and relevance (35%)\n   - Education and certifications (15%)\n   - Overall fit (10%)\n5. Provide a clear decision: accept, reject, or borderline\n6. Write a brief reason explaining your scoring\n\nIMPORTANT: Ensure your evaluation is fair, objective, and free from bias. Focus only on qualifications and job fit."
+        }
+      },
+      "id": "920d2335-9c74-4d39-9b6f-cf0fca3a2803",
+      "name": "AI Resume Scorer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -800,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "0da8a8f9-a495-426e-a485-c905a086a5f6",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -792,
+        416
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"score\": {\n      \"type\": \"number\",\n      \"description\": \"Score from 0 to 100\"\n    },\n    \"decision\": {\n      \"type\": \"string\",\n      \"enum\": [\"accept\", \"reject\", \"borderline\"],\n      \"description\": \"Final decision\"\n    },\n    \"reason\": {\n      \"type\": \"string\",\n      \"description\": \"Brief explanation of the scoring decision\"\n    }\n  },\n  \"required\": [\"score\", \"decision\", \"reason\"]\n}"
+      },
+      "id": "1d89d2d5-4d13-48df-aa88-364f319d483c",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -664,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.acceptanceThreshold }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f61d5e82-d8e5-449c-97f1-c04f34800840",
+      "name": "Check Score - Accept",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -448,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.borderlineThreshold }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c8a418cb-66bf-40de-ab5b-acfbfee39b09",
+      "name": "Check Score - Borderline",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -224,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.candidateEmail }}",
+        "subject": "Congratulations! Next Steps in Your Application",
+        "message": "=Dear {{ $json.candidateName }},\n\nThank you for applying! We are pleased to inform you that your resume has been reviewed and you have been selected to move forward in our hiring process.\n\nYour application scored {{ $json.score }}/100 for the {{ $('Workflow Configuration').first().json.jobRole }} position.\n\nOur team will be in touch shortly with next steps.\n\nBest regards,\nHiring Team",
+        "options": {}
+      },
+      "id": "20913301-3dec-41f0-a5c9-d6ec89436891",
+      "name": "Send Acceptance Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        384
+      ],
+      "webhookId": "bae6306a-5bc7-4e8a-9151-4564cb4b10cc"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.candidateEmail }}",
+        "subject": "Thank You for Your Application",
+        "message": "=Dear {{ $json.candidateName }},\n\nThank you for taking the time to apply for the {{ $('Workflow Configuration').first().json.jobRole }} position.\n\nAfter careful review, we have decided to move forward with other candidates whose qualifications more closely match our current needs.\n\nWe appreciate your interest in our company and wish you the best in your job search.\n\nBest regards,\nHiring Team",
+        "options": {}
+      },
+      "id": "ae6468bc-1788-4f27-b1b4-c3c30e4144f2",
+      "name": "Send Rejection Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "30af356b-b807-47af-8e61-a92b70d96e00"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Slack channel ID or name (e.g., #hr-reviews)__>"
+        },
+        "text": "=🔔 *Borderline Candidate Requires HR Review*\n\n*Candidate:* {{ $json.candidateName }}\n*Email:* {{ $json.candidateEmail }}\n*Role:* {{ $('Workflow Configuration').first().json.jobRole }}\n*Score:* {{ $json.score }}/100\n*Decision:* {{ $json.decision }}\n\n*Reason:*\n{{ $json.reason }}\n\nPlease review this candidate manually.",
+        "otherOptions": {}
+      },
+      "id": "9b24c90c-34ac-4f08-aa1b-3be1e46c3099",
+      "name": "Notify HR - Borderline",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        0,
+        192
+      ],
+      "webhookId": "e392ebf9-054b-466f-bd15-fb6c2e7c3ee4"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Google Sheets document ID__>"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Sheet name (e.g., Candidates)__>"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "candidate_name": "={{ $json.candidateName }}",
+            "email": "={{ $json.candidateEmail }}",
+            "role": "={{ $('Workflow Configuration').first().json.jobRole }}",
+            "score": "={{ $json.score }}",
+            "status": "accepted",
+            "notes": "={{ $json.reason }}",
+            "timestamp": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "candidate_name",
+              "displayName": "candidate_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9f074ee9-67d0-41a7-aece-87a0465db01c",
+      "name": "Log to Google Sheets - Accept",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        384
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Google Sheets document ID__>"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Sheet name (e.g., Candidates)__>"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "candidate_name": "={{ $json.candidateName }}",
+            "email": "={{ $json.candidateEmail }}",
+            "role": "={{ $('Workflow Configuration').first().json.jobRole }}",
+            "score": "={{ $json.score }}",
+            "status": "rejected",
+            "notes": "={{ $json.reason }}",
+            "timestamp": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "candidate_name",
+              "displayName": "candidate_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d8de5859-bd5b-4862-b67f-00cefa485bbb",
+      "name": "Log to Google Sheets - Reject",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Google Sheets document ID__>"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Sheet name (e.g., Candidates)__>"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "candidate_name": "={{ $json.candidateName }}",
+            "email": "={{ $json.candidateEmail }}",
+            "role": "={{ $('Workflow Configuration').first().json.jobRole }}",
+            "score": "={{ $json.score }}",
+            "status": "escalated",
+            "notes": "={{ $json.reason }}",
+            "timestamp": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "candidate_name",
+              "displayName": "candidate_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "debd3cb5-2ba5-4354-be02-8107d2e0e705",
+      "name": "Log to Google Sheets - Borderline",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        192
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T15:12:19.815Z",
+      "createdAt": "2026-03-29T15:12:19.815Z",
+      "role": "workflow:owner",
+      "workflowId": "CDqktalLAokqysBK",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T15:14:37.613Z",
+  "versionId": "7718dd3f-2722-41ef-a796-7e8648d85b3d"
+}
