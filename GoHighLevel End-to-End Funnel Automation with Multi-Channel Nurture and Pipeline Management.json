@@ -1,0 +1,898 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Lead Capture Webhook": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Create Contact in GoHighLevel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Contact in GoHighLevel": {
+      "main": [
+        [
+          {
+            "node": "Log Lead to Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Lead to Database": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome SMS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Welcome SMS": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Welcome Email": {
+      "main": [
+        [
+          {
+            "node": "Wait 1 Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 1 Day": {
+      "main": [
+        [
+          {
+            "node": "Send Day 1 Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Day 1 Follow-up Email": {
+      "main": [
+        [
+          {
+            "node": "Log Day 1 Activity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Day 1 Activity": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 More Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 More Days": {
+      "main": [
+        [
+          {
+            "node": "Check Email Opens in GoHighLevel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Email Opens in GoHighLevel": {
+      "main": [
+        [
+          {
+            "node": "Has Engaged?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Engaged?": {
+      "main": [
+        [
+          {
+            "node": "Send Day 3 Engaged Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Re-engagement SMS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Day 3 Engaged Email": {
+      "main": [
+        [
+          {
+            "node": "Move to Engaged Pipeline Stage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Re-engagement SMS": {
+      "main": [
+        [
+          {
+            "node": "Move to Cold Pipeline Stage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move to Engaged Pipeline Stage": {
+      "main": [
+        [
+          {
+            "node": "Log Day 3 Activity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move to Cold Pipeline Stage": {
+      "main": [
+        [
+          {
+            "node": "Log Day 3 Activity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Day 3 Activity": {
+      "main": [
+        [
+          {
+            "node": "Wait 4 More Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 4 More Days": {
+      "main": [
+        [
+          {
+            "node": "Send Day 7 Final Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Day 7 Final Email": {
+      "main": [
+        [
+          {
+            "node": "Log Day 7 Activity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T15:00:38.169Z",
+  "id": "bFwFOR8rC8sHZxYC",
+  "isArchived": false,
+  "meta": null,
+  "name": "GoHighLevel End-to-End Funnel Automation with Multi-Channel Nurture and Pipeline Management",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-capture",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "11e9b929-d275-4d2a-8919-8d52063fcfdf",
+      "name": "Lead Capture Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2688,
+        96
+      ],
+      "webhookId": "7b8274d6-77fa-416f-adca-11571c9277e0"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "ghlApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__GoHighLevel API Base URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "ghlApiKey",
+              "value": "<__PLACEHOLDER_VALUE__GoHighLevel API Key__>",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "ghlLocationId",
+              "value": "<__PLACEHOLDER_VALUE__GoHighLevel Location ID__>",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "ghlPipelineId",
+              "value": "<__PLACEHOLDER_VALUE__GoHighLevel Pipeline ID__>",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "engagedStageId",
+              "value": "<__PLACEHOLDER_VALUE__Engaged Pipeline Stage ID__>",
+              "type": "string"
+            },
+            {
+              "id": "id-6",
+              "name": "coldStageId",
+              "value": "<__PLACEHOLDER_VALUE__Cold Pipeline Stage ID__>",
+              "type": "string"
+            },
+            {
+              "id": "id-7",
+              "name": "dbTable",
+              "value": "lead_activity",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "10cbe088-959b-4261-a726-4a6ac41c0763",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2464,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Configuration').first().json.ghlApiUrl }}/contacts/",
+        "authentication": "genericCredentialType",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Workflow Configuration').first().json.ghlApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"locationId\": \"{{ $('Workflow Configuration').first().json.ghlLocationId }}\",\n  \"firstName\": \"{{ $json.body.firstName }}\",\n  \"lastName\": \"{{ $json.body.lastName }}\",\n  \"email\": \"{{ $json.body.email }}\",\n  \"phone\": \"{{ $json.body.phone }}\",\n  \"source\": \"{{ $json.body.source || 'Webhook' }}\",\n  \"tags\": [\"new-lead\", \"funnel-automation\"]\n}",
+        "options": {}
+      },
+      "id": "2b2f6b80-1b6e-418f-927c-13110359fa9b",
+      "name": "Create Contact in GoHighLevel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2240,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.dbTable }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('Lead Capture Webhook').first().json.body.email }}",
+            "phone": "={{ $('Lead Capture Webhook').first().json.body.phone }}",
+            "contact_id": "={{ $json.contact.id }}",
+            "activity_type": "lead_created",
+            "activity_date": "={{ $now() }}",
+            "pipeline_stage": "new"
+          }
+        },
+        "options": {}
+      },
+      "id": "edab34b9-39b8-4f37-9b1f-6a67d034fbee",
+      "name": "Log Lead to Database",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2016,
+        96
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "<__PLACEHOLDER_VALUE__Twilio Phone Number__>",
+        "to": "={{ $('Lead Capture Webhook').first().json.body.phone }}",
+        "message": "=Hi {{ $('Lead Capture Webhook').first().json.body.firstName }}! Welcome to our community. We're excited to have you on board. Check your email for next steps!",
+        "options": {}
+      },
+      "id": "25dfc1a7-bcfc-4b58-8219-3341954eaa14",
+      "name": "Send Welcome SMS",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Lead Capture Webhook').first().json.body.email }}",
+        "subject": "Welcome to Our Community!",
+        "message": "=<h2>Welcome {{ $('Lead Capture Webhook').first().json.body.firstName }}!</h2><p>Thank you for joining us. We're thrilled to have you here.</p><p>Over the next few days, we'll be sharing valuable resources to help you get started.</p><p>Stay tuned!</p><p>Best regards,<br>The Team</p>",
+        "options": {}
+      },
+      "id": "25436055-bf4d-427d-acf0-9a2bca4b55f6",
+      "name": "Send Welcome Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -1568,
+        96
+      ],
+      "webhookId": "eb3bb0ae-3ca9-4dbb-b080-96595496e002"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "days"
+      },
+      "id": "157ebdd9-651d-4533-8585-1065f392bb06",
+      "name": "Wait 1 Day",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1344,
+        96
+      ],
+      "webhookId": "956a9bfd-28bc-4a4f-8c7c-2bde5849c349"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Lead Capture Webhook').first().json.body.email }}",
+        "subject": "Day 1: Getting Started Guide",
+        "message": "=<h2>Hi ={{ $('Lead Capture Webhook').first().json.body.firstName }},</h2><p>It's been a day since you joined us! Here's a quick guide to help you get the most out of our platform:</p><ul><li>Step 1: Complete your profile</li><li>Step 2: Explore our resources</li><li>Step 3: Join our community forum</li></ul><p>Have questions? Just reply to this email.</p><p>Cheers,<br>The Team</p>",
+        "options": {}
+      },
+      "id": "cda28d77-3c94-4fd4-820b-67d0af9f21b5",
+      "name": "Send Day 1 Follow-up Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -1120,
+        96
+      ],
+      "webhookId": "54dfe59f-3669-45ee-a1d6-f4f1f9d2a8cd"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.dbTable }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('Lead Capture Webhook').first().json.body.email }}",
+            "phone": "={{ $('Lead Capture Webhook').first().json.body.phone }}",
+            "contact_id": "={{ $('Create Contact in GoHighLevel').first().json.contact.id }}",
+            "activity_type": "day1_email_sent",
+            "activity_date": "={{ $now() }}",
+            "pipeline_stage": "nurture"
+          },
+          "matchingColumns": [
+            "email",
+            "phone",
+            "contact_id",
+            "activity_type",
+            "activity_date",
+            "pipeline_stage"
+          ],
+          "schema": [
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contact_id",
+              "displayName": "contact_id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "activity_type",
+              "displayName": "activity_type",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "activity_date",
+              "displayName": "activity_date",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pipeline_stage",
+              "displayName": "pipeline_stage",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0a0d89f4-0144-479f-ae03-8a7b5b9cfce1",
+      "name": "Log Day 1 Activity",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -896,
+        96
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "id": "3b800843-107a-4b7e-bacf-9ea22d932d13",
+      "name": "Wait 2 More Days",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -672,
+        96
+      ],
+      "webhookId": "bdc7cd98-6459-4981-bf5a-d0d2467de2e1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.ghlApiUrl }}/contacts/{{ $('Create Contact in GoHighLevel').first().json.contact.id }}/activities",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Workflow Configuration').first().json.ghlApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0b8694a2-df17-4829-a773-679b6c30a5a6",
+      "name": "Check Email Opens in GoHighLevel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -448,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.activities }}",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d3f07380-b0d1-4211-b9cb-511fc28c0d83",
+      "name": "Has Engaged?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -224,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Lead Capture Webhook').first().json.body.email }}",
+        "subject": "Day 3: We Noticed You're Engaged!",
+        "message": "=<h2>Great to see you're interested, {{ $('Lead Capture Webhook').first().json.body.firstName }}!</h2><p>We noticed you've been checking out our emails. That's awesome!</p><p>Here are some exclusive resources just for engaged members like you:</p><ul><li>Advanced training materials</li><li>Priority support access</li><li>Community insider tips</li></ul><p>Keep up the momentum!</p><p>Best,<br>The Team</p>",
+        "options": {}
+      },
+      "id": "4278e914-c255-4265-8d22-039593a8a2a1",
+      "name": "Send Day 3 Engaged Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "aa4de8d2-3e18-4203-85d6-1241ce72f80a"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('Workflow Configuration').first().json.ghlApiUrl }}/opportunities/{{ $('Create Contact in GoHighLevel').first().json.contact.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Workflow Configuration').first().json.ghlApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pipelineId\": \"{{ $('Workflow Configuration').first().json.ghlPipelineId }}\",\n  \"pipelineStageId\": \"{{ $('Workflow Configuration').first().json.engagedStageId }}\"\n}",
+        "options": {}
+      },
+      "id": "31f5724f-59e2-4fe1-b05d-62745e4e9a38",
+      "name": "Move to Engaged Pipeline Stage",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "from": "<__PLACEHOLDER_VALUE__Twilio Phone Number__>",
+        "to": "={{ $('Lead Capture Webhook').first().json.body.phone }}",
+        "message": "=Hi {{ $('Lead Capture Webhook').first().json.body.firstName }}, we haven't heard from you in a while. Is there anything we can help with? Reply to this message anytime!",
+        "options": {}
+      },
+      "id": "c010b0f4-ade5-44e8-aee2-50b529533760",
+      "name": "Send Re-engagement SMS",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        0,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('Workflow Configuration').first().json.ghlApiUrl }}/opportunities/{{ $('Create Contact in GoHighLevel').first().json.contact.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Workflow Configuration').first().json.ghlApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pipelineId\": \"{{ $('Workflow Configuration').first().json.ghlPipelineId }}\",\n  \"pipelineStageId\": \"{{ $('Workflow Configuration').first().json.coldStageId }}\"\n}",
+        "options": {}
+      },
+      "id": "06f7e92b-e019-436f-ad30-ae0b13c3eb9b",
+      "name": "Move to Cold Pipeline Stage",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.dbTable }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('Lead Capture Webhook').first().json.body.email }}",
+            "phone": "={{ $('Lead Capture Webhook').first().json.body.phone }}",
+            "contact_id": "={{ $('Create Contact in GoHighLevel').first().json.contact.id }}",
+            "activity_type": "day3_engagement_check",
+            "activity_date": "={{ $now() }}",
+            "pipeline_stage": "={{ $('Has Engaged?').item.json.engaged ? 'engaged' : 'cold' }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "9435f74e-bfe7-4223-adf9-934836a2f5e9",
+      "name": "Log Day 3 Activity",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        448,
+        96
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 4,
+        "unit": "days"
+      },
+      "id": "2f503102-a342-4a9a-895f-5b774deb09b1",
+      "name": "Wait 4 More Days",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        96
+      ],
+      "webhookId": "0860082a-9d64-448b-91b2-c85a5a141144"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Lead Capture Webhook').first().json.body.email }}",
+        "subject": "Day 7: Final Check-In",
+        "message": "=<h2>Hi {{ $('Lead Capture Webhook').first().json.body.firstName }},</h2><p>It's been a week since you joined us! We wanted to check in one last time.</p><p>If you're still interested in learning more, we'd love to schedule a quick call to answer any questions you might have.</p><p>Simply reply to this email with your availability, and we'll make it happen.</p><p>Looking forward to connecting!</p><p>Warm regards,<br>The Team</p>",
+        "options": {}
+      },
+      "id": "d5844092-2c0f-4909-8b34-8a00ba9b2cd0",
+      "name": "Send Day 7 Final Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        96
+      ],
+      "webhookId": "30722dd6-8e1c-4456-b3ab-45fbb21f9e52"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.dbTable }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('Lead Capture Webhook').first().json.body.email }}",
+            "phone": "={{ $('Lead Capture Webhook').first().json.body.phone }}",
+            "contact_id": "={{ $('Create Contact in GoHighLevel').first().json.contact.id }}",
+            "activity_type": "day7_final_email_sent",
+            "activity_date": "={{ $now() }}",
+            "pipeline_stage": "final_touchpoint"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contact_id",
+              "displayName": "contact_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "activity_type",
+              "displayName": "activity_type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "activity_date",
+              "displayName": "activity_date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pipeline_stage",
+              "displayName": "pipeline_stage",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8a964ca6-f5c6-4074-9378-29f3032f769e",
+      "name": "Log Day 7 Activity",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1120,
+        96
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T15:00:38.175Z",
+      "createdAt": "2026-03-29T15:00:38.175Z",
+      "role": "workflow:owner",
+      "workflowId": "bFwFOR8rC8sHZxYC",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T15:03:18.949Z",
+  "versionId": "ced53bb6-687d-46bd-bab9-9c2e844cab45"
+}
