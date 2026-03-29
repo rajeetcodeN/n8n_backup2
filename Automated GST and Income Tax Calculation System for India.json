@@ -1,0 +1,362 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Monthly Schedule": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Fetch Invoices",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Expenses",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Invoices": {
+      "main": [
+        [
+          {
+            "node": "Merge Transactions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Transactions": {
+      "main": [
+        [
+          {
+            "node": "Categorize Transactions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Categorize Transactions",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Categorize Transactions",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Categorize Transactions": {
+      "main": [
+        [
+          {
+            "node": "Calculate GST and Profit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate GST and Profit": {
+      "main": [
+        [
+          {
+            "node": "Generate Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Report": {
+      "main": [
+        [
+          {
+            "node": "Send Report Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T15:41:19.667Z",
+  "id": "0XRn70WvlBuAaToS",
+  "isArchived": false,
+  "meta": null,
+  "name": "Automated GST and Income Tax Calculation System for India",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "months",
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "80abae31-34f3-4d89-a674-51011bfcc2f2",
+      "name": "Monthly Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        1856,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "reportPeriod",
+              "value": "monthly",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "gstRate",
+              "value": 0.18,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "recipientEmail",
+              "value": "<__PLACEHOLDER_VALUE__Recipient email address for tax reports__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "084953b0-a364-4d59-b66b-f49a581e0ebd",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2080,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM invoices WHERE EXTRACT(MONTH FROM invoice_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') AND EXTRACT(YEAR FROM invoice_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month')",
+        "options": {}
+      },
+      "id": "70ffc3d2-a7d8-4f82-ad0b-96a946a95062",
+      "name": "Fetch Invoices",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2304,
+        400
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM expenses WHERE EXTRACT(MONTH FROM expense_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') AND EXTRACT(YEAR FROM expense_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month')",
+        "options": {}
+      },
+      "id": "3f6c133b-5db5-4264-9deb-827062279283",
+      "name": "Fetch Expenses",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2304,
+        592
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "transactionType",
+              "value": "={{ $runIndex === 0 ? \"invoice\" : \"expense\" }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "allTransactions",
+              "value": "={{ $input.all() }}",
+              "type": "object"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "5a033da1-bd3a-4665-a431-cde3316a0bad",
+      "name": "Merge Transactions",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2528,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify($json) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a tax categorization assistant for Indian GST compliance.\n\nYour task is to:\n1. Analyze each transaction (invoice or expense)\n2. Categorize it into appropriate GST categories (e.g., Sales, Purchases, Services, Capital Goods, etc.)\n3. Determine if GST is applicable\n4. Identify the GST rate (0%, 5%, 12%, 18%, 28%)\n5. Determine if input tax credit is eligible for expenses\n6. Return structured data for each transaction\n\nConsider:\n- Transaction type (invoice = output, expense = input)\n- Description and amount\n- Indian GST rules and exemptions\n- Input tax credit eligibility criteria"
+        }
+      },
+      "id": "26f1e6a3-5aa4-44d6-a8c4-600be01bf280",
+      "name": "Categorize Transactions",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        2752,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "1688718d-ed62-4314-8be0-59fe9e6d1c30",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        2760,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"category\": \"Professional Services\",\n\t\"gstApplicable\": true,\n\t\"gstRate\": 18,\n\t\"inputCreditEligible\": true,\n\t\"description\": \"Software development services\",\n\t\"amount\": 50000,\n\t\"transactionType\": \"invoice\"\n}"
+      },
+      "id": "e02eb605-4d09-4dbe-822b-6f99f2ec9182",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2888,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calculate GST and Profit from categorized transactions\nconst items = $input.all();\n\nlet gstPayable = 0;\nlet inputCredit = 0;\nlet totalRevenue = 0;\nlet totalExpenses = 0;\n\n// Process all transactions\nfor (const item of items) {\n  const data = item.json;\n  const amount = parseFloat(data.amount || 0);\n  const gstRate = parseFloat(data.gst_rate || 0) / 100; // Convert percentage to decimal\n  const transactionType = data.transaction_type || data.type;\n  \n  if (transactionType === 'invoice' || transactionType === 'revenue') {\n    // Calculate GST Payable from invoices\n    gstPayable += amount * gstRate;\n    totalRevenue += amount;\n  } else if (transactionType === 'expense') {\n    // Calculate Input Credit from eligible expenses\n    const isEligible = data.gst_eligible !== false; // Assume eligible unless explicitly marked false\n    if (isEligible) {\n      inputCredit += amount * gstRate;\n    }\n    totalExpenses += amount;\n  }\n}\n\n// Calculate Net GST and Profit\nconst netGST = gstPayable - inputCredit;\nconst profit = totalRevenue - totalExpenses;\n\n// Return summary object with all calculations\nreturn [\n  {\n    json: {\n      gst_payable: Math.round(gstPayable * 100) / 100,\n      input_credit: Math.round(inputCredit * 100) / 100,\n      net_gst: Math.round(netGST * 100) / 100,\n      total_revenue: Math.round(totalRevenue * 100) / 100,\n      total_expenses: Math.round(totalExpenses * 100) / 100,\n      profit: Math.round(profit * 100) / 100,\n      calculation_date: new Date().toISOString(),\n      total_transactions: items.length\n    }\n  }\n];"
+      },
+      "id": "0d969be3-692f-4a09-ae3b-387db40ddd77",
+      "name": "Calculate GST and Profit",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3104,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate Comprehensive GST and Income Tax Report\nconst items = $input.all();\n\n// Extract data from the previous node\nconst data = items[0].json;\n\n// Get current date and report period\nconst now = new Date();\nconst reportDate = now.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });\nconst reportMonth = now.toLocaleDateString('en-IN', { year: 'numeric', month: 'long' });\n\n// Calculate GST filing due dates\nconst nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);\nconst gstDueDate = new Date(nextMonth.getFullYear(), nextMonth.getMonth(), 20);\nconst gstDueDateStr = gstDueDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });\n\n// Format currency\nconst formatCurrency = (amount) => {\n  return new Intl.NumberFormat('en-IN', {\n    style: 'currency',\n    currency: 'INR',\n    minimumFractionDigits: 2\n  }).format(amount || 0);\n};\n\n// Generate category breakdown\nconst categoryBreakdown = data.categoryBreakdown || [];\nlet categoryRows = '';\ncategoryBreakdown.forEach(cat => {\n  categoryRows += `\n    <tr>\n      <td style=\"padding: 12px; border-bottom: 1px solid #e0e0e0;\">${cat.category}</td>\n      <td style=\"padding: 12px; border-bottom: 1px solid #e0e0e0; text-align: right;\">${formatCurrency(cat.amount)}</td>\n      <td style=\"padding: 12px; border-bottom: 1px solid #e0e0e0; text-align: right;\">${cat.count}</td>\n    </tr>\n  `;\n});\n\n// Generate transaction details\nconst transactions = data.transactions || [];\nlet transactionRows = '';\ntransactions.slice(0, 50).forEach(txn => {\n  transactionRows += `\n    <tr>\n      <td style=\"padding: 8px; border-bottom: 1px solid #f0f0f0; font-size: 13px;\">${txn.date}</td>\n      <td style=\"padding: 8px; border-bottom: 1px solid #f0f0f0; font-size: 13px;\">${txn.description}</td>\n      <td style=\"padding: 8px; border-bottom: 1px solid #f0f0f0; font-size: 13px;\">${txn.category}</td>\n      <td style=\"padding: 8px; border-bottom: 1px solid #f0f0f0; text-align: right; font-size: 13px;\">${txn.type === 'income' ? formatCurrency(txn.amount) : '-'}</td>\n      <td style=\"padding: 8px; border-bottom: 1px solid #f0f0f0; text-align: right; font-size: 13px;\">${txn.type === 'expense' ? formatCurrency(txn.amount) : '-'}</td>\n      <td style=\"padding: 8px; border-bottom: 1px solid #f0f0f0; text-align: right; font-size: 13px;\">${formatCurrency(txn.gst || 0)}</td>\n    </tr>\n  `;\n});\n\nif (transactions.length > 50) {\n  transactionRows += `\n    <tr>\n      <td colspan=\"6\" style=\"padding: 12px; text-align: center; font-style: italic; color: #666;\">... and ${transactions.length - 50} more transactions</td>\n    </tr>\n  `;\n}\n\n// Generate HTML report\nconst htmlReport = `\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>GST and Income Tax Report</title>\n</head>\n<body style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;\">\n  <div style=\"background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);\">\n    \n    <!-- Header -->\n    <div style=\"text-align: center; margin-bottom: 30px; border-bottom: 3px solid #1a73e8; padding-bottom: 20px;\">\n      <h1 style=\"color: #1a73e8; margin: 0 0 10px 0; font-size: 28px;\">GST & Income Tax Report</h1>\n      <p style=\"color: #666; margin: 5px 0; font-size: 16px;\"><strong>Report Period:</strong> ${reportMonth}</p>\n      <p style=\"color: #666; margin: 5px 0; font-size: 14px;\">Generated on: ${reportDate}</p>\n    </div>\n\n    <!-- GST Summary -->\n    <div style=\"margin-bottom: 30px;\">\n      <h2 style=\"color: #1a73e8; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; font-size: 22px;\">📊 GST Summary</h2>\n      <div style=\"display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;\">\n        <div style=\"background-color: #e3f2fd; padding: 20px; border-radius: 6px; text-align: center;\">\n          <p style=\"margin: 0; color: #666; font-size: 14px;\">GST Collected (Output)</p>\n          <p style=\"margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #1976d2;\">${formatCurrency(data.gstSummary?.gstPayable || 0)}</p>\n        </div>\n        <div style=\"background-color: #e8f5e9; padding: 20px; border-radius: 6px; text-align: center;\">\n          <p style=\"margin: 0; color: #666; font-size: 14px;\">GST Paid (Input Credit)</p>\n          <p style=\"margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #388e3c;\">${formatCurrency(data.gstSummary?.inputCredit || 0)}</p>\n        </div>\n        <div style=\"background-color: #fff3e0; padding: 20px; border-radius: 6px; text-align: center;\">\n          <p style=\"margin: 0; color: #666; font-size: 14px;\">Net GST Payable</p>\n          <p style=\"margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #f57c00;\">${formatCurrency(data.gstSummary?.netGST || 0)}</p>\n        </div>\n      </div>\n    </div>\n\n    <!-- Income Summary -->\n    <div style=\"margin-bottom: 30px;\">\n      <h2 style=\"color: #1a73e8; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; font-size: 22px;\">💰 Income Summary</h2>\n      <div style=\"display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;\">\n        <div style=\"background-color: #e8f5e9; padding: 20px; border-radius: 6px; text-align: center;\">\n          <p style=\"margin: 0; color: #666; font-size: 14px;\">Total Revenue</p>\n          <p style=\"margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #2e7d32;\">${formatCurrency(data.incomeSummary?.totalRevenue || 0)}</p>\n        </div>\n        <div style=\"background-color: #ffebee; padding: 20px; border-radius: 6px; text-align: center;\">\n          <p style=\"margin: 0; color: #666; font-size: 14px;\">Total Expenses</p>\n          <p style=\"margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #c62828;\">${formatCurrency(data.incomeSummary?.totalExpenses || 0)}</p>\n        </div>\n        <div style=\"background-color: #f3e5f5; padding: 20px; border-radius: 6px; text-align: center;\">\n          <p style=\"margin: 0; color: #666; font-size: 14px;\">Net Profit</p>\n          <p style=\"margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #7b1fa2;\">${formatCurrency(data.incomeSummary?.netProfit || 0)}</p>\n        </div>\n      </div>\n    </div>\n\n    <!-- Category Breakdown -->\n    <div style=\"margin-bottom: 30px;\">\n      <h2 style=\"color: #1a73e8; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; font-size: 22px;\">📁 Category-wise Breakdown</h2>\n      <table style=\"width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #fff;\">\n        <thead>\n          <tr style=\"background-color: #1a73e8; color: white;\">\n            <th style=\"padding: 12px; text-align: left;\">Category</th>\n            <th style=\"padding: 12px; text-align: right;\">Amount</th>\n            <th style=\"padding: 12px; text-align: right;\">Transactions</th>\n          </tr>\n        </thead>\n        <tbody>\n          ${categoryRows || '<tr><td colspan=\"3\" style=\"padding: 20px; text-align: center; color: #999;\">No category data available</td></tr>'}\n        </tbody>\n      </table>\n    </div>\n\n    <!-- Transaction Details -->\n    <div style=\"margin-bottom: 30px;\">\n      <h2 style=\"color: #1a73e8; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; font-size: 22px;\">📋 Transaction Details</h2>\n      <div style=\"overflow-x: auto; margin-top: 20px;\">\n        <table style=\"width: 100%; border-collapse: collapse; background-color: #fff; font-size: 13px;\">\n          <thead>\n            <tr style=\"background-color: #1a73e8; color: white;\">\n              <th style=\"padding: 10px; text-align: left; white-space: nowrap;\">Date</th>\n              <th style=\"padding: 10px; text-align: left;\">Description</th>\n              <th style=\"padding: 10px; text-align: left;\">Category</th>\n              <th style=\"padding: 10px; text-align: right;\">Income</th>\n              <th style=\"padding: 10px; text-align: right;\">Expense</th>\n              <th style=\"padding: 10px; text-align: right;\">GST</th>\n            </tr>\n          </thead>\n          <tbody>\n            ${transactionRows || '<tr><td colspan=\"6\" style=\"padding: 20px; text-align: center; color: #999;\">No transactions available</td></tr>'}\n          </tbody>\n        </table>\n      </div>\n    </div>\n\n    <!-- GST Filing Summary -->\n    <div style=\"margin-bottom: 20px; background-color: #fff8e1; padding: 20px; border-radius: 6px; border-left: 4px solid #ffa000;\">\n      <h2 style=\"color: #f57c00; margin-top: 0; font-size: 20px;\">⚠️ GST Filing Reminder</h2>\n      <p style=\"margin: 10px 0; font-size: 15px;\"><strong>GSTR-3B Due Date:</strong> ${gstDueDateStr}</p>\n      <p style=\"margin: 10px 0; font-size: 15px;\"><strong>Net GST Payable:</strong> ${formatCurrency(data.gstSummary?.netGST || 0)}</p>\n      <p style=\"margin: 10px 0; color: #666; font-size: 14px;\">Please ensure timely filing to avoid penalties and interest charges.</p>\n    </div>\n\n    <!-- Footer -->\n    <div style=\"margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0; text-align: center; color: #666; font-size: 12px;\">\n      <p style=\"margin: 5px 0;\">This is an automated report generated by your GST & Income Tax Calculation System</p>\n      <p style=\"margin: 5px 0;\">For any queries, please consult with your tax advisor</p>\n    </div>\n\n  </div>\n</body>\n</html>\n`;\n\n// Return the HTML report\nreturn [{\n  json: {\n    htmlReport: htmlReport,\n    reportDate: reportDate,\n    reportPeriod: reportMonth,\n    gstSummary: data.gstSummary,\n    incomeSummary: data.incomeSummary,\n    transactionCount: transactions.length\n  }\n}];"
+      },
+      "id": "0d30f95d-8402-4ccd-905f-ef863a3df353",
+      "name": "Generate Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3328,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Workflow Configuration').first().json.recipientEmail }}",
+        "subject": "=GST & Income Tax Report - {{ new Date().toLocaleDateString(\"en-IN\", { month: \"long\", year: \"numeric\" }) }}",
+        "message": "={{ $json.reportHtml }}",
+        "options": {}
+      },
+      "id": "831190db-613c-4f31-848f-9039bd054e0c",
+      "name": "Send Report Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3552,
+        400
+      ],
+      "webhookId": "fe18ec32-f4a1-48c4-a50f-a40253f9a180"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T15:41:19.672Z",
+      "createdAt": "2026-03-29T15:41:19.672Z",
+      "role": "workflow:owner",
+      "workflowId": "0XRn70WvlBuAaToS",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T15:43:34.760Z",
+  "versionId": "eaaa8fb9-4df8-4c30-bf8c-f740261c48e8"
+}
