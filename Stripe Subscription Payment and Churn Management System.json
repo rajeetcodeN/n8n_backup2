@@ -1,0 +1,607 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Stripe Webhook": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Extract Event Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Event Data": {
+      "main": [
+        [
+          {
+            "node": "Check Payment Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Payment Status": {
+      "main": [
+        [
+          {
+            "node": "Update Subscription Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Retry Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Retry Data": {
+      "main": [
+        [
+          {
+            "node": "Check Retry Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Retry Count": {
+      "main": [
+        [
+          {
+            "node": "Wait Before Retry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Failed Payment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait Before Retry": {
+      "main": [
+        [
+          {
+            "node": "Retry Payment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry Payment": {
+      "main": [
+        [
+          {
+            "node": "Increment Retry Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Increment Retry Count": {
+      "main": [
+        [
+          {
+            "node": "Check Retry Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Failed Payment": {
+      "main": [
+        [
+          {
+            "node": "Send Payment Failure Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Payment Failure Email": {
+      "main": [
+        [
+          {
+            "node": "Check Churn Risk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Churn Risk": {
+      "main": [
+        [
+          {
+            "node": "Alert Churn Risk",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Subscription Success": {
+      "main": [
+        [
+          {
+            "node": "Log Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert Churn Risk": {
+      "main": [
+        [
+          {
+            "node": "Log Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T14:50:51.359Z",
+  "id": "I6QwfIzg2Jdrh4GS",
+  "isArchived": false,
+  "meta": null,
+  "name": "Stripe Subscription Payment and Churn Management System",
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "payment_intent.succeeded",
+          "payment_intent.payment_failed",
+          "invoice.payment_succeeded",
+          "invoice.payment_failed"
+        ]
+      },
+      "id": "034769c4-be5d-4ba2-9fff-5e5464444d3b",
+      "name": "Stripe Webhook",
+      "type": "n8n-nodes-base.stripeTrigger",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        1160
+      ],
+      "webhookId": "eb8fa54e-6d3a-4cbd-95a6-8c277743d5bf"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "maxRetries",
+              "value": 3,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "retryDelayMinutes",
+              "value": 60,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "churnRiskThreshold",
+              "value": 2,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "02f6c24b-a5b8-4a75-b578-0ce1b8a0401f",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1520,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "eventType",
+              "value": "={{ $json.type }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "customerId",
+              "value": "={{ $json.data.object.customer }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "subscriptionId",
+              "value": "={{ $json.data.object.subscription }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "paymentIntentId",
+              "value": "={{ $json.data.object.id }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "amount",
+              "value": "={{ $json.data.object.amount }}",
+              "type": "number"
+            },
+            {
+              "id": "id-6",
+              "name": "status",
+              "value": "={{ $json.data.object.status }}",
+              "type": "string"
+            },
+            {
+              "id": "id-7",
+              "name": "retryCount",
+              "value": 0,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "19eab88b-b01c-4ddf-ab88-4745638766a8",
+      "name": "Extract Event Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1744,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Extract Event Data').item.json.status }}",
+              "rightValue": "succeeded",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "05006b15-2453-4c32-90a9-e8b1959125d3",
+      "name": "Check Payment Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1968,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE subscriptions SET status = 'active', last_payment_date = NOW(), failed_payment_count = 0 WHERE subscription_id = '={{ $json.subscriptionId }}'",
+        "options": {}
+      },
+      "id": "305f901f-2dec-43a4-bcf0-f33a7553231d",
+      "name": "Update Subscription Success",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3312,
+        1088
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "shouldRetry",
+              "value": true,
+              "type": "boolean"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "82329583-3ab1-49f5-8c23-3efe9feaf55a",
+      "name": "Prepare Retry Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2192,
+        1328
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Prepare Retry Data').item.json.retryCount }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.maxRetries }}",
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e8a4ca32-e54f-4d0e-b114-24a61390198c",
+      "name": "Check Retry Count",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2416,
+        1328
+      ]
+    },
+    {
+      "parameters": {
+        "amount": "={{ $('Workflow Configuration').first().json.retryDelayMinutes }}",
+        "unit": "minutes"
+      },
+      "id": "ae30a465-2a0f-425f-a84b-af490f33cb2f",
+      "name": "Wait Before Retry",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2640,
+        1232
+      ],
+      "webhookId": "06474bd7-f6d5-4b6f-a7da-5dee5cd63a3e"
+    },
+    {
+      "parameters": {
+        "resource": "charge",
+        "operation": "create",
+        "customerId": "={{ $json.customerId }}",
+        "amount": "={{ $json.amount }}",
+        "currency": "usd",
+        "additionalFields": {
+          "description": "Subscription payment retry"
+        }
+      },
+      "id": "766f795f-cc86-4495-a6ae-8f150a384e25",
+      "name": "Retry Payment",
+      "type": "n8n-nodes-base.stripe",
+      "typeVersion": 1,
+      "position": [
+        2864,
+        1232
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "retryCount",
+              "value": "={{ $json.retryCount + 1 }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "c1b9f331-77c7-4c32-8f08-2ed2ff7c141c",
+      "name": "Increment Retry Count",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3088,
+        1232
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE subscriptions SET status = 'payment_failed', failed_payment_count = failed_payment_count + 1, last_failed_date = NOW() WHERE subscription_id = '={{ $json.subscriptionId }}'",
+        "options": {}
+      },
+      "id": "9ba824b6-c831-457a-bcbe-77763c215348",
+      "name": "Update Failed Payment",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2640,
+        1424
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "<__PLACEHOLDER_VALUE__Customer email address__>",
+        "subject": "Payment Failed - Action Required",
+        "message": "=Dear Customer,\n\nYour recent payment for subscription {{ $json.subscriptionId }} has failed after multiple retry attempts.\n\nPlease update your payment method to continue your subscription.\n\nAmount: ${{ $json.amount / 100 }}\n\nThank you",
+        "options": {}
+      },
+      "id": "c6b95792-da2f-46d1-a7ae-589c8aca8f45",
+      "name": "Send Payment Failure Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2864,
+        1424
+      ],
+      "webhookId": "0a214069-c03a-4e7d-9200-37cf756ec9a4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.retryCount }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.churnRiskThreshold }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "194e8966-2d0b-4627-bd18-9d1090a5112b",
+      "name": "Check Churn Risk",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3088,
+        1424
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "<__PLACEHOLDER_VALUE__Slack channel ID or name__>"
+        },
+        "text": "=🚨 *Churn Risk Alert*\n\nCustomer ID: {{ $json.customerId }}\nSubscription ID: {{ $json.subscriptionId }}\nFailed Attempts: {{ $json.retryCount }}\nAmount: ${{ $json.amount / 100 }}\n\nThis customer has exceeded the churn risk threshold and requires immediate attention.",
+        "otherOptions": {}
+      },
+      "id": "7e3745f4-70c5-438f-80b1-11d81abb7209",
+      "name": "Alert Churn Risk",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        3312,
+        1352
+      ],
+      "webhookId": "7c69c15f-0714-4c45-8600-462b660ea719"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO payment_logs (event_type, customer_id, subscription_id, payment_intent_id, amount, status, retry_count, created_at) VALUES ('{{ $json.eventType }}', '{{ $json.customerId }}', '{{ $json.subscriptionId }}', '{{ $json.paymentIntentId }}', {{ $json.amount }}, '{{ $json.status }}', {{ $json.retryCount }}, NOW())",
+        "options": {}
+      },
+      "id": "27516e72-d0a4-434a-8890-056409052873",
+      "name": "Log Event",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3536,
+        1352
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T14:50:51.363Z",
+      "createdAt": "2026-03-29T14:50:51.363Z",
+      "role": "workflow:owner",
+      "workflowId": "I6QwfIzg2Jdrh4GS",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T14:52:47.814Z",
+  "versionId": "173c8a2f-0bee-457d-8daa-91443e49d73f"
+}
