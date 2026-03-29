@@ -1,0 +1,583 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Fetch Records from DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Records from DB": {
+      "main": [
+        [
+          {
+            "node": "Generate Record Pairs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Record Pairs": {
+      "main": [
+        [
+          {
+            "node": "Fuzzy Match Comparison",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fuzzy Match Comparison": {
+      "main": [
+        [
+          {
+            "node": "Check Similarity Threshold",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Similarity Threshold": {
+      "main": [
+        [
+          {
+            "node": "AI Merge Suggestion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Merge Suggestion": {
+      "main": [
+        [
+          {
+            "node": "Wait for Human Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Human Approval": {
+      "main": [
+        [
+          {
+            "node": "Check Approval Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Approval Decision": {
+      "main": [
+        [
+          {
+            "node": "Prepare Merge Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Merge Data": {
+      "main": [
+        [
+          {
+            "node": "Update Master Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Master Record": {
+      "main": [
+        [
+          {
+            "node": "Mark Duplicate Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T14:57:01.600Z",
+  "id": "BeuYHbqwYvAUcM3L",
+  "isArchived": false,
+  "meta": null,
+  "name": "Master Data Deduplication Engine with AI-Assisted Fuzzy Matching",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "3ecd3c7d-d7e4-42f1-9e03-db2d264e2d8d",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "similarityThreshold",
+              "value": 0.8,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "tableName",
+              "value": "<__PLACEHOLDER_VALUE__Database table name__>",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "nameField",
+              "value": "<__PLACEHOLDER_VALUE__Name field column__>",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "emailField",
+              "value": "<__PLACEHOLDER_VALUE__Email field column__>",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "phoneField",
+              "value": "<__PLACEHOLDER_VALUE__Phone field column__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "03ca78b8-a224-4893-b16d-f6c52b32808c",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.tableName }}"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "c6d64495-80bd-48d2-9261-36d95f2431c3",
+      "name": "Fetch Records from DB",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        448,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate all possible pairs of records for comparison\nconst items = $input.all();\nconst pairs = [];\n\n// Nested loops to create all unique pairs\nfor (let i = 0; i < items.length; i++) {\n  for (let j = i + 1; j < items.length; j++) {\n    pairs.push({\n      json: {\n        record1: items[i].json,\n        record2: items[j].json,\n        pair_id: `${i}_${j}`\n      }\n    });\n  }\n}\n\nreturn pairs;"
+      },
+      "id": "825c8155-0257-45da-b4fe-a24d948a33d7",
+      "name": "Generate Record Pairs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Levenshtein distance function\nfunction levenshteinDistance(str1, str2) {\n  if (!str1 || !str2) return str1 === str2 ? 0 : Math.max(str1?.length || 0, str2?.length || 0);\n  \n  str1 = str1.toLowerCase().trim();\n  str2 = str2.toLowerCase().trim();\n  \n  const matrix = [];\n  \n  for (let i = 0; i <= str2.length; i++) {\n    matrix[i] = [i];\n  }\n  \n  for (let j = 0; j <= str1.length; j++) {\n    matrix[0][j] = j;\n  }\n  \n  for (let i = 1; i <= str2.length; i++) {\n    for (let j = 1; j <= str1.length; j++) {\n      if (str2.charAt(i - 1) === str1.charAt(j - 1)) {\n        matrix[i][j] = matrix[i - 1][j - 1];\n      } else {\n        matrix[i][j] = Math.min(\n          matrix[i - 1][j - 1] + 1,\n          matrix[i][j - 1] + 1,\n          matrix[i - 1][j] + 1\n        );\n      }\n    }\n  }\n  \n  return matrix[str2.length][str1.length];\n}\n\n// Calculate similarity score (0 to 1)\nfunction calculateSimilarity(str1, str2) {\n  if (!str1 && !str2) return 1;\n  if (!str1 || !str2) return 0;\n  \n  const distance = levenshteinDistance(str1, str2);\n  const maxLength = Math.max(str1.length, str2.length);\n  \n  return maxLength === 0 ? 1 : 1 - (distance / maxLength);\n}\n\n// Get input data\nconst record1 = $input.item.json.record1;\nconst record2 = $input.item.json.record2;\n\n// Calculate similarity for each field\nconst nameSimilarity = calculateSimilarity(record1.name, record2.name);\nconst emailSimilarity = calculateSimilarity(record1.email, record2.email);\nconst phoneSimilarity = calculateSimilarity(record1.phone, record2.phone);\n\n// Calculate weighted average similarity score\n// You can adjust weights based on importance of each field\nconst weights = {\n  name: 0.4,\n  email: 0.35,\n  phone: 0.25\n};\n\nconst overallSimilarity = (\n  nameSimilarity * weights.name +\n  emailSimilarity * weights.email +\n  phoneSimilarity * weights.phone\n);\n\n// Return the pair with similarity scores\nreturn {\n  record1: record1,\n  record2: record2,\n  similarityScore: overallSimilarity,\n  fieldScores: {\n    name: nameSimilarity,\n    email: emailSimilarity,\n    phone: phoneSimilarity\n  }\n};"
+      },
+      "id": "62ff5e3b-8bc2-4764-8f63-53f6aea90101",
+      "name": "Fuzzy Match Comparison",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.similarityScore >= $('Workflow Configuration').first().json.similarityThreshold }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f4efe991-8077-4e90-98fd-eb74aa035426",
+      "name": "Check Similarity Threshold",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "responses": {
+          "values": [
+            {
+              "content": "=Analyze these two potentially duplicate records and suggest which fields should be kept in the merged record:\n\nRecord 1: {{ $json.record1 }}\nRecord 2: {{ $json.record2 }}\nSimilarity Score: {{ $json.similarityScore }}\n\nProvide a JSON response with: masterRecordId (which record to keep), fieldsToUpdate (object with field names and values to update), and reasoning (explanation for the merge decision)."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "e6e9cd12-c706-4f62-83b9-ee7fe973d862",
+      "name": "AI Merge Suggestion",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        1344,
+        0
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "options": {
+          "responseData": "Approval received. Processing merge..."
+        }
+      },
+      "id": "71e56ec6-b12c-431d-8994-d4dd2db259da",
+      "name": "Wait for Human Approval",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1696,
+        0
+      ],
+      "webhookId": "7da6cf56-ec08-4b84-9787-2d60531819da"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.decision }}",
+              "rightValue": "approved",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c9c048b9-87e2-44bf-a4f4-fc0bccc60a8a",
+      "name": "Check Approval Decision",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1920,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "masterRecordId",
+              "value": "={{ $('AI Merge Suggestion').item.json.masterRecordId }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "duplicateRecordId",
+              "value": "={{ $('AI Merge Suggestion').item.json.duplicateRecordId }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "fieldsToUpdate",
+              "value": "={{ JSON.stringify($('AI Merge Suggestion').item.json.fieldsToUpdate) }}",
+              "type": "object"
+            },
+            {
+              "id": "id-4",
+              "name": "mergeTimestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "84e82c11-36f8-43af-8f26-28f08e9aa3a6",
+      "name": "Prepare Merge Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2144,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').item.json.tableName }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Prepare Merge Data').item.json.masterId }}",
+            "name": "={{ $('Prepare Merge Data').item.json.mergedData.name }}",
+            "email": "={{ $('Prepare Merge Data').item.json.mergedData.email }}",
+            "phone": "={{ $('Prepare Merge Data').item.json.mergedData.phone }}",
+            "address": "={{ $('Prepare Merge Data').item.json.mergedData.address }}",
+            "company": "={{ $('Prepare Merge Data').item.json.mergedData.company }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2139efe2-2689-4ce7-8bbf-e1e3bfbd2ff4",
+      "name": "Update Master Record",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2368,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').item.json.tableName }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Prepare Merge Data').item.json.duplicateRecordId }}",
+            "is_duplicate": true,
+            "merged_into_id": "={{ $('Prepare Merge Data').item.json.masterRecordId }}",
+            "merge_timestamp": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "is_duplicate",
+              "displayName": "is_duplicate",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "merged_into_id",
+              "displayName": "merged_into_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "merge_timestamp",
+              "displayName": "merge_timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "59b325bd-063e-4edb-aee7-78585b6d0244",
+      "name": "Mark Duplicate Record",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2592,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T14:57:01.603Z",
+      "createdAt": "2026-03-29T14:57:01.603Z",
+      "role": "workflow:owner",
+      "workflowId": "BeuYHbqwYvAUcM3L",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T14:59:17.707Z",
+  "versionId": "9fb24814-50ce-4f11-aa26-677e1c1e4c63"
+}
