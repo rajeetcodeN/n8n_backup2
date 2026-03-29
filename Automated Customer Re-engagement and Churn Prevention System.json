@@ -1,0 +1,534 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Daily Retention Check": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Query Inactive Users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Inactive Users": {
+      "main": [
+        [
+          {
+            "node": "Check If High-Value User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If High-Value User": {
+      "main": [
+        [
+          {
+            "node": "Retention Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Retention Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Webhook": {
+      "main": [
+        [
+          {
+            "node": "Controller Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Controller Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Retention Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Database Query Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Controller Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Call Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Controller Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conversation Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Controller Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Retention Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Controller Agent": {
+      "main": [
+        [
+          {
+            "node": "Send Response",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log Conversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Retention Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Retention Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retention Agent": {
+      "main": [
+        [
+          {
+            "node": "Update User Engagement Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T14:55:34.719Z",
+  "id": "pNGwM0rkPdIWBgmY",
+  "isArchived": false,
+  "meta": null,
+  "name": "Automated Customer Re-engagement and Churn Prevention System",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "dfeb4fbe-9a13-4c79-b89a-4143e02a07b0",
+      "name": "Daily Retention Check",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "inactivityThresholdDays",
+              "value": 14,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "highValueThreshold",
+              "value": 1000,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "4b025189-b9e0-49cc-8130-19edf207bdaa",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        336,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT user_id, email, name, last_active, lifetime_value FROM users WHERE last_active < NOW() - INTERVAL '={{ $('Workflow Configuration').first().json.inactivityThresholdDays }} days' AND status = 'active'",
+        "options": {}
+      },
+      "id": "b626c7cc-21db-4c58-8252-90d127672637",
+      "name": "Query Inactive Users",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        624,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Query Inactive Users').item.json.lifetime_value }}",
+              "rightValue": "={{ $('Workflow Configuration').first().json.highValueThreshold }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "fbd48e87-15ea-4170-92b3-c16d5facfdeb",
+      "name": "Check If High-Value User",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        848,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE users SET last_contact_date = NOW(), re_engagement_sent = true WHERE user_id = {{ $('Query Inactive Users').item.json.user_id }}",
+        "options": {}
+      },
+      "id": "80b25f2b-9e45-46b0-8fe4-8ee82d12922d",
+      "name": "Update User Engagement Status",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1664,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai-agent",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "3b2ec117-b036-4972-86ec-3be459d16805",
+      "name": "AI Agent Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        336
+      ],
+      "webhookId": "467e41d8-510b-4b29-949c-e36cd0c460f9"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.query }}",
+        "options": {
+          "systemMessage": "You are an intelligent AI assistant with access to database queries and external API calls.\n\nYour capabilities:\n1. Query the PostgreSQL database for user information, analytics, and historical data\n2. Make HTTP API calls to external services for real-time data\n3. Maintain conversation context across multiple interactions\n4. Provide detailed, accurate responses based on retrieved data\n\nWhen a user asks a question:\n1. Analyze what information is needed\n2. Decide which tool(s) to use (database query, API call, or both)\n3. Execute the necessary operations\n4. Synthesize the results into a clear, helpful response\n\nFor database queries:\n- Use the Database Query Tool with proper SQL syntax\n- Always sanitize inputs to prevent SQL injection\n- Return structured data when possible\n\nFor API calls:\n- Use the API Call Tool with appropriate endpoints\n- Handle errors gracefully\n- Parse and present API responses clearly\n\nAlways explain your reasoning and cite your data sources."
+        }
+      },
+      "id": "6871078c-d3a8-4caa-9083-8b1b9e9021c1",
+      "name": "Controller Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        272,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "4983cc65-6dbd-4e33-a17d-1d718ed9d544",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        224
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $fromAI(\"sql_query\", \"The SQL query to execute on the PostgreSQL database\", \"string\") }}",
+        "options": {}
+      },
+      "id": "669ce810-a690-4e4d-b0dc-6ff30c5ba8c0",
+      "name": "Database Query Tool",
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        288,
+        560
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Make HTTP requests to external APIs. Use this tool to fetch real-time data from third-party services, webhooks, or external data sources. Supports GET, POST, PUT, DELETE methods with custom headers and body.",
+        "method": "={{ $fromAI(\"http_method\", \"HTTP method (GET, POST, PUT, DELETE)\", \"string\", \"GET\") }}",
+        "url": "={{ $fromAI(\"api_url\", \"The full API endpoint URL to call\", \"string\") }}",
+        "options": {}
+      },
+      "id": "e00c3ef9-defb-4695-b3c2-c85b7e1f69e0",
+      "name": "API Call Tool",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        416,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.user_id || $json.body?.session_id || \"default-session\" }}",
+        "tableName": "agent_memory",
+        "contextWindowLength": 10
+      },
+      "id": "79d9e40c-39d9-460a-8ceb-b47da7aa1386",
+      "name": "Conversation Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        224
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"response\": $json.output,\n  \"session_id\": $('AI Agent Webhook').item.json.body.session_id || \"default-session\",\n  \"timestamp\": new Date().toISOString()\n}",
+        "options": {}
+      },
+      "id": "73552ea9-db07-4ce0-82c0-ec86973b7e0c",
+      "name": "Send Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        624,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO agent_memory (session_id, user_query, tool_used, response, created_at) VALUES ('={{ $('AI Agent Webhook').item.json.body.session_id || \"default-session\" }}', '={{ $('AI Agent Webhook').item.json.body.query }}', 'agent', '={{ $json.output }}', NOW())",
+        "options": {}
+      },
+      "id": "7a2cbad9-257d-4f90-b8e1-bfe2e8a8538f",
+      "name": "Log Conversation",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        624,
+        432
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $fromAI(\"recipient_email\", \"Email address of the recipient\", \"string\") }}",
+        "subject": "={{ $fromAI(\"email_subject\", \"Subject line for the email\", \"string\") }}",
+        "message": "={{ $fromAI(\"email_body_html\", \"HTML body content of the email\", \"string\") }}",
+        "options": {}
+      },
+      "id": "576c8c31-2113-43a6-8506-513c538164fc",
+      "name": "Gmail Tool",
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        224
+      ],
+      "webhookId": "97265dbb-d442-4645-a534-d1fb74c1c97f"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $fromAI('slack_channel', 'Slack channel ID or name', 'string', '<__PLACEHOLDER_VALUE__Slack channel ID or name__>') }}"
+        },
+        "text": "={{ $fromAI('slack_message', 'Message content to post in Slack', 'string') }}",
+        "otherOptions": {}
+      },
+      "id": "429890f6-566c-4403-be88-2f2ddf42f4c3",
+      "name": "Slack Tool",
+      "type": "n8n-nodes-base.slackTool",
+      "typeVersion": 2.4,
+      "position": [
+        1456,
+        224
+      ],
+      "webhookId": "913d0f89-fafa-4265-9034-7fb032fbb128"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User: {{ $json.name }} ({{ $json.email }})\nLifetime Value: ${{ $json.lifetime_value }}\nLast Active: {{ $json.last_active }}\nDays Inactive: {{ Math.floor((new Date() - new Date($json.last_active)) / (1000 * 60 * 60 * 24)) }}\nHigh-Value User: {{ $json.lifetime_value > $('Workflow Configuration').first().json.highValueThreshold ? \"Yes\" : \"No\" }}",
+        "options": {
+          "systemMessage": "You are a customer retention specialist AI agent with access to communication tools.\n\nYour mission: Re-engage inactive customers through personalized outreach.\n\nYour capabilities:\n1. Send personalized re-engagement emails via Gmail\n2. Alert the team via Slack for high-value users\n3. Access conversation history to maintain context\n\nWhen processing an inactive user:\n\n**For HIGH-VALUE users (lifetime_value > threshold):**\n1. FIRST: Send a Slack alert to notify the customer success team\n   - Include customer name, email, lifetime value, and days inactive\n   - Use an urgent tone with emoji (🚨)\n2. THEN: Compose and send a personalized re-engagement email\n   - Acknowledge their value as a premium customer\n   - Offer a special 20% discount for the next month\n   - Highlight specific benefits they've used\n   - Include a clear call-to-action to return\n\n**For REGULAR users:**\n1. Compose and send a friendly re-engagement email\n   - Warm, non-pushy tone\n   - Offer a 20% discount incentive\n   - Remind them of product value\n   - Include a clear call-to-action\n\nEmail guidelines:\n- Use HTML format for better presentation\n- Keep subject lines engaging (e.g., \"We miss you! Here's 20% off to welcome you back\")\n- Personalize with customer name\n- Be concise but warm\n- Always include the discount offer\n\nSlack alert format:\n🚨 High-Value User Alert: Inactive Customer Detected\n\n*Customer:* [name]\n*Email:* [email]\n*Lifetime Value:* $[amount]\n*Last Active:* [date]\n*Days Inactive:* [number]\n\nRe-engagement email will be sent automatically.\n\nIMPORTANT: Always use the tools to actually send messages - don't just describe what you would do."
+        }
+      },
+      "id": "bcbb3ce1-2250-4745-9a80-6864409236c3",
+      "name": "Retention Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        0
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T14:55:34.722Z",
+      "createdAt": "2026-03-29T14:55:34.722Z",
+      "role": "workflow:owner",
+      "workflowId": "pNGwM0rkPdIWBgmY",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T15:07:49.490Z",
+  "versionId": "f9a08234-b302-46d3-a1bb-f71ba85a6859"
+}
