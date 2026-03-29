@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-08T18:50:39.117Z",
-    "createdAt": "2026-01-08T18:50:39.117Z",
-    "versionId": "68e58f69-6c28-4e9c-804d-5b24e9eb12e6",
+    "updatedAt": "2026-03-20T17:50:10.800Z",
+    "createdAt": "2026-03-20T17:50:10.800Z",
+    "versionId": "05989d50-07bc-44f1-bb5e-95842881cf60",
     "workflowId": "2QRwtlRMd4jV3297",
     "nodes": [
       {
@@ -15,8 +15,8 @@
         "type": "@n8n/n8n-nodes-langchain.chatTrigger",
         "typeVersion": 1.3,
         "position": [
-          -3344,
-          16
+          -4112,
+          368
         ],
         "id": "eb9e49d2-1418-4070-9320-aaaa2a9c1b9e",
         "name": "When chat message received",
@@ -31,8 +31,8 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 2.2,
         "position": [
-          -2800,
-          16
+          -3568,
+          368
         ],
         "id": "c7938c25-19a6-420d-aeda-4a4bdb54f27f",
         "name": "AI Agent"
@@ -45,8 +45,8 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
         "typeVersion": 1,
         "position": [
-          -2832,
-          272
+          -3600,
+          624
         ],
         "id": "a8fc6c78-f892-40d0-a072-7d47bc69fa6a",
         "name": "Mistral Cloud Chat Model",
@@ -84,8 +84,8 @@
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2.1,
         "position": [
-          -3328,
-          -176
+          -4576,
+          80
         ],
         "id": "9d991050-ab64-4591-bd27-f040220816d4",
         "name": "Webhook1",
@@ -148,8 +148,8 @@
         "typeVersion": 4.2,
         "credentials": {
           "mistralCloudApi": {
-            "id": "NRp52l3NFK2olZNh",
-            "name": "Mistral Cloud account dbt test"
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
           }
         }
       },
@@ -200,8 +200,8 @@
         "typeVersion": 4.2,
         "credentials": {
           "mistralCloudApi": {
-            "id": "NRp52l3NFK2olZNh",
-            "name": "Mistral Cloud account dbt test"
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
           }
         }
       },
@@ -237,8 +237,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          -2416,
-          -1024
+          -2544,
+          -1008
         ],
         "id": "e7b5715e-73bf-463e-a2f4-01296286fa33",
         "name": "HTTP Request3",
@@ -277,8 +277,8 @@
         "typeVersion": 4.2,
         "credentials": {
           "mistralCloudApi": {
-            "id": "NRp52l3NFK2olZNh",
-            "name": "Mistral Cloud account dbt test"
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
           }
         }
       },
@@ -317,8 +317,8 @@
         "typeVersion": 4.2,
         "credentials": {
           "mistralCloudApi": {
-            "id": "NRp52l3NFK2olZNh",
-            "name": "Mistral Cloud account dbt test"
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
           }
         }
       },
@@ -329,8 +329,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -2832,
-          -528
+          -2848,
+          -256
         ],
         "id": "8411d08e-fc94-4633-98ec-cf5f75772d86",
         "name": "Code5"
@@ -554,8 +554,8 @@
         "type": "n8n-nodes-base.extractFromFile",
         "typeVersion": 1,
         "position": [
-          -2544,
-          -688
+          -2736,
+          -704
         ],
         "id": "bd8ddd7d-421b-4e55-9a17-189bc68d3638",
         "name": "Extract from File2"
@@ -565,7 +565,7 @@
           "promptType": "define",
           "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n\n\n\n{{ $json.text }}",
           "options": {
-            "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\n## Task:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\n## Important Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n9. vendor_address: Use the merchant address from header/footer/payment block. Remove trailing legal suffix if duplicative.\n10. Participants: Extract all *person* entries listed as attendees, guests, or signatories.\n  For each participant, return an object with:\n  - name (string, full name as written)\n  - designation (string|null)\n  - company (string|null)\n  - address (string|null)\n  - is_employee (boolean) → true if the participant’s company is \"nosta GmbH\" or \"nosta\" (case-insensitive); otherwise false.\n  Exclude company names, brands, or stores listed alone.\n  If no individual names appear, set Participants = null.\n\n## Output Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\n## JSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"vendor_address\":null,\n    \"Category\": null,\n    \"Participants\":[\n      {\n        \"name\": null,\n        \"designation\": null,\n        \"company\": null,\n        \"address\": null,\n        \"is_employee\": null\n      }\n    ],\n\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
+            "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\n## Task:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\n## Important Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n9. vendor_address: Use the merchant address from header/footer/payment block. Remove trailing legal suffix if duplicative.\n10. Participants: Extract all *person* entries listed as attendees, guests, or signatories.\n  For each participant, return an object with:\n  - name (string, full name as written)\n  - designation (string|null)\n  - company (string|null)\n  - address (string|null)\n  - is_employee (boolean) → true if the participant’s company is \"nosta GmbH\" or \"nosta\" (case-insensitive); otherwise false.\n  Exclude company names, brands, or stores listed alone.\n11. never add vendor employee names into extracted data like  example \"name\": \"Anshu\", \"designation\": \"Cashier\", \"company\": \"Radha Regent Hotels Pvt Ltd\" such vendor staff details should be not extracted and added into output \n\n## Output Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\n## JSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"vendor_address\":null,\n    \"Category\": null,\n    \"Participants\":[\n      {\n        \"name\": null,\n        \"designation\": null,\n        \"company\": null,\n        \"address\": null,\n        \"is_employee\": null\n      }\n    ],\n\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
           }
         },
         "type": "@n8n/n8n-nodes-langchain.agent",
@@ -690,8 +690,8 @@
         "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
         "typeVersion": 1.3,
         "position": [
-          -2656,
-          256
+          -3424,
+          608
         ],
         "id": "ecc5ecec-bbf2-45e9-bd5f-3e076f0e7c4a",
         "name": "Simple Memory"
@@ -732,8 +732,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -3088,
-          -176
+          -3952,
+          112
         ]
       },
       {
@@ -792,14 +792,14 @@
         "name": "Mistral Upload3",
         "type": "n8n-nodes-base.httpRequest",
         "position": [
-          -2656,
-          -528
+          -2688,
+          -272
         ],
         "typeVersion": 4.2,
         "credentials": {
           "mistralCloudApi": {
-            "id": "NRp52l3NFK2olZNh",
-            "name": "Mistral Cloud account dbt test"
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
           }
         }
       },
@@ -832,14 +832,14 @@
         "name": "Mistral Signed URL3",
         "type": "n8n-nodes-base.httpRequest",
         "position": [
-          -2448,
-          -528
+          -2464,
+          -256
         ],
         "typeVersion": 4.2,
         "credentials": {
           "mistralCloudApi": {
-            "id": "NRp52l3NFK2olZNh",
-            "name": "Mistral Cloud account dbt test"
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
           }
         }
       },
@@ -858,14 +858,14 @@
         "name": "Mistral IMAGE OCR2",
         "type": "n8n-nodes-base.httpRequest",
         "position": [
-          -2240,
-          -528
+          -2272,
+          -272
         ],
         "typeVersion": 4.2,
         "credentials": {
           "mistralCloudApi": {
-            "id": "NRp52l3NFK2olZNh",
-            "name": "Mistral Cloud account dbt test"
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
           }
         }
       },
@@ -903,27 +903,11 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 1.9,
         "position": [
-          -2256,
-          -112
+          -3888,
+          592
         ],
         "id": "b9dea63b-56e5-4b8e-b442-d73735ca6334",
         "name": "AI Agent6"
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "options": {
-            "passthroughBinaryImages": true
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "typeVersion": 2.2,
-        "position": [
-          -2768,
-          -1008
-        ],
-        "id": "a27fee4e-6faa-475c-b638-3b9798f00957",
-        "name": "AI Agent2"
       },
       {
         "parameters": {
@@ -939,6 +923,783 @@
         ],
         "id": "a52d4bfa-1651-4737-a267-493230198d63",
         "name": "AI Agent3"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "9df0ddfc-1a59-4c87-9139-e5e6cfed3069",
+                "leftValue": "",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -1664,
+          -400
+        ],
+        "id": "28cfeecc-0a87-4961-802a-d680844f74e4",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          3072,
+          1760
+        ],
+        "id": "ebaedae1-5fbb-47f2-81ae-c2d54fa2e038",
+        "name": "Respond to Webhook1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ JSON.parse($json[\"data\"][0]).blocks[0].content }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1808,
+          1744
+        ],
+        "id": "47f48ebc-eac1-414a-8648-a1629bd2fd61",
+        "name": "Edit Fields12"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/ocr",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+          "options": {}
+        },
+        "id": "1f8eaa9e-9c75-454d-b14e-4f93fa3b8442",
+        "name": "Mistral DOC OCR",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          1792,
+          1488
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ $json.pages[0].markdown }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2016,
+          1584
+        ],
+        "id": "7f2c7454-ca05-4d0b-9aef-d51b32297981",
+        "name": "Edit Fields13"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "mode",
+                "value": "single"
+              },
+              {
+                "name": "output_type",
+                "value": "jsonl"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "files",
+                "inputDataFieldName": "data"
+              },
+              {
+                "name": "include_images",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1600,
+          1728
+        ],
+        "id": "5c8489e2-308f-4c4d-a4ee-bf066fc40fce",
+        "name": "HTTP Request",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/files",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "purpose",
+                "value": "ocr"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "file",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "66699515-26f3-4245-9f63-ac1105f46106",
+        "name": "Mistral Upload1",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          1344,
+          1488
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "expiry",
+                "value": "1"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "fc835b98-d487-4ea9-8901-f54b06303b84",
+        "name": "Mistral Signed URL1",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          1568,
+          1488
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "NRp52l3NFK2olZNh",
+            "name": "Mistral Cloud account dbt test"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          1488
+        ],
+        "id": "2aaab4fe-6fcc-4135-8417-37004a6156d0",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/msword",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "509a71b4-8c1b-419b-8d8b-fc2c68b86bf2"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/msword",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "e492cbb6-eaca-42fa-95b6-8cb1363b1ead"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "44e10cb4-4d6a-41f4-a34d-f9f635e6c998"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.google-apps.document",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "33eaa3dd-d6c6-4fbb-a625-9db12fd6b13c"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "doc"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.ms-excel",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "298f79a3-fb4b-48c7-bed8-f9e26a4fafad"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b08acf48-8386-4017-8285-e134d0094482"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "application/vnd.google-apps.spreadsheet",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "8a5c4ec2-f2d9-4a98-b62b-b51e08ec6bd7"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "excel"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/jpeg",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "8f99c496-5acb-4577-8ee3-89267716697b"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/png",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "1a243663-2d4d-4004-b0be-77d61f69fd34"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/tiff",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "fdd3e440-3119-43c9-ba2c-b0ad4aa29454"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/jpg",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b7c6b1a4-cce5-4912-9c24-2bb7527d6d38"
+                    },
+                    {
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "image/bmp",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "47c28737-9239-4ac9-a5cb-74e6843c07a6"
+                    }
+                  ],
+                  "combinator": "or"
+                },
+                "renameOutput": true,
+                "outputKey": "image"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "id": "8b8e621e-40b4-43cd-8bd6-220e55b9e9fc",
+                      "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                      "rightValue": "=application/pdf",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "pdf"
+              }
+            ]
+          },
+          "options": {
+            "allMatchingOutputs": false
+          }
+        },
+        "id": "c0ae0059-cd3e-4ef0-88d1-c7d13f83c3cc",
+        "name": "Switch File Type1",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3,
+        "position": [
+          896,
+          1744
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "pdf",
+          "binaryPropertyName": "file",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          1280,
+          2048
+        ],
+        "id": "04e67571-a6f0-484d-b64b-f8a822a69623",
+        "name": "Extract from File"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n\n\n\n{{ $json.text }}",
+          "options": {
+            "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\n## Task:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\n## Important Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n9. vendor_address: Use the merchant address from header/footer/payment block. Remove trailing legal suffix if duplicative.\n10. Participants: Extract all *person* entries listed as attendees, guests, or signatories.\n  For each participant, return an object with:\n  - name (string, full name as written)\n  - designation (string|null)\n  - company (string|null)\n  - address (string|null)\n  - is_employee (boolean) → true if the participant’s company is \"nosta GmbH\" or \"nosta\" (case-insensitive); otherwise false.\n  Exclude company names, brands, or stores listed alone.\n11. never add vendor employee names into extracted data like  example \"name\": \"Anshu\", \"designation\": \"Cashier\", \"company\": \"Radha Regent Hotels Pvt Ltd\" such vendor staff details should be not extracted and added into output \n\n## Output Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\n## JSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"vendor_address\":null,\n    \"Category\": null,\n    \"Participants\":[\n      {\n        \"name\": null,\n        \"designation\": null,\n        \"company\": null,\n        \"address\": null,\n        \"is_employee\": null\n      }\n    ],\n\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          2240,
+          1776
+        ],
+        "id": "1550e43f-2490-43dd-96fe-8342790085e1",
+        "name": "AI Agent7"
+      },
+      {
+        "parameters": {
+          "model": "mistral-medium-latest",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+        "typeVersion": 1,
+        "position": [
+          2304,
+          2000
+        ],
+        "id": "25235893-563f-47e0-8b43-b66c94b180b0",
+        "name": "Mistral Cloud Chat Model7",
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4f0cd863-7593-471b-9c43-743c0f7602c1",
+                "name": "output",
+                "value": "={{ $json.output }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2592,
+          1776
+        ],
+        "id": "ec54c567-0962-4825-9943-698620457217",
+        "name": "Edit Fields14"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Get the raw string\nconst raw = $input.first().json.output;\n\n// Helper: remove ```json ... ``` fences if present\nfunction stripFences(s) {\n  if (typeof s !== 'string') return s;\n  return s.trim()\n    .replace(/^```[a-zA-Z]*\\s*/i, '')   // leading ``` or ```json\n    .replace(/```[\\s]*$/i, '')          // trailing ```\n    .trim();\n}\n\n// Helper: robust JSON parse (handles double-encoded JSON too)\nfunction robustParse(s) {\n  if (typeof s !== 'string') return s;\n  let t = stripFences(s);\n  try { return JSON.parse(t); } catch (e1) {}\n  // Sometimes the JSON is stringified twice\n  try { return JSON.parse(JSON.parse(t)); } catch (e2) {}\n  // Fallback: try to extract the first {...} block\n  const m = t.match(/\\{[\\s\\S]*\\}$/);\n  if (m) { return JSON.parse(m[0]); }\n  throw new Error('Could not parse JSON from `output` – check the upstream node.');\n}\n\nconst parsed = robustParse(raw);\nreturn [{ json: parsed }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2848,
+          2032
+        ],
+        "id": "8f487dd9-7897-4a49-9720-89b9878b2bd0",
+        "name": "Code10",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ $json.pages[0].markdown }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          2000,
+          2112
+        ],
+        "id": "6731a27c-f9a7-4143-bb9e-2f0f34accabc",
+        "name": "Edit Fields15"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "options": {
+            "passthroughBinaryImages": true
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1248,
+          1744
+        ],
+        "id": "d62ce8a6-bb18-4db8-b5e2-687c9c018bd5",
+        "name": "AI Agent4"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "9df0ddfc-1a59-4c87-9139-e5e6cfed3069",
+                "leftValue": "",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1536,
+          2032
+        ],
+        "id": "3a68d926-53be-41ce-ab01-eeb265dc7206",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/ocr",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+          "options": {}
+        },
+        "id": "e0a16dd4-b4aa-4f7e-a3fc-07dab2a28bde",
+        "name": "Mistral DOC OCR2",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2352,
+          0
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+                "name": "text",
+                "value": "={{ $json.pages[0].markdown }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -2128,
+          192
+        ],
+        "id": "16665af6-6fcf-4aef-a7a4-eadc76d16260",
+        "name": "Edit Fields16"
+      },
+      {
+        "parameters": {
+          "method": "DELETE",
+          "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload2').item.json.id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {}
+            ]
+          },
+          "options": {}
+        },
+        "id": "4bff2890-93d3-43cd-a827-6b6f556985b6",
+        "name": "Mistral file delete1",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2144,
+          -96
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.mistral.ai/v1/files",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "purpose",
+                "value": "ocr"
+              },
+              {
+                "parameterType": "formBinaryData",
+                "name": "file",
+                "inputDataFieldName": "data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "bbdf03c6-9141-4997-8ed9-47ecb63a8e92",
+        "name": "Mistral Upload2",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2832,
+          0
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "mistralCloudApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "expiry",
+                "value": "1"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "28a88a07-cb54-48ff-bfcf-7eebb9eb1d04",
+        "name": "Mistral Signed URL2",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -2576,
+          0
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "mistralCloudApi": {
+            "id": "FXWAQ4fSAuPWXyZ1",
+            "name": "Mistral Cloud nosta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -3024,
+          0
+        ],
+        "id": "028fc991-4750-439f-9ed2-8f942ba82b25",
+        "name": "Code8"
       }
     ],
     "connections": {
@@ -1066,7 +1827,13 @@
               "index": 0
             }
           ],
-          [],
+          [
+            {
+              "node": "HTTP Request3",
+              "type": "main",
+              "index": 0
+            }
+          ],
           [
             {
               "node": "Code5",
@@ -1076,7 +1843,7 @@
           ],
           [
             {
-              "node": "Extract from File2",
+              "node": "Code8",
               "type": "main",
               "index": 0
             }
@@ -1269,13 +2036,236 @@
             }
           ]
         ]
+      },
+      "Edit Fields12": {
+        "main": [
+          [
+            {
+              "node": "AI Agent7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral DOC OCR": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields13",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields13": {
+        "main": [
+          [
+            {
+              "node": "AI Agent7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields12",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Upload1": {
+        "main": [
+          [
+            {
+              "node": "Mistral Signed URL1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Signed URL1": {
+        "main": [
+          [
+            {
+              "node": "Mistral DOC OCR",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Mistral Upload1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch File Type1": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [],
+          [],
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent7": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields14",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Cloud Chat Model7": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent7",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields14": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code10": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields15": {
+        "main": [
+          [
+            {
+              "node": "AI Agent7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral DOC OCR2": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields16",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Mistral file delete1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Upload2": {
+        "main": [
+          [
+            {
+              "node": "Mistral Signed URL2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mistral Signed URL2": {
+        "main": [
+          [
+            {
+              "node": "Mistral DOC OCR2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields16": {
+        "main": [
+          [
+            {
+              "node": "AI Agent5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code8": {
+        "main": [
+          [
+            {
+              "node": "Mistral Upload2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
-    "authors": "system migration",
+    "authors": "Anusha Priya",
     "name": null,
     "description": null
   },
-  "activeVersionId": "68e58f69-6c28-4e9c-804d-5b24e9eb12e6",
+  "activeVersionId": "05989d50-07bc-44f1-bb5e-95842881cf60",
   "connections": {
     "When chat message received": {
       "main": [
@@ -1401,7 +2391,13 @@
             "index": 0
           }
         ],
-        [],
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "Code5",
@@ -1411,7 +2407,7 @@
         ],
         [
           {
-            "node": "Extract from File2",
+            "node": "Code8",
             "type": "main",
             "index": 0
           }
@@ -1604,6 +2600,229 @@
           }
         ]
       ]
+    },
+    "Edit Fields12": {
+      "main": [
+        [
+          {
+            "node": "AI Agent7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral DOC OCR": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields13": {
+      "main": [
+        [
+          {
+            "node": "AI Agent7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Upload1": {
+      "main": [
+        [
+          {
+            "node": "Mistral Signed URL1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Signed URL1": {
+      "main": [
+        [
+          {
+            "node": "Mistral DOC OCR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Mistral Upload1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch File Type1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [],
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent7": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model7": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent7",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields14": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code10": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields15": {
+      "main": [
+        [
+          {
+            "node": "AI Agent7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral DOC OCR2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields16",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mistral file delete1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Upload2": {
+      "main": [
+        [
+          {
+            "node": "Mistral Signed URL2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Signed URL2": {
+      "main": [
+        [
+          {
+            "node": "Mistral DOC OCR2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields16": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code8": {
+      "main": [
+        [
+          {
+            "node": "Mistral Upload2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-31T12:39:41.124Z",
@@ -1623,8 +2842,8 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.3,
       "position": [
-        -3344,
-        16
+        -4112,
+        368
       ],
       "id": "eb9e49d2-1418-4070-9320-aaaa2a9c1b9e",
       "name": "When chat message received",
@@ -1639,8 +2858,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -2800,
-        16
+        -3568,
+        368
       ],
       "id": "c7938c25-19a6-420d-aeda-4a4bdb54f27f",
       "name": "AI Agent"
@@ -1653,8 +2872,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        -2832,
-        272
+        -3600,
+        624
       ],
       "id": "a8fc6c78-f892-40d0-a072-7d47bc69fa6a",
       "name": "Mistral Cloud Chat Model",
@@ -1692,8 +2911,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -3328,
-        -176
+        -4576,
+        80
       ],
       "id": "9d991050-ab64-4591-bd27-f040220816d4",
       "name": "Webhook1",
@@ -1756,8 +2975,8 @@
       "typeVersion": 4.2,
       "credentials": {
         "mistralCloudApi": {
-          "id": "NRp52l3NFK2olZNh",
-          "name": "Mistral Cloud account dbt test"
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
         }
       }
     },
@@ -1808,8 +3027,8 @@
       "typeVersion": 4.2,
       "credentials": {
         "mistralCloudApi": {
-          "id": "NRp52l3NFK2olZNh",
-          "name": "Mistral Cloud account dbt test"
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
         }
       }
     },
@@ -1845,8 +3064,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2416,
-        -1024
+        -2544,
+        -1008
       ],
       "id": "e7b5715e-73bf-463e-a2f4-01296286fa33",
       "name": "HTTP Request3",
@@ -1885,8 +3104,8 @@
       "typeVersion": 4.2,
       "credentials": {
         "mistralCloudApi": {
-          "id": "NRp52l3NFK2olZNh",
-          "name": "Mistral Cloud account dbt test"
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
         }
       }
     },
@@ -1925,8 +3144,8 @@
       "typeVersion": 4.2,
       "credentials": {
         "mistralCloudApi": {
-          "id": "NRp52l3NFK2olZNh",
-          "name": "Mistral Cloud account dbt test"
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
         }
       }
     },
@@ -1937,8 +3156,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2832,
-        -528
+        -2848,
+        -256
       ],
       "id": "8411d08e-fc94-4633-98ec-cf5f75772d86",
       "name": "Code5"
@@ -2162,8 +3381,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -2544,
-        -688
+        -2736,
+        -704
       ],
       "id": "bd8ddd7d-421b-4e55-9a17-189bc68d3638",
       "name": "Extract from File2"
@@ -2173,7 +3392,7 @@
         "promptType": "define",
         "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n\n\n\n{{ $json.text }}",
         "options": {
-          "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\n## Task:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\n## Important Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n9. vendor_address: Use the merchant address from header/footer/payment block. Remove trailing legal suffix if duplicative.\n10. Participants: Extract all *person* entries listed as attendees, guests, or signatories.\n  For each participant, return an object with:\n  - name (string, full name as written)\n  - designation (string|null)\n  - company (string|null)\n  - address (string|null)\n  - is_employee (boolean) → true if the participant’s company is \"nosta GmbH\" or \"nosta\" (case-insensitive); otherwise false.\n  Exclude company names, brands, or stores listed alone.\n  If no individual names appear, set Participants = null.\n\n## Output Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\n## JSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"vendor_address\":null,\n    \"Category\": null,\n    \"Participants\":[\n      {\n        \"name\": null,\n        \"designation\": null,\n        \"company\": null,\n        \"address\": null,\n        \"is_employee\": null\n      }\n    ],\n\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
+          "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\n## Task:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\n## Important Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n9. vendor_address: Use the merchant address from header/footer/payment block. Remove trailing legal suffix if duplicative.\n10. Participants: Extract all *person* entries listed as attendees, guests, or signatories.\n  For each participant, return an object with:\n  - name (string, full name as written)\n  - designation (string|null)\n  - company (string|null)\n  - address (string|null)\n  - is_employee (boolean) → true if the participant’s company is \"nosta GmbH\" or \"nosta\" (case-insensitive); otherwise false.\n  Exclude company names, brands, or stores listed alone.\n11. never add vendor employee names into extracted data like  example \"name\": \"Anshu\", \"designation\": \"Cashier\", \"company\": \"Radha Regent Hotels Pvt Ltd\" such vendor staff details should be not extracted and added into output \n\n## Output Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\n## JSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"vendor_address\":null,\n    \"Category\": null,\n    \"Participants\":[\n      {\n        \"name\": null,\n        \"designation\": null,\n        \"company\": null,\n        \"address\": null,\n        \"is_employee\": null\n      }\n    ],\n\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -2298,8 +3517,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -2656,
-        256
+        -3424,
+        608
       ],
       "id": "ecc5ecec-bbf2-45e9-bd5f-3e076f0e7c4a",
       "name": "Simple Memory"
@@ -2340,8 +3559,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -3088,
-        -176
+        -3952,
+        112
       ]
     },
     {
@@ -2400,14 +3619,14 @@
       "name": "Mistral Upload3",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        -2656,
-        -528
+        -2688,
+        -272
       ],
       "typeVersion": 4.2,
       "credentials": {
         "mistralCloudApi": {
-          "id": "NRp52l3NFK2olZNh",
-          "name": "Mistral Cloud account dbt test"
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
         }
       }
     },
@@ -2440,14 +3659,14 @@
       "name": "Mistral Signed URL3",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        -2448,
-        -528
+        -2464,
+        -256
       ],
       "typeVersion": 4.2,
       "credentials": {
         "mistralCloudApi": {
-          "id": "NRp52l3NFK2olZNh",
-          "name": "Mistral Cloud account dbt test"
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
         }
       }
     },
@@ -2466,14 +3685,14 @@
       "name": "Mistral IMAGE OCR2",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        -2240,
-        -528
+        -2272,
+        -272
       ],
       "typeVersion": 4.2,
       "credentials": {
         "mistralCloudApi": {
-          "id": "NRp52l3NFK2olZNh",
-          "name": "Mistral Cloud account dbt test"
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
         }
       }
     },
@@ -2511,27 +3730,11 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -2256,
-        -112
+        -3888,
+        592
       ],
       "id": "b9dea63b-56e5-4b8e-b442-d73735ca6334",
       "name": "AI Agent6"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "options": {
-          "passthroughBinaryImages": true
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -2768,
-        -1008
-      ],
-      "id": "a27fee4e-6faa-475c-b638-3b9798f00957",
-      "name": "AI Agent2"
     },
     {
       "parameters": {
@@ -2547,6 +3750,783 @@
       ],
       "id": "a52d4bfa-1651-4737-a267-493230198d63",
       "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9df0ddfc-1a59-4c87-9139-e5e6cfed3069",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1664,
+        -400
+      ],
+      "id": "28cfeecc-0a87-4961-802a-d680844f74e4",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        3072,
+        1760
+      ],
+      "id": "ebaedae1-5fbb-47f2-81ae-c2d54fa2e038",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ JSON.parse($json[\"data\"][0]).blocks[0].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1808,
+        1744
+      ],
+      "id": "47f48ebc-eac1-414a-8648-a1629bd2fd61",
+      "name": "Edit Fields12"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+        "options": {}
+      },
+      "id": "1f8eaa9e-9c75-454d-b14e-4f93fa3b8442",
+      "name": "Mistral DOC OCR",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1792,
+        1488
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ $json.pages[0].markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2016,
+        1584
+      ],
+      "id": "7f2c7454-ca05-4d0b-9aef-d51b32297981",
+      "name": "Edit Fields13"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://universal-file-to-text-extractor.vercel.app/extract",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "single"
+            },
+            {
+              "name": "output_type",
+              "value": "jsonl"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "include_images",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        1728
+      ],
+      "id": "5c8489e2-308f-4c4d-a4ee-bf066fc40fce",
+      "name": "HTTP Request",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "66699515-26f3-4245-9f63-ac1105f46106",
+      "name": "Mistral Upload1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1344,
+        1488
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fc835b98-d487-4ea9-8901-f54b06303b84",
+      "name": "Mistral Signed URL1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1568,
+        1488
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NRp52l3NFK2olZNh",
+          "name": "Mistral Cloud account dbt test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        1488
+      ],
+      "id": "2aaab4fe-6fcc-4135-8417-37004a6156d0",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/msword",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "509a71b4-8c1b-419b-8d8b-fc2c68b86bf2"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/msword",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e492cbb6-eaca-42fa-95b6-8cb1363b1ead"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "44e10cb4-4d6a-41f4-a34d-f9f635e6c998"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.google-apps.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "33eaa3dd-d6c6-4fbb-a625-9db12fd6b13c"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "doc"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.ms-excel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "298f79a3-fb4b-48c7-bed8-f9e26a4fafad"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b08acf48-8386-4017-8285-e134d0094482"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "application/vnd.google-apps.spreadsheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8a5c4ec2-f2d9-4a98-b62b-b51e08ec6bd7"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "excel"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/jpeg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8f99c496-5acb-4577-8ee3-89267716697b"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/png",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1a243663-2d4d-4004-b0be-77d61f69fd34"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/tiff",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fdd3e440-3119-43c9-ba2c-b0ad4aa29454"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/jpg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b7c6b1a4-cce5-4912-9c24-2bb7527d6d38"
+                  },
+                  {
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "image/bmp",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "47c28737-9239-4ac9-a5cb-74e6843c07a6"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8b8e621e-40b4-43cd-8bd6-220e55b9e9fc",
+                    "leftValue": "={{ $binary[Object.keys($binary)[0]].mimeType }}",
+                    "rightValue": "=application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pdf"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": false
+        }
+      },
+      "id": "c0ae0059-cd3e-4ef0-88d1-c7d13f83c3cc",
+      "name": "Switch File Type1",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        896,
+        1744
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        2048
+      ],
+      "id": "04e67571-a6f0-484d-b64b-f8a822a69623",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You must respond ONLY with valid raw rendered JSON.\n- Do NOT include the word \"json\".\n- Do NOT include the word \"```json\".\n- Do NOT use triple backticks or markdown formatting.\n- Do NOT wrap the response in any key like \"output\".\n- Do NOT write anything starting at output directly start with valid root-level JSON.\n- Only respond with a valid, root-level JSON object.\n\n\n\n{{ $json.text }}",
+        "options": {
+          "systemMessage": "=You are a document parsing assistant designed to extract structured data from travel receipts, invoices, and itineraries (e.g., flights, hotels, taxis, ride-hailing, rail, tolls, fuel, meals while traveling).\n\n## Task:\nFrom the provided text (or OCR’d PDF/images), extract the following fields for every distinct charge found in the document:\n\n- Date: Transaction/charge date in YYYY-MM-DD format.\n- Vendor: Merchant or service provider name exactly as shown (normalized spacing; remove all-caps if clearly a stylistic artifact).\n- Category: One of:\n  Flight,Meals ,Transport ,Accomodation and Other\n  Choose based on keywords and context. If unclear, use \"other\".\n- Location: City and country (or best available location string) derived from the receipt. If none present, set to null.\n- Amount: Final charge amount for that line/entry as a number (decimal point, no currency symbol, no thousands separators).\n- Currency: Three-letter ISO 4217 code (e.g., USD, EUR, INR). If only a symbol is present, infer the ISO code when unambiguous; otherwise null.\n\n## Important Rules:\n1. Multiple entries: If a document contains several charges (e.g., hotel folio with multiple nights), output one JSON object with total final charge.\n2. Amount: Prefer final total  (after taxes/fees). Ignore subtotals unless they are the only values present.\n3. Dates: Prefer transaction/charge date. Normalize to YYYY-MM-DD. If only a date range exists (e.g., hotel stay), and nightly totals exist, assign each night separately; otherwise use checkout or invoice date.\n4. Vendor: Use the merchant name from header/footer/payment block. Remove trailing legal suffix if duplicative.\n5. Location: Prefer explicit city/country; else derive from airport code if explicitly stated in the document. Never invent locations.\n6. Currency: Use the currency associated with the final charged amount. If ambiguous and document provides no clarity, set to null.\n7. No assumptions: Extract values exactly as shown (except normalization). Missing → null.\n8. Merge lines split across pages; ignore footer/header repetition, barcodes, or unrelated text.\n9. vendor_address: Use the merchant address from header/footer/payment block. Remove trailing legal suffix if duplicative.\n10. Participants: Extract all *person* entries listed as attendees, guests, or signatories.\n  For each participant, return an object with:\n  - name (string, full name as written)\n  - designation (string|null)\n  - company (string|null)\n  - address (string|null)\n  - is_employee (boolean) → true if the participant’s company is \"nosta GmbH\" or \"nosta\" (case-insensitive); otherwise false.\n  Exclude company names, brands, or stores listed alone.\n11. never add vendor employee names into extracted data like  example \"name\": \"Anshu\", \"designation\": \"Cashier\", \"company\": \"Radha Regent Hotels Pvt Ltd\" such vendor staff details should be not extracted and added into output \n\n## Output Requirements:\n- Always respond ONLY with a single valid JSON array.\n- Each array element represents one charge and must contain exactly the keys below.\n- No extra fields. No markdown. No explanations outside the JSON.\n- Numbers use dot (.) as decimal separator.\n- Dates formatted as YYYY-MM-DD.\n- Unknown fields → null.\n\n## JSON Schema:\nEach array element should follow this structure:\n\n[\n  {\n    \"Date\": null,\n    \"Vendor\": null,\n    \"vendor_address\":null,\n    \"Category\": null,\n    \"Participants\":[\n      {\n        \"name\": null,\n        \"designation\": null,\n        \"company\": null,\n        \"address\": null,\n        \"is_employee\": null\n      }\n    ],\n\n    \"Location\": null,\n    \"Amount\": null,\n    \"Currency\": null\n  }\n]\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        2240,
+        1776
+      ],
+      "id": "1550e43f-2490-43dd-96fe-8342790085e1",
+      "name": "AI Agent7"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        2304,
+        2000
+      ],
+      "id": "25235893-563f-47e0-8b43-b66c94b180b0",
+      "name": "Mistral Cloud Chat Model7",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4f0cd863-7593-471b-9c43-743c0f7602c1",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2592,
+        1776
+      ],
+      "id": "ec54c567-0962-4825-9943-698620457217",
+      "name": "Edit Fields14"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the raw string\nconst raw = $input.first().json.output;\n\n// Helper: remove ```json ... ``` fences if present\nfunction stripFences(s) {\n  if (typeof s !== 'string') return s;\n  return s.trim()\n    .replace(/^```[a-zA-Z]*\\s*/i, '')   // leading ``` or ```json\n    .replace(/```[\\s]*$/i, '')          // trailing ```\n    .trim();\n}\n\n// Helper: robust JSON parse (handles double-encoded JSON too)\nfunction robustParse(s) {\n  if (typeof s !== 'string') return s;\n  let t = stripFences(s);\n  try { return JSON.parse(t); } catch (e1) {}\n  // Sometimes the JSON is stringified twice\n  try { return JSON.parse(JSON.parse(t)); } catch (e2) {}\n  // Fallback: try to extract the first {...} block\n  const m = t.match(/\\{[\\s\\S]*\\}$/);\n  if (m) { return JSON.parse(m[0]); }\n  throw new Error('Could not parse JSON from `output` – check the upstream node.');\n}\n\nconst parsed = robustParse(raw);\nreturn [{ json: parsed }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2848,
+        2032
+      ],
+      "id": "8f487dd9-7897-4a49-9720-89b9878b2bd0",
+      "name": "Code10",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ $json.pages[0].markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2000,
+        2112
+      ],
+      "id": "6731a27c-f9a7-4143-bb9e-2f0f34accabc",
+      "name": "Edit Fields15"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "options": {
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        1744
+      ],
+      "id": "d62ce8a6-bb18-4db8-b5e2-687c9c018bd5",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9df0ddfc-1a59-4c87-9139-e5e6cfed3069",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1536,
+        2032
+      ],
+      "id": "3a68d926-53be-41ce-ab01-eeb265dc7206",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"bbox_annotation_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"schema\": {\n        \"properties\": {\n          \"image_type\": { \"title\": \"Image_Type\", \"type\": \"string\", \"description\": \"type of image\" },\n          \"short_description\": { \"title\": \"Short_Description\", \"type\": \"string\", \"description\": \"short description\" },\n          \"summary\": { \"title\": \"Summary\", \"type\": \"string\", \"description\": \"summary of the image\" }\n        },\n        \"required\": [\"image_type\",\"short_description\",\"summary\"],\n        \"title\": \"BBOXAnnotation\",\n        \"type\": \"object\",\n        \"additionalProperties\": false\n      },\n      \"name\": \"bbox_annotation\",\n      \"strict\": true\n    }\n  },\n  \"include_image_base64\": true\n}\n",
+        "options": {}
+      },
+      "id": "e0a16dd4-b4aa-4f7e-a3fc-07dab2a28bde",
+      "name": "Mistral DOC OCR2",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2352,
+        0
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cefc6cbe-dcc3-4cd5-bf3c-735320ece1fe",
+              "name": "text",
+              "value": "={{ $json.pages[0].markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2128,
+        192
+      ],
+      "id": "16665af6-6fcf-4aef-a7a4-eadc76d16260",
+      "name": "Edit Fields16"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://api.mistral.ai/v1/files/{{ $('Mistral Upload2').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "4bff2890-93d3-43cd-a827-6b6f556985b6",
+      "name": "Mistral file delete1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2144,
+        -96
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bbdf03c6-9141-4997-8ed9-47ecb63a8e92",
+      "name": "Mistral Upload2",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2832,
+        0
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mistralCloudApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "28a88a07-cb54-48ff-bfcf-7eebb9eb1d04",
+      "name": "Mistral Signed URL2",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -2576,
+        0
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "FXWAQ4fSAuPWXyZ1",
+          "name": "Mistral Cloud nosta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const firstKey = Object.keys(item.binary || {})[0];\n\n  if (!firstKey) return item;\n\n  return {\n    json: item.json,\n    binary: { data: item.binary[firstKey] },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3024,
+        0
+      ],
+      "id": "028fc991-4750-439f-9ed2-8f942ba82b25",
+      "name": "Code8"
     }
   ],
   "origin": "n8n",
@@ -2570,6 +4550,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 4,
-  "updatedAt": "2025-11-08T10:33:37.000Z",
-  "versionId": "68e58f69-6c28-4e9c-804d-5b24e9eb12e6"
+  "updatedAt": "2026-03-20T17:50:10.798Z",
+  "versionId": "05989d50-07bc-44f1-bb5e-95842881cf60"
 }
