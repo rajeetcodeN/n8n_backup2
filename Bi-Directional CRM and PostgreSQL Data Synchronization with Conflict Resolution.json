@@ -1,0 +1,686 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Sync Schedule": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Fetch HubSpot Contacts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch PostgreSQL Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch HubSpot Contacts": {
+      "main": [
+        [
+          {
+            "node": "Merge CRM and DB Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch PostgreSQL Contacts": {
+      "main": [
+        [
+          {
+            "node": "Merge CRM and DB Data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge CRM and DB Data": {
+      "main": [
+        [
+          {
+            "node": "Compare and Detect Changes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare and Detect Changes": {
+      "main": [
+        [
+          {
+            "node": "Has Changes?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Changes?": {
+      "main": [
+        [
+          {
+            "node": "Route Changes by Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Changes by Type": {
+      "main": [
+        [
+          {
+            "node": "Check Change Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Change Type": {
+      "main": [
+        [
+          {
+            "node": "Insert to PostgreSQL",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create in HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update PostgreSQL",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update in HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert to PostgreSQL": {
+      "main": [
+        [
+          {
+            "node": "Combine Sync Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update PostgreSQL": {
+      "main": [
+        [
+          {
+            "node": "Combine Sync Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create in HubSpot": {
+      "main": [
+        [
+          {
+            "node": "Combine Sync Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Update in HubSpot": {
+      "main": [
+        [
+          {
+            "node": "Combine Sync Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Combine Sync Results": {
+      "main": [
+        [
+          {
+            "node": "Format Sync Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Sync Log": {
+      "main": [
+        [
+          {
+            "node": "Log Sync Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T14:42:57.016Z",
+  "id": "qC9wXOqUcNOI9vQ4",
+  "isArchived": false,
+  "meta": null,
+  "name": "Bi-Directional CRM and PostgreSQL Data Synchronization with Conflict Resolution",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "1c1cc39e-0e38-4499-9758-8131fb046f6d",
+      "name": "Sync Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1792,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "hubspotApiUrl",
+              "value": "https://api.hubapi.com/crm/v3/objects/contacts",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "hubspotApiKey",
+              "value": "<__PLACEHOLDER_VALUE__HubSpot API Key__>",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "postgresTable",
+              "value": "contacts",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "conflictResolution",
+              "value": "latest_timestamp",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "fb921a4b-c3b6-4467-8328-bc270c17728f",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1568,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.hubspotApiUrl }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "limit",
+              "value": "100"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "88b6976e-0ddd-4759-9a74-f2fe4227cf25",
+      "name": "Fetch HubSpot Contacts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1344,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ 'SELECT * FROM ' + $('Workflow Configuration').first().json.postgresTable }}",
+        "options": {}
+      },
+      "id": "c8c84c09-3af2-4beb-96e6-9c7dadf443f2",
+      "name": "Fetch PostgreSQL Contacts",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1344,
+        384
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "ffde1a2b-e1f9-41f6-a9cb-6c6cab472892",
+      "name": "Merge CRM and DB Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1120,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get CRM and DB data from merged inputs\nconst crmData = $input.first().json.crmContacts || [];\nconst dbData = $input.first().json.dbContacts || [];\n\n// Create maps for efficient lookup\nconst crmMap = new Map();\nconst dbMap = new Map();\n\n// Index CRM records by email and ID\ncrmData.forEach(record => {\n  const email = record.email?.toLowerCase();\n  const id = record.id || record.hs_object_id;\n  if (email) crmMap.set(`email:${email}`, record);\n  if (id) crmMap.set(`id:${id}`, record);\n});\n\n// Index DB records by email and ID\ndbData.forEach(record => {\n  const email = record.email?.toLowerCase();\n  const id = record.id || record.contact_id;\n  if (email) dbMap.set(`email:${email}`, record);\n  if (id) dbMap.set(`id:${id}`, record);\n});\n\nconst changes = [];\nconst processedEmails = new Set();\nconst processedIds = new Set();\n\n// Helper function to get timestamp\nfunction getTimestamp(record, source) {\n  if (source === 'crm') {\n    return new Date(record.lastmodifieddate || record.createdate || 0);\n  } else {\n    return new Date(record.updated_at || record.created_at || 0);\n  }\n}\n\n// Process CRM records\ncrmData.forEach(crmRecord => {\n  const email = crmRecord.email?.toLowerCase();\n  const id = crmRecord.id || crmRecord.hs_object_id;\n  \n  let dbRecord = null;\n  \n  // Try to find matching DB record by ID first, then email\n  if (id && dbMap.has(`id:${id}`)) {\n    dbRecord = dbMap.get(`id:${id}`);\n  } else if (email && dbMap.has(`email:${email}`)) {\n    dbRecord = dbMap.get(`email:${email}`);\n  }\n  \n  if (dbRecord) {\n    // Record exists in both - check for updates\n    const crmTimestamp = getTimestamp(crmRecord, 'crm');\n    const dbTimestamp = getTimestamp(dbRecord, 'db');\n    \n    // Check if data is different (simple comparison)\n    const isDifferent = JSON.stringify(crmRecord) !== JSON.stringify(dbRecord);\n    \n    if (isDifferent) {\n      if (crmTimestamp > dbTimestamp) {\n        changes.push({\n          changeType: 'update_db',\n          source: 'crm',\n          record: crmRecord,\n          crmTimestamp: crmTimestamp.toISOString(),\n          dbTimestamp: dbTimestamp.toISOString()\n        });\n      } else if (dbTimestamp > crmTimestamp) {\n        changes.push({\n          changeType: 'update_crm',\n          source: 'db',\n          record: dbRecord,\n          crmTimestamp: crmTimestamp.toISOString(),\n          dbTimestamp: dbTimestamp.toISOString()\n        });\n      } else {\n        // Same timestamp but different data - mark as duplicate/conflict\n        changes.push({\n          changeType: 'duplicate',\n          source: 'both',\n          crmRecord: crmRecord,\n          dbRecord: dbRecord,\n          crmTimestamp: crmTimestamp.toISOString(),\n          dbTimestamp: dbTimestamp.toISOString()\n        });\n      }\n    }\n    \n    if (email) processedEmails.add(email);\n    if (id) processedIds.add(id);\n  } else {\n    // Record only exists in CRM - new in CRM\n    changes.push({\n      changeType: 'new_in_crm',\n      source: 'crm',\n      record: crmRecord\n    });\n    \n    if (email) processedEmails.add(email);\n    if (id) processedIds.add(id);\n  }\n});\n\n// Process DB records to find ones not in CRM\ndbData.forEach(dbRecord => {\n  const email = dbRecord.email?.toLowerCase();\n  const id = dbRecord.id || dbRecord.contact_id;\n  \n  // Skip if already processed\n  if ((email && processedEmails.has(email)) || (id && processedIds.has(id))) {\n    return;\n  }\n  \n  // Record only exists in DB - new in DB\n  changes.push({\n    changeType: 'new_in_db',\n    source: 'db',\n    record: dbRecord\n  });\n});\n\nreturn changes.map(change => ({ json: change }));"
+      },
+      "id": "c7375d9e-2495-4ca2-96d7-cfbf7dc5e934",
+      "name": "Compare and Detect Changes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -896,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.changeType }}",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.changeType }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "95a6cae8-0769-4327-9f8c-6f64bfa61a2a",
+      "name": "Has Changes?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -672,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop through all items and output each change separately\nconst outputItems = [];\n\nfor (const item of $input.all()) {\n  if (item.json.changes && Array.isArray(item.json.changes)) {\n    // If changes is an array, output each change as a separate item\n    for (const change of item.json.changes) {\n      outputItems.push({\n        json: change\n      });\n    }\n  } else {\n    // If no changes array, output the item as is\n    outputItems.push({\n      json: item.json\n    });\n  }\n}\n\nreturn outputItems;"
+      },
+      "id": "dcdc2d49-5253-4123-9483-b2e5f5b4e3f6",
+      "name": "Route Changes by Type",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.changeType }}",
+              "rightValue": "new_in_crm",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.changeType }}",
+              "rightValue": "new_in_db",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "810bbbb1-b303-4853-877d-069f147aa51c",
+      "name": "Check Change Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -224,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.postgresTable }}"
+        },
+        "options": {}
+      },
+      "id": "e6620d93-0924-43a1-a2d0-15616ddacd1e",
+      "name": "Insert to PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Workflow Configuration').first().json.postgresTable }}"
+        },
+        "options": {}
+      },
+      "id": "75982d4f-56f1-4b15-8415-8c32f925c1e8",
+      "name": "Update PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        192
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Configuration').first().json.hubspotApiUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Workflow Configuration').first().json.hubspotApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"properties\": $json } }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "0ea2c324-5739-428f-ac17-895ca6ec362d",
+      "name": "Create in HubSpot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('Workflow Configuration').first().json.hubspotApiUrl }}/={{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Workflow Configuration').first().json.hubspotApiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"properties\": $json.updatedFields } }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "11da061e-68e6-4ef0-a4c9-817e11dbaf52",
+      "name": "Update in HubSpot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "dfb57634-3aa8-4f51-a727-b62049104f16",
+      "name": "Combine Sync Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "syncTimestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "totalRecordsProcessed",
+              "value": "={{ $items().length }}",
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "syncStatus",
+              "value": "completed",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "details",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f0eaeb0e-dede-4137-a813-5a1579901437",
+      "name": "Format Sync Log",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "sync_logs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sync_timestamp": "={{ $now }}",
+            "total_records_processed": "={{ $('Format Sync Log').item.json.total_records_processed }}",
+            "sync_status": "={{ $('Format Sync Log').item.json.sync_status }}",
+            "details": "={{ $('Format Sync Log').item.json.details }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "f4cca37f-7dfe-463e-8aae-6dc61ec70aaa",
+      "name": "Log Sync Results",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        672,
+        288
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T14:42:57.020Z",
+      "createdAt": "2026-03-29T14:42:57.020Z",
+      "role": "workflow:owner",
+      "workflowId": "qC9wXOqUcNOI9vQ4",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T14:45:37.378Z",
+  "versionId": "17e4479b-ea1d-4159-925b-bea59b590e47"
+}
