@@ -1,0 +1,1172 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "SAP Data Webhook": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Validate SAP Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate SAP Data": {
+      "main": [
+        [
+          {
+            "node": "Route to Target System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route to Target System": {
+      "main": [
+        [
+          {
+            "node": "Map to Salesforce",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Map to Shopify",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Map to HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Map to QuickBooks",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Map to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map to Salesforce": {
+      "main": [
+        [
+          {
+            "node": "Check Salesforce Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map to Shopify": {
+      "main": [
+        [
+          {
+            "node": "Check Shopify Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map to HubSpot": {
+      "main": [
+        [
+          {
+            "node": "Check HubSpot Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map to QuickBooks": {
+      "main": [
+        [
+          {
+            "node": "Check QuickBooks Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Check Google Sheets Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Salesforce Duplicate": {
+      "main": [
+        [
+          {
+            "node": "Salesforce Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Shopify Duplicate": {
+      "main": [
+        [
+          {
+            "node": "Shopify Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check HubSpot Duplicate": {
+      "main": [
+        [
+          {
+            "node": "HubSpot Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check QuickBooks Duplicate": {
+      "main": [
+        [
+          {
+            "node": "QuickBooks Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Google Sheets Duplicate": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salesforce Exists?": {
+      "main": [
+        [
+          {
+            "node": "Update in Salesforce",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create in Salesforce",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shopify Exists?": {
+      "main": [
+        [
+          {
+            "node": "Update in Shopify",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create in Shopify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HubSpot Exists?": {
+      "main": [
+        [
+          {
+            "node": "Update in HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create in HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QuickBooks Exists?": {
+      "main": [
+        [
+          {
+            "node": "Update in QuickBooks",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create in QuickBooks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Exists?": {
+      "main": [
+        [
+          {
+            "node": "Update in Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create in Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create in Salesforce": {
+      "main": [
+        [
+          {
+            "node": "Merge Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update in Salesforce": {
+      "main": [
+        [
+          {
+            "node": "Merge Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Results": {
+      "main": [
+        [
+          {
+            "node": "Format Sync Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T16:26:45.745Z",
+  "id": "0PCUgfI1ylUsAmNf",
+  "isArchived": false,
+  "meta": null,
+  "name": "Universal SAP to Multi-Platform Data Synchronization Connector",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sap-sync",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "9c00796a-35ee-4674-b2c4-437ff2e18d8c",
+      "name": "SAP Data Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2560,
+        272
+      ],
+      "webhookId": "ed9cf5cd-9c72-4422-a427-e6f9ebed35e2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "salesforceApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__Salesforce API URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "shopifyApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__Shopify API URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "hubspotApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__HubSpot API URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "quickbooksApiUrl",
+              "value": "<__PLACEHOLDER_VALUE__QuickBooks API URL__>",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "googleSheetsId",
+              "value": "<__PLACEHOLDER_VALUE__Google Sheets ID__>",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "053c7ea4-4a0f-4060-9497-bf3abd4948d2",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2784,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst validated = items.map(item => {\n  const data = item.json;\n  \n  if (!data.targetSystem) {\n    throw new Error('Missing targetSystem field');\n  }\n  \n  if (!data.sapKey) {\n    throw new Error('Missing sapKey field');\n  }\n  \n  if (!data.records || !Array.isArray(data.records)) {\n    throw new Error('Missing or invalid records array');\n  }\n  \n  return {\n    json: {\n      ...data,\n      validated: true,\n      validatedAt: new Date().toISOString()\n    }\n  };\n});\n\nreturn validated;"
+      },
+      "id": "ae74e6f7-9655-4322-b97c-ff3a8620e61c",
+      "name": "Validate SAP Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3008,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.targetSystem }}",
+                    "rightValue": "salesforce",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Salesforce"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.targetSystem }}",
+                    "rightValue": "shopify",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Shopify"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.targetSystem }}",
+                    "rightValue": "hubspot",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HubSpot"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.targetSystem }}",
+                    "rightValue": "quickbooks",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "QuickBooks"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.targetSystem }}",
+                    "rightValue": "googlesheets",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Google Sheets"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a36648b5-a56f-4fab-a4a3-bf668e7d3c1b",
+      "name": "Route to Target System",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        3232,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst mapped = items.flatMap(item => {\n  const records = item.json.records || [];\n  return records.map(record => ({\n    json: {\n      sapKey: record.MANDT + '-' + record.KUNNR,\n      Name: record.NAME1,\n      Email: record.SMTP_ADDR,\n      Phone: record.TEL_NUMBER,\n      BillingStreet: record.STRAS,\n      BillingCity: record.ORT01,\n      BillingPostalCode: record.PSTLZ,\n      BillingCountry: record.LAND1,\n      AccountNumber: record.KUNNR,\n      _originalSapData: record\n    }\n  }));\n});\n\nreturn mapped;"
+      },
+      "id": "55c04d46-ee5f-4d11-a23f-39cdf2744858",
+      "name": "Map to Salesforce",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3456,
+        -496
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst mapped = items.flatMap(item => {\n  const records = item.json.records || [];\n  return records.map(record => ({\n    json: {\n      sapKey: record.MANDT + '-' + record.MATNR,\n      title: record.MAKTX,\n      product_type: record.MTART,\n      vendor: record.MFRNR,\n      sku: record.MATNR,\n      price: record.NETPR,\n      inventory_quantity: record.LABST,\n      weight: record.BRGEW,\n      weight_unit: record.GEWEI,\n      _originalSapData: record\n    }\n  }));\n});\nreturn mapped;"
+      },
+      "id": "e43a9fb3-341d-48ed-8632-851fca6403fb",
+      "name": "Map to Shopify",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3456,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst mapped = items.flatMap(item => {\n  const records = item.json.records || [];\n  return records.map(record => ({\n    json: {\n      sapKey: record.MANDT + '-' + record.KUNNR,\n      properties: {\n        firstname: record.NAME1?.split(' ')[0],\n        lastname: record.NAME1?.split(' ').slice(1).join(' '),\n        email: record.SMTP_ADDR,\n        phone: record.TEL_NUMBER,\n        address: record.STRAS,\n        city: record.ORT01,\n        zip: record.PSTLZ,\n        country: record.LAND1,\n        customer_number: record.KUNNR\n      },\n      _originalSapData: record\n    }\n  }));\n});\nreturn mapped;"
+      },
+      "id": "54a7319c-f622-44f3-9856-9c3467c196e8",
+      "name": "Map to HubSpot",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3456,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst mapped = items.flatMap(item => {\n  const records = item.json.records || [];\n  return records.map(record => ({\n    json: {\n      sapKey: record.MANDT + '-' + record.KUNNR,\n      DisplayName: record.NAME1,\n      PrimaryEmailAddr: {\n        Address: record.SMTP_ADDR\n      },\n      PrimaryPhone: {\n        FreeFormNumber: record.TEL_NUMBER\n      },\n      BillAddr: {\n        Line1: record.STRAS,\n        City: record.ORT01,\n        PostalCode: record.PSTLZ,\n        Country: record.LAND1\n      },\n      CompanyName: record.NAME1,\n      _originalSapData: record\n    }\n  }));\n});\nreturn mapped;"
+      },
+      "id": "947ddb82-3ced-4308-947c-a3cca7a99970",
+      "name": "Map to QuickBooks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3456,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst mapped = items.flatMap(item => {\n  const records = item.json.records || [];\n  \n  return records.map(record => ({\n    json: {\n      sapKey: record.MANDT + '-' + record.KUNNR,\n      customerNumber: record.KUNNR,\n      name: record.NAME1,\n      email: record.SMTP_ADDR,\n      phone: record.TEL_NUMBER,\n      street: record.STRAS,\n      city: record.ORT01,\n      postalCode: record.PSTLZ,\n      country: record.LAND1,\n      syncedAt: new Date().toISOString(),\n      _originalSapData: record\n    }\n  }));\n});\n\nreturn mapped;"
+      },
+      "id": "3a3a0dd7-2d11-48b2-92e1-88fdc934da78",
+      "name": "Map to Google Sheets",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3456,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.salesforceApiUrl }}/services/data/v57.0/query?q=SELECT+Id+FROM+Account+WHERE+AccountNumber='{{ $json.AccountNumber }}'",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "options": {}
+      },
+      "id": "7f3a562b-bb6c-4a98-a838-a2eed80288de",
+      "name": "Check Salesforce Duplicate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3680,
+        -496
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.shopifyApiUrl }}/admin/api/2024-01/products.json?fields=id&sku={{ $json.sku }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "shopifyApi",
+        "options": {}
+      },
+      "id": "23120860-55c3-4eca-b9be-4cb5b0e6141a",
+      "name": "Check Shopify Duplicate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3680,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.hubspotApiUrl }}/crm/v3/objects/contacts/search",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "hubspotApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"customer_number\",\n          \"operator\": \"EQ\",\n          \"value\": \"{{ $json.properties.customer_number }}\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "67dd6f3b-9701-4160-8aba-514b69277e92",
+      "name": "Check HubSpot Duplicate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3680,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Workflow Configuration').first().json.quickbooksApiUrl }}/v3/company/<__PLACEHOLDER_VALUE__QuickBooks Company ID__>/query?query=SELECT * FROM Customer WHERE DisplayName='{{ $json.DisplayName }}'",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "quickBooksOAuth2Api",
+        "options": {}
+      },
+      "id": "975e353a-0768-47ed-a46f-03fb8418d87d",
+      "name": "Check QuickBooks Duplicate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3680,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ 'https://sheets.googleapis.com/v4/spreadsheets/' + $('Workflow Configuration').first().json.googleSheetsId + '/values/Sheet1!A:A?majorDimension=COLUMNS' }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleSheetsOAuth2Api",
+        "options": {}
+      },
+      "id": "93206394-2523-4a5d-8e23-d80af9702722",
+      "name": "Check Google Sheets Duplicate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3680,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.records }}",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.totalSize }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "7ae472fd-9242-44eb-b5f8-41f92e7bd828",
+      "name": "Salesforce Exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3904,
+        -496
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.products }}",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ae70c0b6-1561-48db-a07e-746a88937168",
+      "name": "Shopify Exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3904,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.results }}",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b81dec2d-4055-4fa3-933a-f3685100b993",
+      "name": "HubSpot Exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3904,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.QueryResponse?.Customer }}",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "fa6102f3-c57e-4764-822b-f394bf4a6b7c",
+      "name": "QuickBooks Exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3904,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Check Google Sheets Duplicate').item.json.values }}",
+              "rightValue": "={{ $('Map to Google Sheets').item.json.sapKey }}",
+              "operator": {
+                "type": "array",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6c1388af-5961-40e6-a0a2-3396cf10228c",
+      "name": "Google Sheets Exists?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3904,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "account",
+        "name": "={{ $json.companyName || $json.name || $json.accountName }}",
+        "additionalFields": {
+          "annualRevenue": "={{ $json.annualRevenue }}",
+          "billingCity": "={{ $json.city }}",
+          "billingCountry": "={{ $json.country }}",
+          "billingPostalCode": "={{ $json.postalCode || $json.zipCode }}",
+          "billingState": "={{ $json.state }}",
+          "billingStreet": "={{ $json.street || $json.address }}",
+          "description": "={{ $json.description }}",
+          "industry": "={{ $json.industry }}",
+          "numberOfEmployees": "={{ $json.numberOfEmployees }}",
+          "phone": "={{ $json.phone || $json.phoneNumber }}",
+          "website": "={{ $json.website }}"
+        }
+      },
+      "id": "19fe88a2-84c4-411c-b582-309621f94bf4",
+      "name": "Create in Salesforce",
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1,
+      "position": [
+        4128,
+        -592
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "account",
+        "operation": "update",
+        "accountId": "={{ $('Check Salesforce Duplicate').first().json.records[0].Id }}",
+        "updateFields": {}
+      },
+      "id": "0964b597-25f7-4c3a-8624-7c2798781bdf",
+      "name": "Update in Salesforce",
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1,
+      "position": [
+        4128,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "product",
+        "title": "={{ $json.productName || $json.title || $json.name }}",
+        "additionalFields": {
+          "body_html": "={{ $json.description || $json.body_html || '' }}",
+          "product_type": "={{ $json.productType || $json.product_type || '' }}",
+          "published_at": "={{ $json.publishedAt || $json.published_at || '' }}",
+          "tags": "={{ $json.tags || '' }}",
+          "vendor": "={{ $json.vendor || $json.manufacturer || '' }}"
+        }
+      },
+      "id": "7adb6878-9797-4ba0-91e0-79cd0bedb992",
+      "name": "Create in Shopify",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [
+        4128,
+        -208
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "product",
+        "operation": "update",
+        "productId": "={{ $('Check Shopify Duplicate').first().json.products[0].id }}",
+        "updateFields": {
+          "body_html": "={{ $('Map to Shopify').item.json.body_html }}",
+          "product_type": "={{ $('Map to Shopify').item.json.product_type }}",
+          "tags": "={{ $('Map to Shopify').item.json.tags }}",
+          "title": "={{ $('Map to Shopify').item.json.title }}",
+          "vendor": "={{ $('Map to Shopify').item.json.vendor }}"
+        }
+      },
+      "id": "80d45d83-697e-402a-9064-db9db4e0c906",
+      "name": "Update in Shopify",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [
+        4128,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "email": "={{ $json.email }}",
+        "additionalFields": {
+          "city": "={{ $json.city }}",
+          "companyName": "={{ $json.company }}",
+          "country": "={{ $json.country }}",
+          "firstName": "={{ $json.firstName }}",
+          "lastName": "={{ $json.lastName }}",
+          "phoneNumber": "={{ $json.phone }}",
+          "postalCode": "={{ $json.postalCode }}",
+          "stateRegion": "={{ $json.state }}"
+        },
+        "options": {}
+      },
+      "id": "bfa7d94c-29b1-47ad-b20c-2dcf7c41831f",
+      "name": "Create in HubSpot",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        4128,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update"
+      },
+      "id": "ab3d8fed-c3f8-4618-9c6d-dfe317be2072",
+      "name": "Update in HubSpot",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        4128,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "displayName": "={{ $json.customerName }}",
+        "additionalFields": {
+          "BillAddr": {
+            "details": {
+              "City": "={{ $json.city }}",
+              "Line1": "={{ $json.address }}",
+              "PostalCode": "={{ $json.postalCode }}",
+              "CountrySubDivisionCode": "={{ $json.state }}"
+            }
+          },
+          "CompanyName": "={{ $json.companyName }}",
+          "FamilyName": "={{ $json.lastName }}",
+          "GivenName": "={{ $json.firstName }}",
+          "PrimaryEmailAddr": "={{ $json.email }}",
+          "PrimaryPhone": "={{ $json.phone }}"
+        }
+      },
+      "id": "81795481-04cc-4f87-921c-c8b4527cf7bd",
+      "name": "Create in QuickBooks",
+      "type": "n8n-nodes-base.quickbooks",
+      "typeVersion": 1,
+      "position": [
+        4128,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "customerId": "={{ $('Check QuickBooks Duplicate').first().json.QueryResponse.Customer[0].Id }}",
+        "updateFields": {
+          "BillAddr": {
+            "details": {
+              "City": "={{ $json.city }}",
+              "Line1": "={{ $json.address }}",
+              "PostalCode": "={{ $json.postalCode }}",
+              "CountrySubDivisionCode": "={{ $json.state }}"
+            }
+          },
+          "CompanyName": "={{ $json.companyName }}",
+          "FamilyName": "={{ $json.familyName }}",
+          "GivenName": "={{ $json.givenName }}",
+          "PrimaryEmailAddr": "={{ $json.email }}",
+          "PrimaryPhone": "={{ $json.phone }}"
+        }
+      },
+      "id": "0ab267b2-beec-4ae9-ab23-42db8082a4c2",
+      "name": "Update in QuickBooks",
+      "type": "n8n-nodes-base.quickbooks",
+      "typeVersion": 1,
+      "position": [
+        4128,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.googleSheetsId }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null
+        },
+        "options": {}
+      },
+      "id": "bc047350-d4f6-4525-bc84-641fbd2367f5",
+      "name": "Create in Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4128,
+        944
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Workflow Configuration').first().json.googleSheetsId }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null
+        },
+        "options": {}
+      },
+      "id": "ece536b6-8a7a-437e-8786-2fc8a63a331c",
+      "name": "Update in Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4128,
+        1136
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nO915SPhClSut0w0",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "237c8798-96cb-4ee0-9b6f-86bd65bafea6",
+      "name": "Merge Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4352,
+        -496
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "syncStatus",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "id-2",
+              "name": "syncedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "targetSystem",
+              "value": "={{ $('Route to Target System').item.json.targetSystem }}",
+              "type": "string"
+            },
+            {
+              "id": "id-4",
+              "name": "action",
+              "value": "={{ $('Route to Target System').item.json.action || 'create' }}",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "recordId",
+              "value": "={{ $json.id || $json.recordId || $json.result?.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "915abf02-d130-495e-b2a7-73bf91d402ee",
+      "name": "Format Sync Results",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4576,
+        -496
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T16:26:45.748Z",
+      "createdAt": "2026-03-29T16:26:45.748Z",
+      "role": "workflow:owner",
+      "workflowId": "0PCUgfI1ylUsAmNf",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T16:30:33.688Z",
+  "versionId": "b87d2322-5714-4b78-b866-afc0433b1be5"
+}
