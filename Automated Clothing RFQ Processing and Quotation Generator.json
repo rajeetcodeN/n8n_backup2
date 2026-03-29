@@ -1,0 +1,589 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "RFQ Webhook": {
+      "main": [
+        [
+          {
+            "node": "Merge Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RFQ Email Trigger": {
+      "main": [
+        [
+          {
+            "node": "Merge Inputs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Inputs": {
+      "main": [
+        [
+          {
+            "node": "Workflow Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Configuration": {
+      "main": [
+        [
+          {
+            "node": "Check for PDF Attachment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check for PDF Attachment": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare RFQ Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Prepare RFQ Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare RFQ Text": {
+      "main": [
+        [
+          {
+            "node": "Parse RFQ Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Parse RFQ Details",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Parse RFQ Details",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse RFQ Details": {
+      "main": [
+        [
+          {
+            "node": "Fetch Product Pricing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Product Pricing": {
+      "main": [
+        [
+          {
+            "node": "Calculate Quote Pricing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Quote Pricing": {
+      "main": [
+        [
+          {
+            "node": "Generate PDF Quote",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate PDF Quote": {
+      "main": [
+        [
+          {
+            "node": "Store Quote in Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Quote in Database": {
+      "main": [
+        [
+          {
+            "node": "Send Quote Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Quote Email": {
+      "main": [
+        [
+          {
+            "node": "Notify Team on Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-29T15:21:30.071Z",
+  "id": "5xhqRg3eoNJJa7B0",
+  "isArchived": false,
+  "meta": null,
+  "name": "Automated Clothing RFQ Processing and Quotation Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rfq-quote",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "0d501a34-ad11-47be-948b-2fd273c90765",
+      "name": "RFQ Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "fc1762a2-b77e-44cf-98bb-28b35227ce51"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "<__PLACEHOLDER_VALUE__RFQ_LABEL_ID__>"
+          ]
+        },
+        "options": {
+          "dataPropertyAttachmentsPrefixName": "attachment_",
+          "downloadAttachments": true
+        }
+      },
+      "id": "f9368fc6-4f4a-4a67-a701-a3e317bd6e28",
+      "name": "RFQ Email Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "bulkDiscountThreshold",
+              "value": 500,
+              "type": "number"
+            },
+            {
+              "id": "id-2",
+              "name": "bulkDiscountPercent",
+              "value": 10,
+              "type": "number"
+            },
+            {
+              "id": "id-3",
+              "name": "urgencySurchargePercent",
+              "value": 15,
+              "type": "number"
+            },
+            {
+              "id": "id-4",
+              "name": "standardLeadTimeDays",
+              "value": 14,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "eca08f24-8b34-4817-a972-449671d61b8c",
+      "name": "Workflow Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        96
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "47c65336-9214-4f69-bfb7-8437a1d698e2",
+      "name": "Merge Inputs",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.binary }}",
+              "operator": {
+                "type": "object",
+                "operation": "exists"
+              }
+            },
+            {
+              "id": "id-2",
+              "leftValue": "={{ $json.binary?.attachment_0?.mimeType || $json.binary?.data?.mimeType || '' }}",
+              "rightValue": "pdf",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "dca2ce0e-2261-4cef-8958-a38d773e512c",
+      "name": "Check for PDF Attachment",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "attachment_0",
+        "options": {}
+      },
+      "id": "36bb8a12-ea20-4480-ac11-de025e79def7",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        24
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-1",
+              "name": "rfqText",
+              "value": "={{ $json.text || $json.body || $json.bodyPlainText }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "e8b922e7-7e01-4aba-9dde-f95076eaab69",
+      "name": "Prepare RFQ Text",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.rfqText }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an RFQ parsing assistant for a clothing supplier. Extract the following details from the customer request:\n\n- product: type of clothing (e.g., t-shirt, hoodie, polo)\n- fabric: fabric type (e.g., cotton, polyester, blend)\n- sizes: array of sizes requested (e.g., [\"S\", \"M\", \"L\", \"XL\"])\n- quantity: total number of units\n- printing: whether custom printing is required (yes/no)\n- deadline: delivery deadline or lead time requested\n- clientName: customer or company name if mentioned\n- clientEmail: customer email if mentioned\n\nReturn the data in the exact JSON schema format specified by the output parser."
+        }
+      },
+      "id": "ce100906-ed70-4471-a2f2-60934e0f8bc6",
+      "name": "Parse RFQ Details",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1344,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "0a76c396-e471-4829-85e8-f94c45edc8a1",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1352,
+        320
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "zHMgvi1Nu77MFY12",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"product\": {\"type\": \"string\"},\n    \"fabric\": {\"type\": \"string\"},\n    \"sizes\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}},\n    \"quantity\": {\"type\": \"number\"},\n    \"printing\": {\"type\": \"string\"},\n    \"deadline\": {\"type\": \"string\"},\n    \"clientName\": {\"type\": \"string\"},\n    \"clientEmail\": {\"type\": \"string\"}\n  },\n  \"required\": [\"product\", \"fabric\", \"sizes\", \"quantity\", \"printing\"]\n}"
+      },
+      "id": "5508ea17-0e2e-4dff-94ba-947e44d68935",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1480,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT product_type, fabric_type, base_price, size_multiplier, print_cost, moq FROM products WHERE product_type = $1 AND fabric_type = $2",
+        "options": {
+          "queryReplacement": "={{ $json.product }},={{ $json.fabric }}"
+        }
+      },
+      "id": "aece2db0-89e4-4c84-827c-a32a8dead4c5",
+      "name": "Fetch Product Pricing",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1696,
+        96
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rfqData = $input.first().json;\nconst pricingData = $input.first().json;\nconst config = $('Workflow Configuration').first().json;\n\n// Extract pricing from database\nconst basePrice = pricingData.base_price || 0;\nconst sizeMultiplier = JSON.parse(pricingData.size_multiplier || '{}');\nconst printCost = pricingData.print_cost || 0;\nconst moq = pricingData.moq || 0;\n\n// Calculate size-adjusted base price\nlet totalBasePrice = 0;\nconst sizes = rfqData.sizes || [];\nconst quantityPerSize = Math.ceil(rfqData.quantity / sizes.length);\n\nsizes.forEach(size => {\n  const multiplier = sizeMultiplier[size] || 1;\n  totalBasePrice += basePrice * multiplier * quantityPerSize;\n});\n\n// Calculate printing cost\nconst totalPrintCost = rfqData.printing === 'yes' ? printCost * rfqData.quantity : 0;\n\n// Calculate bulk discount\nconst bulkDiscount = rfqData.quantity >= config.bulkDiscountThreshold \n  ? (totalBasePrice + totalPrintCost) * (config.bulkDiscountPercent / 100)\n  : 0;\n\n// Calculate urgency surcharge\nconst deadlineDays = rfqData.deadline ? parseInt(rfqData.deadline) : config.standardLeadTimeDays;\nconst urgencySurcharge = deadlineDays < config.standardLeadTimeDays\n  ? (totalBasePrice + totalPrintCost) * (config.urgencySurchargePercent / 100)\n  : 0;\n\n// Calculate totals\nconst subtotal = totalBasePrice + totalPrintCost;\nconst totalPrice = subtotal - bulkDiscount + urgencySurcharge;\nconst pricePerUnit = totalPrice / rfqData.quantity;\n\nreturn {\n  ...rfqData,\n  pricing: {\n    basePrice: totalBasePrice.toFixed(2),\n    printingCost: totalPrintCost.toFixed(2),\n    bulkDiscount: bulkDiscount.toFixed(2),\n    urgencySurcharge: urgencySurcharge.toFixed(2),\n    subtotal: subtotal.toFixed(2),\n    totalPrice: totalPrice.toFixed(2),\n    pricePerUnit: pricePerUnit.toFixed(2)\n  },\n  leadTime: deadlineDays < config.standardLeadTimeDays ? `${deadlineDays} days (expedited)` : `${config.standardLeadTimeDays} days (standard)`,\n  moqMet: rfqData.quantity >= moq\n};"
+      },
+      "id": "fe203647-327a-41e3-804f-c5bd17c8cf19",
+      "name": "Calculate Quote Pricing",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "<__PLACEHOLDER_VALUE__PDF generation API endpoint (e.g., https://api.pdfmonkey.io/api/v1/documents)__>",
+        "authentication": "genericCredentialType",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"document\": {\n    \"document_template_id\": \"<__PLACEHOLDER_VALUE__PDF template ID__>\",\n    \"payload\": {\n      \"clientName\": \"={{ $json.clientName }}\",\n      \"product\": \"={{ $json.product }}\",\n      \"fabric\": \"={{ $json.fabric }}\",\n      \"sizes\": \"={{ $json.sizes.join(', ') }}\",\n      \"quantity\": \"={{ $json.quantity }}\",\n      \"printing\": \"={{ $json.printing }}\",\n      \"pricePerUnit\": \"={{ $json.pricing.pricePerUnit }}\",\n      \"totalPrice\": \"={{ $json.pricing.totalPrice }}\",\n      \"basePrice\": \"={{ $json.pricing.basePrice }}\",\n      \"printingCost\": \"={{ $json.pricing.printingCost }}\",\n      \"bulkDiscount\": \"={{ $json.pricing.bulkDiscount }}\",\n      \"urgencySurcharge\": \"={{ $json.pricing.urgencySurcharge }}\",\n      \"leadTime\": \"={{ $json.leadTime }}\"\n    }\n  }\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "7fc3cfaa-775f-4a01-803e-25253367184b",
+      "name": "Generate PDF Quote",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2144,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "name",
+          "value": "quotes"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "client_name": "={{ $json.clientName }}",
+            "product": "={{ $json.product }}",
+            "quantity": "={{ $json.quantity }}",
+            "total_price": "={{ $json.pricing.totalPrice }}",
+            "breakdown": "={{ JSON.stringify($json.pricing) }}",
+            "created_at": "={{ NOW() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "aa4aee89-6544-4435-9fba-eeb54fbb22f1",
+      "name": "Store Quote in Database",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2368,
+        96
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "yGwZ0IHTkODL3IL8",
+          "name": "Postgres account dbt rn"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.clientEmail }}",
+        "subject": "=Your Clothing Quote - {{ $json.product }} ({{ $json.quantity }} units)",
+        "message": "=<html>\n<body>\n<h2>Thank you for your RFQ!</h2>\n<p>Dear {{ $json.clientName }},</p>\n<p>We are pleased to provide you with a quotation for your clothing order:</p>\n<h3>Order Details:</h3>\n<ul>\n<li><strong>Product:</strong> {{ $json.product }}</li>\n<li><strong>Fabric:</strong> {{ $json.fabric }}</li>\n<li><strong>Sizes:</strong> {{ $json.sizes.join(', ') }}</li>\n<li><strong>Quantity:</strong> {{ $json.quantity }} units</li>\n<li><strong>Custom Printing:</strong> {{ $json.printing }}</li>\n</ul>\n<h3>Pricing Breakdown:</h3>\n<ul>\n<li><strong>Base Price:</strong> ${{ $json.pricing.basePrice }}</li>\n<li><strong>Printing Cost:</strong> ${{ $json.pricing.printingCost }}</li>\n<li><strong>Bulk Discount:</strong> -${{ $json.pricing.bulkDiscount }}</li>\n<li><strong>Urgency Surcharge:</strong> +${{ $json.pricing.urgencySurcharge }}</li>\n<li><strong>Total Price:</strong> ${{ $json.pricing.totalPrice }}</li>\n<li><strong>Price per Unit:</strong> ${{ $json.pricing.pricePerUnit }}</li>\n</ul>\n<p><strong>Lead Time:</strong> {{ $json.leadTime }}</p>\n<p>Please find the detailed quotation attached as PDF.</p>\n<p>Best regards,<br>Your Clothing Supplier Team</p>\n</body>\n</html>",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "id": "24b44077-f77f-40bc-bcd1-675d482afa29",
+      "name": "Send Quote Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2592,
+        96
+      ],
+      "webhookId": "b23f3020-88a2-40e6-ac31-874f35a5a24d"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "<__PLACEHOLDER_VALUE__Slack channel ID or name (e.g., #sales-quotes)__>"
+        },
+        "text": "=🎯 New Quote Generated!\n\n*Client:* {{ $json.clientName }}\n*Product:* {{ $json.product }} ({{ $json.fabric }})\n*Quantity:* {{ $json.quantity }} units\n*Total Price:* ${{ $json.pricing.totalPrice }}\n*Price per Unit:* ${{ $json.pricing.pricePerUnit }}\n*Lead Time:* {{ $json.leadTime }}\n\n✅ Quote sent to {{ $json.clientEmail }}",
+        "otherOptions": {}
+      },
+      "id": "c69e9e76-d26f-42bb-8350-8a6f21627e69",
+      "name": "Notify Team on Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        2816,
+        96
+      ],
+      "webhookId": "660cf823-a34f-4360-bf43-fb722b952a5d"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "rajeetcodeN",
+    "name": "n8n_backup2"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-29T15:21:30.078Z",
+      "createdAt": "2026-03-29T15:21:30.078Z",
+      "role": "workflow:owner",
+      "workflowId": "5xhqRg3eoNJJa7B0",
+      "projectId": "7DfoImgKnNZiM78g"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-29T15:24:07.175Z",
+  "versionId": "74745fcc-703d-4f45-8de7-ec495426a0aa"
+}
