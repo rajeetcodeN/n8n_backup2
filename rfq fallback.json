@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-02-17T14:13:22.060Z",
-    "createdAt": "2026-02-17T14:13:22.060Z",
-    "versionId": "b5da006f-b61d-40b9-a7f3-44194d646f14",
+    "updatedAt": "2026-03-10T08:11:55.545Z",
+    "createdAt": "2026-03-10T08:11:55.545Z",
+    "versionId": "036fc619-8d0c-4f01-882b-cce7c3022825",
     "workflowId": "36bWhzz8qb0jaaw9",
     "nodes": [
       {
@@ -572,7 +572,7 @@
       },
       {
         "parameters": {
-          "model": "mistral-medium-latest",
+          "model": "mistral-small-latest",
           "options": {}
         },
         "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
@@ -967,7 +967,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "b5da006f-b61d-40b9-a7f3-44194d646f14",
+  "activeVersionId": "036fc619-8d0c-4f01-882b-cce7c3022825",
   "connections": {
     "Read Spreadsheet File1": {
       "main": [
@@ -1806,7 +1806,7 @@
     },
     {
       "parameters": {
-        "model": "mistral-medium-latest",
+        "model": "mistral-small-latest",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
@@ -2000,6 +2000,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-17T14:13:22.058Z",
-  "versionId": "b5da006f-b61d-40b9-a7f3-44194d646f14"
+  "updatedAt": "2026-03-10T08:11:55.543Z",
+  "versionId": "036fc619-8d0c-4f01-882b-cce7c3022825"
 }
